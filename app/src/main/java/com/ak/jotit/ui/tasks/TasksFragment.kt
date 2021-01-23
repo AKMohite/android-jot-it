@@ -1,14 +1,21 @@
 package com.ak.jotit.ui.tasks
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ak.jotit.R
 import com.ak.jotit.databinding.FragmentTasksBinding
+import com.ak.jotit.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @AndroidEntryPoint
 class TasksFragment : Fragment(R.layout.fragment_tasks) {
 
@@ -29,6 +36,43 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
 
         viewModel.tasks.observe(viewLifecycleOwner){ tasks ->
             tasksAdapter.submitList(tasks)
+        }
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_fragment_home, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.onQueryTextChanged { query ->
+//            update search query
+            viewModel.searchQuery.value = query
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.action_sort_name -> {
+                true
+            }
+
+            R.id.action_sort_date -> {
+                true
+            }
+
+            R.id.action_hide_completed_tasks -> {
+                item.isChecked = !item.isChecked
+                true
+            }
+
+            R.id.action_delete_completed_tasks -> {
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

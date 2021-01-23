@@ -7,4 +7,10 @@
     <string name="create_update_btn">Create Or update button</string>
     <string name="task_name">Task name</string>
     <string name="important_task">Important task</string>
+    <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_date">Sort by date created</string>
+    <string name="hide_completed">Hide completed</string>
+    <string name="delete_completed_tasks">Delete all completed tasks</string>
 </resources>
