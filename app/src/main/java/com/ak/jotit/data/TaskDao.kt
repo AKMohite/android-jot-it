@@ -19,4 +19,7 @@ interface TaskDao: BaseDao<TaskEntity> {
     @Query("SELECT * FROM task_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND name LIKE '%'||:searchQuery||'%' ORDER BY is_important DESC, created_at")
     fun getTasksSortedByDateCreated(searchQuery: String, hideCompleted: Boolean): Flow<List<TaskEntity>>
 
+    @Query("DELETE FROM task_table WHERE is_complete = 1")
+    suspend fun deleteCompleteTasks()
+
 }
