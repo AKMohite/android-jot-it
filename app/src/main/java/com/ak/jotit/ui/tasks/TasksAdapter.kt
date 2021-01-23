@@ -43,13 +43,11 @@ class TasksAdapter(private val listener: OnItemClickListener): ListAdapter<TaskE
             }
         }
 
-        fun bind(task: TaskEntity){
-            binding.apply {
-                checkboxComplete.isChecked = task.isComplete
-                taskName.text = task.name
-                taskName.paint.isStrikeThruText = task.isComplete
-                labelPriority.isVisible = task.isImportant
-            }
+        fun bind(task: TaskEntity) = with(binding){
+            checkboxComplete.isChecked = task.isComplete
+            taskName.text = task.name
+            taskName.paint.isStrikeThruText = task.isComplete
+            labelPriority.isVisible = task.isImportant
         }
 
     }

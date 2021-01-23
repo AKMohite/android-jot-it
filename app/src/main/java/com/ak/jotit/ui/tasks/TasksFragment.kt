@@ -33,6 +33,8 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
 
     private val viewModel: TasksViewModel by viewModels()
 
+    private lateinit var searchView: SearchView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentTasksBinding.bind(view)
@@ -46,8 +48,10 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
                 setHasFixedSize(true)
             }
 
-            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
                 override fun onMove(
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
@@ -68,30 +72,42 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
             }
         }
 
-        viewModel.tasks.observe(viewLifecycleOwner){ tasks ->
+        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
             tasksAdapter.submitList(tasks)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.tasksEventChannel.collect { event ->
-                when(event){
+                when (event) {
                     is TasksViewModel.TasksEvent.ShowUndoDeleteTaskMessage -> {
-                        Snackbar.make(requireView(), getString(R.string.task_delete), Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo)){
+                        Snackbar.make(
+                            requireView(),
+                            getString(R.string.task_delete),
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(getString(R.string.undo)) {
                                 viewModel.onUndoDeleteClick(event.task)
                             }
                             .show()
                     }
 
                     is TasksViewModel.TasksEvent.NavigateToAddTaskScreen -> {
-                        val action = TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(null, getString(
-                                                    R.string.new_task))
+                        val action =
+                            TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(
+                                null, getString(
+                                    R.string.new_task
+                                )
+                            )
                         findNavController().navigate(action)
                     }
 
                     is TasksViewModel.TasksEvent.NavigateToEditTaskScreen -> {
-                        val action = TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(event.task, getString(
-                                                    R.string.edit_task))
+                        val action =
+                            TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(
+                                event.task, getString(
+                                    R.string.edit_task
+                                )
+                            )
                         findNavController().navigate(action)
                     }
 
@@ -100,14 +116,15 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
                     }
 
                     is TasksViewModel.TasksEvent.NavigateToDeleteAllCompleteScreen -> {
-                        val action = TasksFragmentDirections.actionGlobalDeleteAllCompletedDialogFragment()
+                        val action =
+                            TasksFragmentDirections.actionGlobalDeleteAllCompletedDialogFragment()
                         findNavController().navigate(action)
                     }
                 }.exhaustive
             }
         }
 
-        setFragmentResultListener("add_edit_request"){ _, bundle ->
+        setFragmentResultListener("add_edit_request") { _, bundle ->
             val result = bundle.getInt("add_edit_result")
             viewModel.onAddEditResult(result)
         }
@@ -117,20 +134,27 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
         inflater.inflate(R.menu.menu_fragment_home, menu)
 
         val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        searchView = searchItem.actionView as SearchView
 
         searchView.onQueryTextChanged { query ->
 //            update search query
             viewModel.searchQuery.value = query
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            menu.findItem(R.id.action_hide_completed_tasks).isChecked = viewModel.preferencesFlow.first().hideCompleted
+        val pendingQuery = viewModel.searchQuery.value
+        if (!pendingQuery.isNullOrEmpty()) {
+            searchItem.expandActionView()
+            searchView.setQuery(pendingQuery, false)
         }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                menu.findItem(R.id.action_hide_completed_tasks).isChecked =
+                    viewModel.preferencesFlow.first().hideCompleted
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.action_sort_name -> {
                 viewModel.onSortOrderSelected(SortOrder.BY_NAME)
                 true
@@ -162,5 +186,10 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
 
     override fun onCheckBoxClick(task: TaskEntity, isChecked: Boolean) {
         viewModel.onTaskCheckChanged(task, isChecked)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        searchView.setOnQueryTextListener(null)
     }
 }
