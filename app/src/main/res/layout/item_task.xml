@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_8"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <CheckBox
+        android:id="@+id/checkbox_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_0"
+        android:minWidth="@dimen/dp_0"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="ToDo ! Important task"
+        android:maxLines="1"
+        android:layout_toStartOf="@id/label_priority"
+        android:ellipsize="end"
+        android:textColor="@color/black"
+        android:layout_alignTop="@id/checkbox_complete"
+        android:layout_alignBottom="@id/checkbox_complete"
+        android:gravity="center_vertical"
+        android:layout_toEndOf="@+id/checkbox_complete"/>
+
+    <ImageView
+        android:id="@+id/label_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_priority"
+        android:contentDescription="@string/task_priority"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>
