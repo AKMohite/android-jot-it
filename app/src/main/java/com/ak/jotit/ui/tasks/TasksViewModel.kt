@@ -7,6 +7,8 @@ import com.ak.jotit.data.PrefManager
 import com.ak.jotit.data.SortOrder
 import com.ak.jotit.data.TaskDao
 import com.ak.jotit.data.TaskEntity
+import com.ak.jotit.ui.ADD_TASK_RESULT_OK
+import com.ak.jotit.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,10 +72,23 @@ class TasksViewModel @ViewModelInject constructor(
         _tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
     }
 
+    fun onAddEditResult(result: Int) {
+        when(result){
+            ADD_TASK_RESULT_OK -> showTaskSaveConfirmationMessage("Task added")
+
+            EDIT_TASK_RESULT_OK -> showTaskSaveConfirmationMessage("Task updated")
+        }
+    }
+
+    private fun showTaskSaveConfirmationMessage(msg: String) = viewModelScope.launch {
+        _tasksEventChannel.send(TasksEvent.ShowTaskSavedConfirmationMsg(msg))
+    }
+
     sealed class TasksEvent{
         data class ShowUndoDeleteTaskMessage(val task: TaskEntity): TasksEvent()
         object NavigateToAddTaskScreen: TasksEvent()
         data class NavigateToEditTaskScreen(val task: TaskEntity): TasksEvent()
+        data class ShowTaskSavedConfirmationMsg(val msg: String): TasksEvent()
     }
 
 }
