@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ak.jotit.data.PrefManager
 import com.ak.jotit.data.SortOrder
 import com.ak.jotit.data.TaskDao
+import com.ak.jotit.data.TaskEntity
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -33,6 +34,8 @@ class TasksViewModel @ViewModelInject constructor(
             taskDao.getTasks(query, filterPreferences.sortOrder, filterPreferences.hideCompleted)
         }
 
+    val tasks = tasksFlow.asLiveData()
+
     fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
         prefManager.updateSortOrder(sortOrder)
     }
@@ -41,7 +44,12 @@ class TasksViewModel @ViewModelInject constructor(
         prefManager.updateHideCompleted(onHideComplete)
     }
 
-    val tasks = tasksFlow.asLiveData()
+    fun onTaskCheckChanged(task: TaskEntity, isChecked: Boolean) = viewModelScope.launch {
+        taskDao.update(task.copy(isComplete = isChecked))
+    }
 
+    fun onTaskSelected(task: TaskEntity){
+
+    }
 
 }

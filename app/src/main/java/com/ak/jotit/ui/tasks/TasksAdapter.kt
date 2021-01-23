@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ak.jotit.data.TaskEntity
 import com.ak.jotit.databinding.ItemTaskBinding
 
-class TasksAdapter: ListAdapter<TaskEntity, TasksAdapter.TasksViewHolder>(DiffCallBack()) {
+class TasksAdapter(private val listener: OnItemClickListener): ListAdapter<TaskEntity, TasksAdapter.TasksViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +21,27 @@ class TasksAdapter: ListAdapter<TaskEntity, TasksAdapter.TasksViewHolder>(DiffCa
         holder.bind(currentTask)
     }
 
-    class TasksViewHolder(private val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root){
+    inner class TasksViewHolder(private val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root){
+
+        init {
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION){
+                        val  task = getItem(position)
+                        listener.onItemClick(task)
+                    }
+                }
+
+                checkboxComplete.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION){
+                        val  task = getItem(position)
+                        listener.onCheckBoxClick(task, checkboxComplete.isChecked)
+                    }
+                }
+            }
+        }
 
         fun bind(task: TaskEntity){
             binding.apply {
@@ -32,6 +52,11 @@ class TasksAdapter: ListAdapter<TaskEntity, TasksAdapter.TasksViewHolder>(DiffCa
             }
         }
 
+    }
+
+    interface OnItemClickListener{
+        fun onItemClick(task: TaskEntity)
+        fun onCheckBoxClick(task: TaskEntity, isChecked: Boolean)
     }
 
     class DiffCallBack: DiffUtil.ItemCallback<TaskEntity>(){
