@@ -3,36 +3,45 @@ package com.ak.jotit.ui.tasks
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.ak.jotit.data.PrefManager
+import com.ak.jotit.data.SortOrder
 import com.ak.jotit.data.TaskDao
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 
 @FlowPreview
 class TasksViewModel @ViewModelInject constructor(
-    private val taskDao: TaskDao
+    private val taskDao: TaskDao,
+    private val prefManager: PrefManager
 ): ViewModel() {
 
     val searchQuery = MutableStateFlow("")
 
-    val sortOrder = MutableStateFlow(SortOrder.BY_DATE)
-    val hideCompleted = MutableStateFlow(false)
+    val preferencesFlow = prefManager.preferencesFlow
 
     private val tasksFlow = combine(
         searchQuery,
-        sortOrder,
-        hideCompleted
-    ){ query, sortOrder, hideCompleted ->
-        Triple(query, sortOrder, hideCompleted)
+        preferencesFlow
+    ){ query, filterPreferences ->
+        Pair(query, filterPreferences)
     }
-        .flatMapLatest { (query, sortOrder, hideCompleted)->
-            taskDao.getTasks(query, sortOrder, hideCompleted)
+        .flatMapLatest { (query, filterPreferences)->
+            taskDao.getTasks(query, filterPreferences.sortOrder, filterPreferences.hideCompleted)
         }
+
+    fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
+        prefManager.updateSortOrder(sortOrder)
+    }
+
+    fun onHideCompleteCheck(onHideComplete: Boolean) = viewModelScope.launch {
+        prefManager.updateHideCompleted(onHideComplete)
+    }
 
     val tasks = tasksFlow.asLiveData()
 
 
 }
-
-enum class SortOrder{ BY_NAME, BY_DATE}

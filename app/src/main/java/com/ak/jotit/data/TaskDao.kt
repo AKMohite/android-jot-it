@@ -2,7 +2,6 @@ package com.ak.jotit.data
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.ak.jotit.ui.tasks.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
