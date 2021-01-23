@@ -5,17 +5,16 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ak.jotit.data.TaskDao
 import com.ak.jotit.data.TaskEntity
+import com.ak.jotit.repo.TasksRepository
 import com.ak.jotit.ui.ADD_TASK_RESULT_OK
 import com.ak.jotit.ui.EDIT_TASK_RESULT_OK
-import com.ak.jotit.ui.tasks.TasksViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class AddEditTaskViewModel @ViewModelInject constructor(
-    private val taskDao: TaskDao,
+    private val tasksRepository: TasksRepository,
     @Assisted private val state: SavedStateHandle
 ): ViewModel() {
 
@@ -57,13 +56,13 @@ class AddEditTaskViewModel @ViewModelInject constructor(
     }
 
     private fun createTask(newTask: TaskEntity) = viewModelScope.launch {
-        taskDao.insert(newTask)
+        tasksRepository.insertTask(newTask)
 //        navigate back
         _addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackResult(ADD_TASK_RESULT_OK))
     }
 
     private fun updatedTask(updatedTask: TaskEntity) = viewModelScope.launch {
-        taskDao.update(updatedTask)
+        tasksRepository.insertTask(updatedTask)
 //        navigate back
         _addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackResult(EDIT_TASK_RESULT_OK))
     }
