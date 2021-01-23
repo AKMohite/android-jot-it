@@ -31,7 +31,7 @@ abstract class TasksDatabase: RoomDatabase() {
 
             appScope.launch {
                 dao.insert(TaskEntity(name = "Go for walk"))
-                dao.insert(TaskEntity(name = "Drink water"))
+                dao.insert(TaskEntity(name = "Drink water", isComplete = true))
                 dao.insert(TaskEntity(name = "Fix issues", isImportant = true))
                 dao.insert(TaskEntity(name = "Standup call"))
                 dao.insert(TaskEntity(name = "Create POC"))
