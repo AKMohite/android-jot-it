@@ -1,9 +1,8 @@
 package com.ak.jotit.ui.tasks
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ak.jotit.data.PrefManager
 import com.ak.jotit.data.SortOrder
 import com.ak.jotit.data.TaskDao
@@ -19,10 +18,11 @@ import kotlinx.coroutines.launch
 @FlowPreview
 class TasksViewModel @ViewModelInject constructor(
     private val taskDao: TaskDao,
-    private val prefManager: PrefManager
+    private val prefManager: PrefManager,
+    @Assisted private val state: SavedStateHandle
 ): ViewModel() {
 
-    val searchQuery = MutableStateFlow("")
+    val searchQuery = state.getLiveData("searchQuery", "")
 
     val preferencesFlow = prefManager.preferencesFlow
 
@@ -30,7 +30,7 @@ class TasksViewModel @ViewModelInject constructor(
     val tasksEventChannel = _tasksEventChannel.receiveAsFlow()
 
     private val tasksFlow = combine(
-        searchQuery,
+        searchQuery.asFlow(),
         preferencesFlow
     ){ query, filterPreferences ->
         Pair(query, filterPreferences)
@@ -53,8 +53,8 @@ class TasksViewModel @ViewModelInject constructor(
         taskDao.update(task.copy(isComplete = isChecked))
     }
 
-    fun onTaskSelected(task: TaskEntity){
-
+    fun onTaskSelected(task: TaskEntity) = viewModelScope.launch {
+        _tasksEventChannel.send(TasksEvent.NavigateToEditTaskScreen(task))
     }
 
     fun onTaskSwiped(task: TaskEntity) = viewModelScope.launch {
@@ -66,8 +66,14 @@ class TasksViewModel @ViewModelInject constructor(
         taskDao.insert(task)
     }
 
+    fun onAddNewTaskClick() = viewModelScope.launch {
+        _tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
+    }
+
     sealed class TasksEvent{
         data class ShowUndoDeleteTaskMessage(val task: TaskEntity): TasksEvent()
+        object NavigateToAddTaskScreen: TasksEvent()
+        data class NavigateToEditTaskScreen(val task: TaskEntity): TasksEvent()
     }
 
 }

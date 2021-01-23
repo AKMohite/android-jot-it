@@ -15,4 +15,6 @@
     <string name="delete_completed_tasks">Delete all completed tasks</string>
     <string name="task_delete">Task deleted</string>
     <string name="undo">UNDO</string>
+    <string name="new_task">New Task</string>
+    <string name="edit_task">Edit Task</string>
 </resources>
