@@ -8,8 +8,7 @@ import androidx.test.filters.SmallTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
@@ -48,14 +47,13 @@ class TaskDaoTest {
     fun insertTaskItem() = runBlockingTest {
         val taskItem = TaskEntity(id = 1, name = "Check Test", isImportant = true)
         dao.insert(taskItem)
-        val allTasks = dao.getTasks("", SortOrder.BY_DATE, false).first()
-        val firstTask = allTasks[0]
+        val task = dao.getTask(1).first()
 
-        assertThat<TaskEntity>(firstTask as TaskEntity, notNullValue())
-        assertThat(firstTask.id, `is`(taskItem.id))
-        assertThat(firstTask.name, `is`(taskItem.name))
-        assertThat(firstTask.createdAt, `is`(taskItem.createdAt))
-        assertThat(firstTask.isComplete, `is`(taskItem.isComplete))
+        assertThat<TaskEntity>(task as TaskEntity, notNullValue())
+        assertThat(task.id, `is`(taskItem.id))
+        assertThat(task.name, `is`(taskItem.name))
+        assertThat(task.createdAt, `is`(taskItem.createdAt))
+        assertThat(task.isComplete, `is`(taskItem.isComplete))
     }
 
     @Test
@@ -69,11 +67,24 @@ class TaskDaoTest {
         dao.update(updatedTask)
 
         // THEN - The loaded data contains the expected values
-        val loaded = dao.getTasks("", SortOrder.BY_DATE, false).first()
-        val firstTask = loaded[0]
-        assertThat(firstTask?.id, `is`(taskItem.id))
-        assertThat(firstTask?.name, `is`("new title"))
-        assertThat(firstTask?.isComplete, `is`(true))
+        val task = dao.getTask(1).first()
+        assertThat(task?.id, `is`(taskItem.id))
+        assertThat(task?.name, `is`("new title"))
+        assertThat(task?.isComplete, `is`(true))
+    }
+
+    @Test
+    fun deleteTaskItem_verifySuccess() = runBlockingTest {
+        // When inserting a task
+        val taskItem = TaskEntity(id = 1, name = "Check Test", isImportant = true)
+        dao.insert(taskItem)
+
+        // When the task is updated
+        dao.delete(taskItem)
+
+        // THEN - The loaded data contains the expected values
+        val task = dao.getTask(1).first()
+        assertThat<TaskEntity>(task, `is`(nullValue()))
     }
 
 }

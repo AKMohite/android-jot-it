@@ -13,6 +13,9 @@ interface TaskDao: BaseDao<TaskEntity> {
             SortOrder.BY_NAME -> getTasksSortedByName(query, hideCompleted)
         }
 
+    @Query("SELECT * FROM task_table WHERE id = :id")
+    fun getTask(id: Long): Flow<TaskEntity>
+
     @Query("SELECT * FROM task_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND name LIKE '%'||:searchQuery||'%' ORDER BY is_important DESC, name")
     fun getTasksSortedByName(searchQuery: String, hideCompleted: Boolean): Flow<List<TaskEntity>>
 
