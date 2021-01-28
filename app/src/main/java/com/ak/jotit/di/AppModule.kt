@@ -24,7 +24,7 @@ object AppModule {
         callBack: TasksDatabase.CallBack
     ) = Room.databaseBuilder(app, TasksDatabase::class.java, "tasks_db")
             .fallbackToDestructiveMigration() // TODO room migration
-            .addCallback(callBack) // TODO Remove this callback
+//            .addCallback(callBack) // TODO Remove this callback
             .build()
 
     @Provides

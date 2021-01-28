@@ -2,7 +2,10 @@ package com.ak.jotit
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +29,7 @@ class ResourceComparerTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val result = resourceComparer.isEqual(context, R.string.add_task, "Add Task")
 
-        assertThat(result).isTrue()
+        assertThat(result, `is` (true))
 
     }
 
@@ -35,8 +38,7 @@ class ResourceComparerTest {
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         val result = resourceComparer.isEqual(context, R.string.add_task, "Hello")
-
-        assertThat(result).isFalse()
+        assertThat(result, `is` (false))
 
     }
 }
