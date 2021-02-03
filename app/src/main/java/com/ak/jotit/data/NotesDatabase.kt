@@ -30,13 +30,13 @@ abstract class NotesDatabase: RoomDatabase() {
             val dao = database.get().noteDao()
 
             appScope.launch {
-                dao.insert(NoteEntity(name = "Go for walk"))
+                /*dao.insert(NoteEntity(name = "Go for walk"))
                 dao.insert(NoteEntity(name = "Drink water", isComplete = true))
                 dao.insert(NoteEntity(name = "Fix issues", isImportant = true))
                 dao.insert(NoteEntity(name = "Standup call"))
                 dao.insert(NoteEntity(name = "Create POC"))
                 dao.insert(NoteEntity(name = "Read a book/blog"))
-                dao.insert(NoteEntity(name = "Get some sleep", isImportant = true))
+                dao.insert(NoteEntity(name = "Get some sleep", isImportant = true))*/
             }
         }
 

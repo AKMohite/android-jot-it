@@ -16,6 +16,8 @@ data class NoteEntity(
     val id: Long = 0,  // TODO implement sync functionality using ids
     @ColumnInfo(name = "name")
     val name: String,
+    @ColumnInfo(name = "description")
+    val description: String,
     @ColumnInfo(name = "is_important")
     val isImportant: Boolean = false,
     @ColumnInfo(name = "is_complete")

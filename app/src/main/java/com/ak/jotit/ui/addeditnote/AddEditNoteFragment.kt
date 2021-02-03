@@ -28,9 +28,14 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
 
         binding.apply {
             noteTitleEt.setText(viewModel.noteTitle)
+            noteDescEt.setText(viewModel.noteDesc)
 
             noteTitleEt.addTextChangedListener {
                 viewModel.noteTitle = it.toString()
+            }
+
+            noteDescEt.addTextChangedListener {
+                viewModel.noteDesc = it.toString()
             }
 
             fabSaveNote.setOnClickListener {
@@ -46,6 +51,7 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
                     }
                     is AddEditNoteViewModel.AddEditNoteEvent.NavigateBackResult -> {
                         binding.noteTitleEt.clearFocus()
+                        binding.noteDescEt.clearFocus()
                         setFragmentResult(
                             "add_edit_request",
                             bundleOf("add_edit_result" to event.result)

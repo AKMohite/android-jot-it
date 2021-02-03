@@ -26,6 +26,12 @@ class AddEditNoteViewModel @ViewModelInject constructor(
             state.set("noteTitle", value)
         }
 
+    var noteDesc = state.get<String>("noteDesc") ?: note?.description ?: ""
+        set(value) {
+            field = value
+            state.set("noteDesc", value)
+        }
+
     var noteImportance = state.get<Boolean>("noteImportance") ?: note?.isImportant ?: false
         set(value) {
             field = value
@@ -38,15 +44,20 @@ class AddEditNoteViewModel @ViewModelInject constructor(
     fun onSaveClick(){
         if (noteTitle.isBlank()) {
 //            show invalid input msg
-            showInvalidInputMessage("Name cannot be empty")
+            showInvalidInputMessage("Title cannot be empty")
+            return
+        }
+
+        if (noteDesc.isBlank()) {
+            showInvalidInputMessage("Description cannot be empty")
             return
         }
 
         if (note != null) {
-            val updatedNote = note.copy(name = noteTitle, isImportant = noteImportance)
+            val updatedNote = note.copy(name = noteTitle, description = noteDesc, isImportant = noteImportance)
             updatedNote(updatedNote)
         } else {
-            val newNote = NoteEntity(name = noteTitle, isImportant = noteImportance)
+            val newNote = NoteEntity(name = noteTitle, description = noteDesc, isImportant = noteImportance)
             createNote(newNote)
         }
     }

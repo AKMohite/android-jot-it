@@ -1,39 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_8"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/dp_4"
+    android:layout_margin="@dimen/dp_4"
+    app:cardElevation="@dimen/dp_2">
 
-    <CheckBox
-        android:id="@+id/checkbox_complete"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/dp_0"
-        android:minWidth="@dimen/dp_0"
-        android:layout_alignParentStart="true"/>
+        android:padding="@dimen/dp_8">
+        <CheckBox
+            android:id="@+id/checkbox_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_0"
+            android:minWidth="@dimen/dp_0"
+            android:visibility="gone"
+            android:layout_alignParentStart="true"/>
 
-    <TextView
-        android:id="@+id/note_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="ToDo ! Important note"
-        android:maxLines="1"
-        android:layout_toStartOf="@id/label_priority"
-        android:ellipsize="end"
-        android:textColor="@color/black"
-        android:layout_alignTop="@id/checkbox_complete"
-        android:layout_alignBottom="@id/checkbox_complete"
-        android:gravity="center_vertical"
-        android:layout_toEndOf="@+id/checkbox_complete"/>
+        <TextView
+            android:id="@+id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="ToDo ! Important note"
+            android:maxLines="1"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_toStartOf="@id/label_priority"
+            android:ellipsize="end"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_alignTop="@id/checkbox_complete"
+            android:layout_alignBottom="@id/checkbox_complete"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@+id/checkbox_complete"/>
 
-    <ImageView
-        android:id="@+id/label_priority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_priority"
-        android:contentDescription="@string/note_priority"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/note_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="ToDo ! Important note"
+            android:maxLines="4"
+            android:layout_below="@+id/note_title"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:ellipsize="end"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/black"/>
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/label_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_priority"
+            android:contentDescription="@string/note_priority"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
