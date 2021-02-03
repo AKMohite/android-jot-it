@@ -3,26 +3,26 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/tasksFragment">
+    app:startDestination="@id/notesFragment">
 
     <fragment
-        android:id="@+id/tasksFragment"
-        android:name="com.ak.jotit.ui.tasks.TasksFragment"
+        android:id="@+id/notesFragment"
+        android:name="com.ak.jotit.ui.notes.NotesFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_tasks">
+        tools:layout="@layout/fragment_notes">
         <action
-            android:id="@+id/action_tasksFragment_to_fragmentAddEditTask"
-            app:destination="@id/addEditTaskFragment" />
+            android:id="@+id/action_notesFragment_to_fragmentAddEditNote"
+            app:destination="@id/addEditNoteFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addEditTaskFragment"
-        android:name="com.ak.jotit.ui.addedittask.AddEditTaskFragment"
+        android:id="@+id/addEditNoteFragment"
+        android:name="com.ak.jotit.ui.addeditnote.AddEditNoteFragment"
         android:label="{title}"
-        tools:layout="@layout/fragment_add_edit_task">
+        tools:layout="@layout/fragment_add_edit_note">
         <argument
-            android:name="task"
+            android:name="note"
             android:defaultValue="@null"
-            app:argType="com.ak.jotit.data.TaskEntity"
+            app:argType="com.ak.jotit.data.NoteEntity"
             app:nullable="true" />
         <argument
             android:name="title"

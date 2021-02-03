@@ -1,4 +1,4 @@
-package com.ak.jotit.ui.tasks
+package com.ak.jotit.ui.notes
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ak.jotit.R
 import com.ak.jotit.data.SortOrder
-import com.ak.jotit.data.TaskEntity
-import com.ak.jotit.databinding.FragmentTasksBinding
+import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.databinding.FragmentNotesBinding
 import com.ak.jotit.util.exhaustive
 import com.ak.jotit.util.onQueryTextChanged
 import com.google.android.material.snackbar.Snackbar
@@ -29,21 +30,21 @@ import kotlinx.coroutines.launch
 
 @FlowPreview
 @AndroidEntryPoint
-class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClickListener {
+class NotesFragment : Fragment(R.layout.fragment_notes), NotesAdapter.OnItemClickListener {
 
-    private val viewModel: TasksViewModel by viewModels()
+    private val viewModel: NotesViewModel by viewModels()
 
     private lateinit var searchView: SearchView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentTasksBinding.bind(view)
-        val tasksAdapter = TasksAdapter(this)
+        val binding = FragmentNotesBinding.bind(view)
+        val notesAdapter = NotesAdapter(this)
         setHasOptionsMenu(true)
 
         binding.apply {
-            tasksRecyclerView.apply {
-                adapter = tasksAdapter
+            notesRecyclerView.apply {
+                adapter = notesAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
             }
@@ -61,63 +62,59 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val task = tasksAdapter.currentList[viewHolder.adapterPosition]
-                    viewModel.onTaskSwiped(task)
+                    val note = notesAdapter.currentList[viewHolder.adapterPosition]
+                    viewModel.onNoteSwiped(note)
                 }
 
-            }).attachToRecyclerView(tasksRecyclerView)
+            }).attachToRecyclerView(notesRecyclerView)
 
-            fabAddTask.setOnClickListener {
-                viewModel.onAddNewTaskClick()
+            fabAddNote.setOnClickListener {
+                viewModel.onAddNewNoteClick()
             }
         }
 
-        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
-            tasksAdapter.submitList(tasks)
-        }
+        viewModel.notes.observe(viewLifecycleOwner, Observer { notes ->
+            notesAdapter.submitList(notes)
+        })
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.tasksEventChannel.collect { event ->
+            viewModel.notesEventChannel.collect { event ->
                 when (event) {
-                    is TasksViewModel.TasksEvent.ShowUndoDeleteTaskMessage -> {
+                    is NotesViewModel.NotesEvent.ShowUndoDeleteNoteMessage -> {
                         Snackbar.make(
                             requireView(),
                             getString(R.string.note_delete),
                             Snackbar.LENGTH_LONG
                         )
                             .setAction(getString(R.string.undo)) {
-                                viewModel.onUndoDeleteClick(event.task)
+                                viewModel.onUndoDeleteClick(event.note)
                             }
                             .show()
                     }
 
-                    is TasksViewModel.TasksEvent.NavigateToAddTaskScreen -> {
+                    is NotesViewModel.NotesEvent.NavigateToAddNoteScreen -> {
                         val action =
-                            TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(
-                                null, getString(
-                                    R.string.new_note
-                                )
+                            NotesFragmentDirections.actionNotesFragmentToFragmentAddEditNote(
+                                null, getString(R.string.new_note)
                             )
                         findNavController().navigate(action)
                     }
 
-                    is TasksViewModel.TasksEvent.NavigateToEditTaskScreen -> {
+                    is NotesViewModel.NotesEvent.NavigateToEditNoteScreen -> {
                         val action =
-                            TasksFragmentDirections.actionTasksFragmentToFragmentAddEditTask(
-                                event.task, getString(
-                                    R.string.edit_note
-                                )
+                            NotesFragmentDirections.actionNotesFragmentToFragmentAddEditNote(
+                                event.note, getString(R.string.edit_note)
                             )
                         findNavController().navigate(action)
                     }
 
-                    is TasksViewModel.TasksEvent.ShowTaskSavedConfirmationMsg -> {
+                    is NotesViewModel.NotesEvent.ShowNoteSavedConfirmationMsg -> {
                         Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_SHORT).show()
                     }
 
-                    is TasksViewModel.TasksEvent.NavigateToDeleteAllCompleteScreen -> {
+                    is NotesViewModel.NotesEvent.NavigateToDeleteAllCompleteScreen -> {
                         val action =
-                            TasksFragmentDirections.actionGlobalDeleteAllCompletedDialogFragment()
+                            NotesFragmentDirections.actionGlobalDeleteAllCompletedDialogFragment()
                         findNavController().navigate(action)
                     }
                 }.exhaustive
@@ -148,7 +145,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
         }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                menu.findItem(R.id.action_hide_completed_tasks).isChecked =
+                menu.findItem(R.id.action_hide_completed_notes).isChecked =
                     viewModel.preferencesFlow.first().hideCompleted
             }
     }
@@ -165,13 +162,13 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
                 true
             }
 
-            R.id.action_hide_completed_tasks -> {
+            R.id.action_hide_completed_notes -> {
                 item.isChecked = !item.isChecked
                 viewModel.onHideCompleteCheck(item.isChecked)
                 true
             }
 
-            R.id.action_delete_completed_tasks -> {
+            R.id.action_delete_completed_notes -> {
                 viewModel.onDeleteAllCompleted()
                 true
             }
@@ -180,12 +177,12 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
         }
     }
 
-    override fun onItemClick(task: TaskEntity) {
-        viewModel.onTaskSelected(task)
+    override fun onItemClick(note: NoteEntity) {
+        viewModel.onNoteSelected(note)
     }
 
-    override fun onCheckBoxClick(task: TaskEntity, isChecked: Boolean) {
-        viewModel.onTaskCheckChanged(task, isChecked)
+    override fun onCheckBoxClick(note: NoteEntity, isChecked: Boolean) {
+        viewModel.onNoteCheckChanged(note, isChecked)
     }
 
     override fun onDestroyView() {

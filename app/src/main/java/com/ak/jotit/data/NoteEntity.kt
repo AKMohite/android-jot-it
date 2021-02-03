@@ -8,9 +8,9 @@ import kotlinx.android.parcel.Parcelize
 import java.text.DateFormat
 
 // TODO implement add edit viewmodel instead of passing objects
-@Entity(tableName = "task_table")
+@Entity(tableName = "note_table")
 @Parcelize // to pass object between fragments
-data class TaskEntity(
+data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,  // TODO implement sync functionality using ids

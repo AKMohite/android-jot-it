@@ -1,8 +1,8 @@
 package com.ak.jotit.di
 
-import com.ak.jotit.data.TaskDao
-import com.ak.jotit.repo.TasksRepository
-import com.ak.jotit.repo.TasksRepositoryImpl
+import com.ak.jotit.data.NoteDao
+import com.ak.jotit.repo.NotesRepository
+import com.ak.jotit.repo.NotesRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +15,5 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideTaskRepository(taskDao: TaskDao): TasksRepository = TasksRepositoryImpl(taskDao)
+    fun provideNoteRepository(noteDao: NoteDao): NotesRepository = NotesRepositoryImpl(noteDao)
 }

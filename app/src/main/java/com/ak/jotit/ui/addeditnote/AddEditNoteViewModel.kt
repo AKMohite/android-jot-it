@@ -1,0 +1,75 @@
+package com.ak.jotit.ui.addeditnote
+
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.repo.NotesRepository
+import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
+import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+
+class AddEditNoteViewModel @ViewModelInject constructor(
+    private val notesRepository: NotesRepository,
+    @Assisted private val state: SavedStateHandle
+): ViewModel() {
+
+    val note = state.get<NoteEntity>("note") // this argument should be same in nav_graph
+
+    var noteTitle = state.get<String>("noteTitle") ?: note?.name ?: ""
+        set(value) {
+            field = value
+            state.set("noteTitle", value)
+        }
+
+    var noteImportance = state.get<Boolean>("noteImportance") ?: note?.isImportant ?: false
+        set(value) {
+            field = value
+            state.set("noteImportance", value)
+        }
+
+    private val _addEditNoteEventChannel = Channel<AddEditNoteEvent>()
+    val addEditNoteEventChannel = _addEditNoteEventChannel.receiveAsFlow()
+
+    fun onSaveClick(){
+        if (noteTitle.isBlank()) {
+//            show invalid input msg
+            showInvalidInputMessage("Name cannot be empty")
+            return
+        }
+
+        if (note != null) {
+            val updatedNote = note.copy(name = noteTitle, isImportant = noteImportance)
+            updatedNote(updatedNote)
+        } else {
+            val newNote = NoteEntity(name = noteTitle, isImportant = noteImportance)
+            createNote(newNote)
+        }
+    }
+
+    private fun showInvalidInputMessage(msg: String) = viewModelScope.launch {
+        _addEditNoteEventChannel.send(AddEditNoteEvent.ShowInvalidInputMessage(msg))
+    }
+
+    private fun createNote(newNote: NoteEntity) = viewModelScope.launch {
+        notesRepository.insertNote(newNote)
+//        navigate back
+        _addEditNoteEventChannel.send(AddEditNoteEvent.NavigateBackResult(ADD_NOTE_RESULT_OK))
+    }
+
+    private fun updatedNote(updatedNote: NoteEntity) = viewModelScope.launch {
+        notesRepository.insertNote(updatedNote)
+//        navigate back
+        _addEditNoteEventChannel.send(AddEditNoteEvent.NavigateBackResult(EDIT_NOTE_RESULT_OK))
+    }
+
+    sealed class AddEditNoteEvent{
+        data class ShowInvalidInputMessage(val msg: String): AddEditNoteEvent()
+        data class NavigateBackResult(val result: Int): AddEditNoteEvent()
+    }
+
+}

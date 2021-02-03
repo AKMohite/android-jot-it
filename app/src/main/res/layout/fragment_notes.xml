@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.tasks.TasksFragment">
+    tools:context=".ui.notes.NotesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tasks_recycler_view"
+        android:id="@+id/notes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_task"/>
+        tools:listitem="@layout/item_note"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_task"
+        android:id="@+id/fab_add_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
