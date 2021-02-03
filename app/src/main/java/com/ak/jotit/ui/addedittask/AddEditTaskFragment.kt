@@ -29,17 +29,9 @@ class AddEditTaskFragment : Fragment(R.layout.fragment_add_edit_task) {
 
         binding.apply {
             taskNameEt.setText(viewModel.taskName)
-            checkBoxImportant.isChecked = viewModel.taskImportance
-            checkBoxImportant.jumpDrawablesToCurrentState()
-            dateCreatedTv.isVisible = viewModel.task != null
-            dateCreatedTv.text = "Created at: ${viewModel.task?.createdDateFormatted}"
 
             taskNameEt.addTextChangedListener {
                 viewModel.taskName = it.toString()
-            }
-
-            checkBoxImportant.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.taskImportance = isChecked
             }
 
             fabSaveTask.setOnClickListener {

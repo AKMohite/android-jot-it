@@ -1,24 +1,23 @@
 <resources>
     <string name="app_name">Jot It</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_task">Add Task</string>
-    <string name="task_priority">Task Priority</string>
+    <string name="add_note">Add Note</string>
+    <string name="note_priority">Note Priority</string>
     <string name="create_update_btn">Create Or update button</string>
-    <string name="task_name">Task name</string>
-    <string name="important_task">Important task</string>
+    <string name="note_title">Note title</string>
+    <string name="important_note">Important note</string>
     <string name="search">Search</string>
     <string name="sort">Sort</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_date">Sort by date created</string>
     <string name="hide_completed">Hide completed</string>
-    <string name="delete_completed_tasks">Delete all completed tasks</string>
-    <string name="task_delete">Task deleted</string>
+    <string name="delete_completed_note">Delete all completed notes</string>
+    <string name="note_delete">Note deleted</string>
     <string name="undo">UNDO</string>
-    <string name="new_task">New Task</string>
-    <string name="edit_task">Edit Task</string>
+    <string name="new_note">New note</string>
+    <string name="edit_note">Edit note</string>
     <string name="confirm_delete">Confirm deletion</string>
-    <string name="delete_all_msg">Do you really want to delete all completed tasks?</string>
+    <string name="delete_all_msg">Do you really want to delete all completed notes?</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
+    <string name="note_desc">Note description</string>
 </resources>

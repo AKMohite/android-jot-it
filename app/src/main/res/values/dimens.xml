@@ -3,4 +3,6 @@
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_0">0dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_64">64dp</dimen>
 </resources>
