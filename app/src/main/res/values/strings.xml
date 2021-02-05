@@ -10,7 +10,7 @@
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_date">Sort by date created</string>
     <string name="hide_completed">Hide completed</string>
-    <string name="delete_completed_note">Delete all completed notes</string>
+    <string name="delete_completed_note">Delete all notes</string>
     <string name="note_delete">Note deleted</string>
     <string name="undo">UNDO</string>
     <string name="new_note">New note</string>

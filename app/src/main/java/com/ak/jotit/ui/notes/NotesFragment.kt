@@ -85,7 +85,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes), NotesAdapter.OnItemClic
                             requireView(),
                             getString(R.string.note_delete),
                             Snackbar.LENGTH_LONG
-                        )
+                        ).setAnchorView(binding.fabAddNote)
                             .setAction(getString(R.string.undo)) {
                                 viewModel.onUndoDeleteClick(event.note)
                             }
@@ -109,7 +109,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes), NotesAdapter.OnItemClic
                     }
 
                     is NotesViewModel.NotesEvent.ShowNoteSavedConfirmationMsg -> {
-                        Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_SHORT).setAnchorView(binding.fabAddNote).show()
                     }
 
                     is NotesViewModel.NotesEvent.NavigateToDeleteAllCompleteScreen -> {
