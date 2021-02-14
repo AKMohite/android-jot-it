@@ -47,7 +47,7 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
             viewModel.addEditNoteEventChannel.collect { event ->
                 when(event){
                     is AddEditNoteViewModel.AddEditNoteEvent.ShowInvalidInputMessage -> {
-                        Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_LONG).setAnchorView(binding.fabSaveNote).show()
                     }
                     is AddEditNoteViewModel.AddEditNoteEvent.NavigateBackResult -> {
                         binding.noteTitleEt.clearFocus()

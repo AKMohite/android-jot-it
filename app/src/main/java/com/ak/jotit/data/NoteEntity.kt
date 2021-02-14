@@ -23,7 +23,9 @@ data class NoteEntity(
     @ColumnInfo(name = "is_complete")
     val isComplete: Boolean = false,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long = System.currentTimeMillis() // TODO add updatedAt column
+    val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updated_at")
+    val updatedAt: Long = System.currentTimeMillis(),
 ): Parcelable{
     val createdDateFormatted: String
         get() = DateFormat.getDateInstance().format(createdAt) // TODO use Room TypeConverters

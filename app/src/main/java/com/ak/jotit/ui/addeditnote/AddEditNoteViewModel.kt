@@ -54,7 +54,7 @@ class AddEditNoteViewModel @ViewModelInject constructor(
         }
 
         if (note != null) {
-            val updatedNote = note.copy(name = noteTitle, description = noteDesc, isImportant = noteImportance)
+            val updatedNote = note.copy(name = noteTitle, description = noteDesc, isImportant = noteImportance, updatedAt = System.currentTimeMillis())
             updatedNote(updatedNote)
         } else {
             val newNote = NoteEntity(name = noteTitle, description = noteDesc, isImportant = noteImportance)
