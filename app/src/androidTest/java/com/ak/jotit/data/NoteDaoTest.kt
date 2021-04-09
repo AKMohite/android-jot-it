@@ -44,7 +44,7 @@ class NoteDaoTest {
 
     @Test
     fun insertNoteItem() = runBlockingTest {
-        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true)
+        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true, description = "Testing description")
         dao.insert(noteItem)
         val note = dao.getNote(1).first()
 
@@ -58,11 +58,11 @@ class NoteDaoTest {
     @Test
     fun updateNoteItem_verifySuccess() = runBlockingTest {
         // When inserting a note
-        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true)
+        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true, description = "Testing description")
         dao.insert(noteItem)
 
         // When the note is updated
-        val updatedNote = NoteEntity(name = "new title", id= noteItem.id, isComplete = true)
+        val updatedNote = NoteEntity(name = "new title", id= noteItem.id, isComplete = true, description = "new description")
         dao.update(updatedNote)
 
         // THEN - The loaded data contains the expected values
@@ -75,7 +75,7 @@ class NoteDaoTest {
     @Test
     fun deleteNoteItem_verifySuccess() = runBlockingTest {
         // When inserting a note
-        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true)
+        val noteItem = NoteEntity(id = 1, name = "Check Test", isImportant = true, description = "Testing description")
         dao.insert(noteItem)
 
         // When the note is updated
