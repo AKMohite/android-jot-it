@@ -143,36 +143,10 @@ class NotesFragment : Fragment(R.layout.fragment_notes), NotesAdapter.OnItemClic
             searchItem.expandActionView()
             searchView.setQuery(pendingQuery, false)
         }
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                menu.findItem(R.id.action_hide_completed_notes).isChecked =
-                    viewModel.preferencesFlow.first().hideCompleted
-            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_sort_name -> {
-                viewModel.onSortOrderSelected(SortOrder.BY_NAME)
-                true
-            }
-
-            R.id.action_sort_date -> {
-                viewModel.onSortOrderSelected(SortOrder.BY_DATE)
-                true
-            }
-
-            R.id.action_hide_completed_notes -> {
-                item.isChecked = !item.isChecked
-                viewModel.onHideCompleteCheck(item.isChecked)
-                true
-            }
-
-            R.id.action_delete_completed_notes -> {
-                viewModel.onDeleteAllCompleted()
-                true
-            }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
