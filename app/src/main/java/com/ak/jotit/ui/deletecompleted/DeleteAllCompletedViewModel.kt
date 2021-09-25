@@ -4,10 +4,13 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.ak.jotit.di.ApplicationScope
 import com.ak.jotit.repo.NotesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DeleteAllCompletedViewModel @ViewModelInject constructor(
+@HiltViewModel
+class DeleteAllCompletedViewModel @Inject constructor(
     private val notesRepository: NotesRepository,
     @ApplicationScope private val applicationScope: CoroutineScope
 ): ViewModel() {

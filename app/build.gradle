@@ -6,14 +6,16 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
 }
+//`https://sasikanth.dev/posts/gradle-version-catalog`
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.ak.jotit"
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion 22
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -55,65 +57,60 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation "androidx.core:core-ktx:$ktxVersion"
-    implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation "com.google.android.material:material:$materialVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$testExtJunitVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    implementation libs.kotlin.stdlib
+    implementation libs.core.ktx
+    implementation libs.appcompat
+    implementation libs.google.material
+    implementation libs.constraint.layout
+    implementation libs.legacy.support.v4
 
     // Fragment
-    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    implementation libs.fragment.ktx
 
     // Lifecycle + ViewModel & LiveData
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    implementation "android.arch.lifecycle:common-java8:$lifecycleVersion"
+    implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.lifecycle.livedata.ktx
 
     // Navigation Component
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation libs.navigation.fragment.ktx
+    implementation libs.navigation.ui.ktx
 
     // Room
-    implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation libs.room.runtime
+    kapt libs.room.compiler
+    implementation libs.room.ktx
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 
     // Dagger Hilt
-    implementation "com.google.dagger:hilt-android:$hiltVersion"
-    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltAndroidXVersion"
-    kapt "androidx.hilt:hilt-compiler:$hiltAndroidXVersion"
+    implementation libs.hilt.library
+    implementation libs.hilt.viewmodel
+    kapt libs.hilt.compiler
 
     // DataStore
-    implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
+    implementation libs.datastore.preferences
 
     // Dependencies for local unit tests
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
-    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation libs.junit.base
+    androidTestImplementation libs.test.ext.junit
+    androidTestImplementation libs.espresso.core
+    testImplementation libs.test.core.ktx
+    testImplementation libs.robolectric
+    testImplementation libs.ext.junit.ktx
+    testImplementation libs.arch.core.testing
+    testImplementation libs.kotlinx.coroutines.test
 
-    // AndroidX Test - Instrumented testing
-    androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    // AndroidX Test . Instrumented testing
+    androidTestImplementation libs.test.ext.junit
 
     // Dependencies for Android instrumented unit tests
-    androidTestImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
-    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
-    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    androidTestImplementation libs.junit.base
+    androidTestImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation libs.mockito.core
+    androidTestImplementation libs.dexmaker.mockito
+    androidTestImplementation libs.espresso.contrib
+    androidTestImplementation libs.arch.core.testing
 
 }

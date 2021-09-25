@@ -9,11 +9,14 @@ import com.ak.jotit.data.NoteEntity
 import com.ak.jotit.repo.NotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddEditNoteViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AddEditNoteViewModel @Inject constructor(
     private val notesRepository: NotesRepository,
     @Assisted private val state: SavedStateHandle
 ): ViewModel() {

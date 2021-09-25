@@ -9,15 +9,18 @@ import com.ak.jotit.data.NoteEntity
 import com.ak.jotit.repo.NotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @FlowPreview
-class NotesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NotesViewModel @Inject constructor(
     private val notesRepository: NotesRepository,
     private val prefManager: PrefManager,
     @Assisted private val state: SavedStateHandle
