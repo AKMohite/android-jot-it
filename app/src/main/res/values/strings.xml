@@ -20,4 +20,5 @@
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="note_desc">Note description</string>
+    <string name="title_activity_home">Home</string>
 </resources>
