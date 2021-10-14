@@ -16,12 +16,56 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.github.ben-manes.versions" version "0.39.0"
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
 }
+
+/**
+ * Get updated dependency versions
+ */
+tasks.named("dependencyUpdates").configure {
+    outputFormatter = { result ->
+        def updatable = result.outdated.dependencies
+        if (!updatable.isEmpty()){
+            def writer = new StringWriter()
+            def html = new groovy.xml.MarkupBuilder(writer)
+
+            html.html {
+                body {
+                    table {
+                        thead {
+                            tr {
+                                td("Group")
+                                td("Module")
+                                td("Current version")
+                                td("Latest version")
+                            }
+                        }
+                        tbody {
+                            updatable.each { dependency->
+                                tr {
+                                    td(dependency.group)
+                                    td(dependency.name)
+                                    td(dependency.version)
+                                    td(dependency.available.release ?: dependency.available.milestone)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            println writer.toString()
+        }
+    }
+}
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
