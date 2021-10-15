@@ -1,11 +1,23 @@
-package com.ak.jotit.repo
+package com.ak.jotit.feature.note.data.repository
 
 import com.ak.jotit.data.SortOrder
 import com.ak.jotit.feature.note.data.local.NoteDao
 import com.ak.jotit.feature.note.domain.model.NoteEntity
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
 import kotlinx.coroutines.flow.Flow
 
-class NotesRepositoryImpl(private val noteDao: NoteDao) : NotesRepository{
+class NotesRepository(
+    private val noteDao: NoteDao
+) : INotesRepository {
+
+    override fun getAllNotes(): Flow<List<NoteEntity>> {
+        return noteDao.getAllNotes()
+    }
+
+    override suspend fun getNoteById(id: Long): NoteEntity? {
+        return noteDao.getNoteById(id)
+    }
+
     override fun getNotes(
         query: String,
         sortOrder: SortOrder,

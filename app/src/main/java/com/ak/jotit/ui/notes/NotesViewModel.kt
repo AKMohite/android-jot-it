@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.ak.jotit.data.PrefManager
 import com.ak.jotit.data.SortOrder
 import com.ak.jotit.feature.note.domain.model.NoteEntity
-import com.ak.jotit.repo.NotesRepository
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @FlowPreview
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val notesRepository: NotesRepository,
+    private val notesRepository: INotesRepository,
     private val prefManager: PrefManager,
     @Assisted private val state: SavedStateHandle
 ): ViewModel() {

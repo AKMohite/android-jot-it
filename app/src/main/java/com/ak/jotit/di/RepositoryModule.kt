@@ -1,8 +1,8 @@
 package com.ak.jotit.di
 
 import com.ak.jotit.feature.note.data.local.NoteDao
-import com.ak.jotit.repo.NotesRepository
-import com.ak.jotit.repo.NotesRepositoryImpl
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
+import com.ak.jotit.feature.note.data.repository.NotesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +15,5 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNoteRepository(noteDao: NoteDao): NotesRepository = NotesRepositoryImpl(noteDao)
+    fun provideNoteRepository(noteDao: NoteDao): INotesRepository = NotesRepository(noteDao)
 }

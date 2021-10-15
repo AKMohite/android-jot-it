@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ak.jotit.feature.note.domain.model.NoteEntity
-import com.ak.jotit.repo.NotesRepository
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
-    private val notesRepository: NotesRepository,
+    private val notesRepository: INotesRepository,
     @Assisted private val state: SavedStateHandle
 ): ViewModel() {
 
