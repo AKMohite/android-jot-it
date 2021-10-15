@@ -24,10 +24,10 @@ interface NoteDao: BaseDao<NoteEntity> {
     @Query("SELECT * FROM note_table WHERE id = :id")
     fun getNote(id: Long): Flow<NoteEntity>
 
-    @Query("SELECT * FROM note_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND (name LIKE '%'||:searchQuery||'%' OR description LIKE '%'||:searchQuery||'%') ORDER BY is_important DESC, name")
+    @Query("SELECT * FROM note_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND (title LIKE '%'||:searchQuery||'%' OR description LIKE '%'||:searchQuery||'%') ORDER BY is_important DESC, title")
     fun getNotesSortedByName(searchQuery: String, hideCompleted: Boolean): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM note_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND (name LIKE '%'||:searchQuery||'%' OR description LIKE '%'||:searchQuery||'%') ORDER BY is_important DESC, created_at")
+    @Query("SELECT * FROM note_table WHERE (is_complete != :hideCompleted OR is_complete = 0) AND (title LIKE '%'||:searchQuery||'%' OR description LIKE '%'||:searchQuery||'%') ORDER BY is_important DESC, created_at")
     fun getNotesSortedByDateCreated(searchQuery: String, hideCompleted: Boolean): Flow<List<NoteEntity>>
 
     @Query("DELETE FROM note_table WHERE is_complete = 1")

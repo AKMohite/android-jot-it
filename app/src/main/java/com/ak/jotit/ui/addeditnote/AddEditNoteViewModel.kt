@@ -22,7 +22,7 @@ class AddEditNoteViewModel @Inject constructor(
 
     val note = state.get<NoteEntity>("note") // this argument should be same in nav_graph
 
-    var noteTitle = state.get<String>("noteTitle") ?: note?.name ?: ""
+    var noteTitle = state.get<String>("noteTitle") ?: note?.title ?: ""
         set(value) {
             field = value
             state.set("noteTitle", value)
@@ -56,10 +56,10 @@ class AddEditNoteViewModel @Inject constructor(
         }
 
         if (note != null) {
-            val updatedNote = note.copy(name = noteTitle, description = noteDesc, isImportant = noteImportance, updatedAt = System.currentTimeMillis())
+            val updatedNote = note.copy(title = noteTitle, description = noteDesc, isImportant = noteImportance, updatedAt = System.currentTimeMillis())
             updatedNote(updatedNote)
         } else {
-            val newNote = NoteEntity(name = noteTitle, description = noteDesc, isImportant = noteImportance, color = 0)
+            val newNote = NoteEntity(title = noteTitle, description = noteDesc, isImportant = noteImportance, color = 0)
             createNote(newNote)
         }
     }

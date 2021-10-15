@@ -45,7 +45,7 @@ class NotesAdapter(private val listener: OnItemClickListener): ListAdapter<NoteE
 
         fun bind(note: NoteEntity) = with(binding){
             checkboxComplete.isChecked = note.isComplete
-            noteTitle.text = note.name
+            noteTitle.text = note.title
             noteDesc.text = note.description
             noteTitle.paint.isStrikeThruText = note.isComplete
             labelPriority.isVisible = note.isImportant

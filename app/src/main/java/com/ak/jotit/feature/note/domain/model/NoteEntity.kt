@@ -11,8 +11,8 @@ data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,  // TODO implement sync functionality using ids
-    @ColumnInfo(name = "name")
-    val name: String,
+    @ColumnInfo(name = "title")
+    val title: String,
     @ColumnInfo(name = "description")
     val description: String,
     @ColumnInfo(name = "is_important")
