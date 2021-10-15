@@ -25,9 +25,6 @@ object AppModule {
             .fallbackToDestructiveMigration() // TODO room migration
             .build()
 
-    @Provides
-    fun provideNoteDao(db: NotesDatabase): NoteDao = db.noteDao()
-
     @ApplicationScope
     @Provides
     @Singleton
