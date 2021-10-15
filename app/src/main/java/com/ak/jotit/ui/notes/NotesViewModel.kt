@@ -1,11 +1,10 @@
 package com.ak.jotit.ui.notes
 
 import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ak.jotit.data.PrefManager
 import com.ak.jotit.data.SortOrder
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.repo.NotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK

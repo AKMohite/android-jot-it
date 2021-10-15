@@ -1,11 +1,10 @@
 package com.ak.jotit.ui.addeditnote
 
 import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.repo.NotesRepository
 import com.ak.jotit.ui.ADD_NOTE_RESULT_OK
 import com.ak.jotit.ui.EDIT_NOTE_RESULT_OK
@@ -60,7 +59,7 @@ class AddEditNoteViewModel @Inject constructor(
             val updatedNote = note.copy(name = noteTitle, description = noteDesc, isImportant = noteImportance, updatedAt = System.currentTimeMillis())
             updatedNote(updatedNote)
         } else {
-            val newNote = NoteEntity(name = noteTitle, description = noteDesc, isImportant = noteImportance)
+            val newNote = NoteEntity(name = noteTitle, description = noteDesc, isImportant = noteImportance, color = 0)
             createNote(newNote)
         }
     }

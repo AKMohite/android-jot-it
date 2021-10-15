@@ -22,7 +22,7 @@
         <argument
             android:name="note"
             android:defaultValue="@null"
-            app:argType="com.ak.jotit.data.NoteEntity"
+            app:argType="com.ak.jotit.feature.note.domain.model.NoteEntity"
             app:nullable="true" />
         <argument
             android:name="title"

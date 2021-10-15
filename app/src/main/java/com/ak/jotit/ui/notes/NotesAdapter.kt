@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.databinding.ItemNoteBinding
 
 class NotesAdapter(private val listener: OnItemClickListener): ListAdapter<NoteEntity, NotesAdapter.NotesViewHolder>(DiffCallBack()) {

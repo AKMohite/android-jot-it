@@ -1,8 +1,8 @@
 package com.ak.jotit.repo
 
 import com.ak.jotit.data.SortOrder
-import com.ak.jotit.data.NoteDao
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.data.local.NoteDao
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 class NotesRepositoryImpl(private val noteDao: NoteDao) : NotesRepository{

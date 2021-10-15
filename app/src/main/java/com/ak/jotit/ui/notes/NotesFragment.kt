@@ -16,8 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ak.jotit.R
-import com.ak.jotit.data.SortOrder
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.databinding.FragmentNotesBinding
 import com.ak.jotit.util.exhaustive
 import com.ak.jotit.util.onQueryTextChanged
@@ -25,8 +24,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @FlowPreview
 @AndroidEntryPoint

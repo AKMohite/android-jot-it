@@ -1,7 +1,7 @@
 package com.ak.jotit.repo
 
 import com.ak.jotit.data.SortOrder
-import com.ak.jotit.data.NoteEntity
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {

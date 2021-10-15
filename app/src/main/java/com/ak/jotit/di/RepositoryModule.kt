@@ -1,6 +1,6 @@
 package com.ak.jotit.di
 
-import com.ak.jotit.data.NoteDao
+import com.ak.jotit.feature.note.data.local.NoteDao
 import com.ak.jotit.repo.NotesRepository
 import com.ak.jotit.repo.NotesRepositoryImpl
 import dagger.Module

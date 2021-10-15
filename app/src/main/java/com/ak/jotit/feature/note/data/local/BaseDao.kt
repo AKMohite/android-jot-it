@@ -1,4 +1,4 @@
-package com.ak.jotit.data
+package com.ak.jotit.feature.note.data.local
 
 import androidx.room.Delete
 import androidx.room.Insert

@@ -1,15 +1,12 @@
-package com.ak.jotit.data
+package com.ak.jotit.feature.note.domain.model
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
-import java.text.DateFormat
+import com.ak.jotit.ui.theme.*
 
 // TODO implement add edit viewmodel instead of passing objects
 @Entity(tableName = "note_table")
-@Parcelize // to pass object between fragments
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -20,13 +17,16 @@ data class NoteEntity(
     val description: String,
     @ColumnInfo(name = "is_important")
     val isImportant: Boolean = false,
-    @ColumnInfo(name = "is_complete")
+    @ColumnInfo(name = "color")
+    val color: Int,
+    @ColumnInfo(name = "is_complete") // TODO remove
     val isComplete: Boolean = false,
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long = System.currentTimeMillis(),
-): Parcelable{
-    val createdDateFormatted: String
-        get() = DateFormat.getDateInstance().format(createdAt) // TODO use Room TypeConverters
+) {
+    companion object {
+        val noteColors = listOf(RedOrange, LightGreen, Violet, BabyBlue, RedPink)
+    }
 }
