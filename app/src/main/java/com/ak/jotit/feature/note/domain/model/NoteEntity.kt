@@ -17,6 +17,8 @@ data class NoteEntity(
     val description: String,
     @ColumnInfo(name = "is_important")
     val isImportant: Boolean = false,
+    @ColumnInfo(name = "is_deleted")
+    val isDeleted: Boolean = false,
     @ColumnInfo(name = "color")
     val color: Int,
     @ColumnInfo(name = "is_complete") // TODO remove

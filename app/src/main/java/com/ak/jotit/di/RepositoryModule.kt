@@ -3,6 +3,7 @@ package com.ak.jotit.di
 import com.ak.jotit.feature.note.data.local.NotesDatabase
 import com.ak.jotit.feature.note.data.repository.NotesRepository
 import com.ak.jotit.feature.note.domain.repository.INotesRepository
+import com.ak.jotit.feature.note.domain.usecase.AddNote
 import com.ak.jotit.feature.note.domain.usecase.DeleteNote
 import com.ak.jotit.feature.note.domain.usecase.GetNotes
 import com.ak.jotit.feature.note.domain.usecase.Notes
@@ -25,7 +26,8 @@ object RepositoryModule {
     fun provideNoteUseCase(repository: INotesRepository): Notes {
         return Notes(
             getNotes = GetNotes(repository),
-            deleteNote = DeleteNote(repository)
+            deleteNote = DeleteNote(repository),
+            addNote = AddNote(repository)
         )
     }
 }
