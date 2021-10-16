@@ -3,10 +3,7 @@ package com.ak.jotit.di
 import com.ak.jotit.feature.note.data.local.NotesDatabase
 import com.ak.jotit.feature.note.data.repository.NotesRepository
 import com.ak.jotit.feature.note.domain.repository.INotesRepository
-import com.ak.jotit.feature.note.domain.usecase.AddNote
-import com.ak.jotit.feature.note.domain.usecase.DeleteNote
-import com.ak.jotit.feature.note.domain.usecase.GetNotes
-import com.ak.jotit.feature.note.domain.usecase.Notes
+import com.ak.jotit.feature.note.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +22,7 @@ object RepositoryModule {
     @Provides
     fun provideNoteUseCase(repository: INotesRepository): Notes {
         return Notes(
+            getNote = GetNote(repository),
             getNotes = GetNotes(repository),
             deleteNote = DeleteNote(repository),
             addNote = AddNote(repository)

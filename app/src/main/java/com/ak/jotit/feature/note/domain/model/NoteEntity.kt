@@ -10,7 +10,7 @@ import com.ak.jotit.ui.theme.*
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long = 0,  // TODO implement sync functionality using ids
+    val id: Long? = 0,  // TODO implement sync functionality using ids
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "description")
