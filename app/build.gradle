@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
+    id 'androidx.navigation.safeargs'
 }
 //`https://sasikanth.dev/posts/gradle-version-catalog`
 
@@ -88,13 +88,16 @@ dependencies {
 
     // Room
     implementation libs.room.runtime
+    kapt libs.room.compiler
+    implementation libs.room.ktx
+
+    // Compose
     implementation libs.compose.androidx
     implementation libs.compose.material
     implementation libs.compose.preview
     implementation libs.lifecycle.runtime.ktx
     implementation libs.compose.activity
-    kapt libs.room.compiler
-    implementation libs.room.ktx
+    implementation libs.compose.navigation
 
     // Coroutines
     implementation libs.coroutines.core
