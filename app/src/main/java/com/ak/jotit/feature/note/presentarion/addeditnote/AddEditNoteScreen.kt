@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,11 +40,26 @@ fun AddEditNoteScreen(
 
     val noteBgAnimatable = remember {
         Animatable(
-            Color(if (noteColor > 0) noteColor else viewModel.color.value)
+            Color(if (noteColor != -1) noteColor else viewModel.color.value)
         )
     }
 
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is AddEditNoteViewModel.UIAddEditEvent.SaveNote -> {
+                    navController.navigateUp()
+                }
+                is AddEditNoteViewModel.UIAddEditEvent.ShowSnackBar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+            }
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
