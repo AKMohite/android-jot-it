@@ -1,5 +1,7 @@
 package com.ak.jotit.di
 
+import com.ak.jotit.feature.note.data.local.INoteLocalDS
+import com.ak.jotit.feature.note.data.local.NoteLocalDS
 import com.ak.jotit.feature.note.data.local.NotesDatabase
 import com.ak.jotit.feature.note.data.repository.NotesRepository
 import com.ak.jotit.feature.note.domain.repository.INotesRepository
@@ -16,7 +18,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNoteRepository(db: NotesDatabase): INotesRepository = NotesRepository(db.noteDao())
+    fun provideNoteLocalDS(db: NotesDatabase): INoteLocalDS = NoteLocalDS(db.noteDao())
+
+    @Singleton
+    @Provides
+    fun provideNoteRepository(local: INoteLocalDS): INotesRepository = NotesRepository(local)
 
     @Singleton
     @Provides
