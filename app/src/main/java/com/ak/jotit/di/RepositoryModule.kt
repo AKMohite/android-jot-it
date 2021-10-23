@@ -1,8 +1,11 @@
 package com.ak.jotit.di
 
-import com.ak.jotit.data.NoteDao
-import com.ak.jotit.repo.NotesRepository
-import com.ak.jotit.repo.NotesRepositoryImpl
+import com.ak.jotit.feature.note.data.local.INoteLocalDS
+import com.ak.jotit.feature.note.data.local.NoteLocalDS
+import com.ak.jotit.feature.note.data.local.NotesDatabase
+import com.ak.jotit.feature.note.data.repository.NotesRepository
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
+import com.ak.jotit.feature.note.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +18,20 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNoteRepository(noteDao: NoteDao): NotesRepository = NotesRepositoryImpl(noteDao)
+    fun provideNoteLocalDS(db: NotesDatabase): INoteLocalDS = NoteLocalDS(db.noteDao())
+
+    @Singleton
+    @Provides
+    fun provideNoteRepository(local: INoteLocalDS): INotesRepository = NotesRepository(local)
+
+    @Singleton
+    @Provides
+    fun provideNoteUseCase(repository: INotesRepository): Notes {
+        return Notes(
+            getNote = GetNote(repository),
+            getNotes = GetNotes(repository),
+            deleteNote = DeleteNote(repository),
+            addNote = AddNote(repository)
+        )
+    }
 }

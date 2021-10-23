@@ -20,4 +20,10 @@
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="note_desc">Note description</string>
+    <string name="title_activity_home">Home</string>
+    <string name="order_title">Title</string>
+    <string name="order_date">Date</string>
+    <string name="order_color">Color</string>
+    <string name="order_ascending">Ascending</string>
+    <string name="order_descending">Descending</string>
 </resources>

@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
+    id 'androidx.navigation.safeargs'
 }
 //`https://sasikanth.dev/posts/gradle-version-catalog`
 
@@ -26,6 +26,9 @@ android {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
         }
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     buildTypes {
@@ -37,6 +40,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -45,12 +49,19 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        useIR = true
     }
 
 // this fix is added because of androidTest issues
     packagingOptions {
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeVersion.get()
     }
 
 }
@@ -79,6 +90,14 @@ dependencies {
     implementation libs.room.runtime
     kapt libs.room.compiler
     implementation libs.room.ktx
+
+    // Compose
+    implementation libs.compose.androidx
+    implementation libs.compose.material
+    implementation libs.compose.preview
+    implementation libs.lifecycle.runtime.ktx
+    implementation libs.compose.activity
+    implementation libs.compose.navigation
 
     // Coroutines
     implementation libs.coroutines.core
@@ -112,5 +131,7 @@ dependencies {
     androidTestImplementation libs.dexmaker.mockito
     androidTestImplementation libs.espresso.contrib
     androidTestImplementation libs.arch.core.testing
+    androidTestImplementation libs.compose.test
+    debugImplementation libs.compose.tooling.test
 
 }
