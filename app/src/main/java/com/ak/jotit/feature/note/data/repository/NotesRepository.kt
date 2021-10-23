@@ -18,11 +18,13 @@ class NotesRepository(
     }
 
     override suspend fun insertNote(noteEntity: NoteEntity) {
-        local.insertNote(noteEntity)
+        val id = local.insertNote(noteEntity)
+        val isSuccess = id != null
     }
 
     override suspend fun deleteNote(noteEntity: NoteEntity) {
-        local.deleteNote(noteEntity)
+        val id = local.deleteNote(noteEntity)
+        val isSuccess = id != null
     }
 
 }

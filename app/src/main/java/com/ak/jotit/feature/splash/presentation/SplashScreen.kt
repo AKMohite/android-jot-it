@@ -50,7 +50,7 @@ fun SplashScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_note),
+            painter = painterResource(id = R.drawable.ic_note),  // todo change note icon
             contentDescription = "Logo",
             modifier = Modifier.scale(scale.value)
         )

@@ -14,12 +14,12 @@ class NoteLocalDS(
         return noteDao.getNoteById(id)
     }
 
-    override suspend fun insertNote(noteEntity: NoteEntity) {
-        noteDao.insert(noteEntity)
+    override suspend fun insertNote(noteEntity: NoteEntity): Long {
+        return noteDao.insert(noteEntity)
     }
 
-    override suspend fun deleteNote(noteEntity: NoteEntity) {
-        noteDao.delete(noteEntity)
+    override suspend fun deleteNote(noteEntity: NoteEntity): Int {
+        return noteDao.delete(noteEntity)
     }
 }
 
@@ -29,7 +29,7 @@ interface INoteLocalDS {
 
     suspend fun getNoteById(id: Long): NoteEntity?
 
-    suspend fun insertNote(noteEntity: NoteEntity)
+    suspend fun insertNote(noteEntity: NoteEntity): Long
 
-    suspend fun deleteNote(noteEntity: NoteEntity)
+    suspend fun deleteNote(noteEntity: NoteEntity): Int
 }
