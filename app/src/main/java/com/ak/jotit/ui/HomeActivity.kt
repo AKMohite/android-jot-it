@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteScreen
 import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
+import com.ak.jotit.feature.splash.presentation.SplashScreen
 import com.ak.jotit.ui.theme.JotItTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,8 +31,13 @@ class HomeActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = ScreenRoute.NotesScreen.route
+                        startDestination = ScreenRoute.SplashScreen.route
                     ) {
+                        composable(route = ScreenRoute.SplashScreen.route) {
+                            SplashScreen(
+                                navController = navController
+                            )
+                        }
                         composable(
                             route = ScreenRoute.NotesScreen.route
                         ) {
