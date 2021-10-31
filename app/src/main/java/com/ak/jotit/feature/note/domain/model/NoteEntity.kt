@@ -8,21 +8,19 @@ import com.ak.jotit.ui.theme.*
 // TODO implement add edit viewmodel instead of passing objects
 @Entity(tableName = "note_table")
 data class NoteEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Long? = 0,  // TODO implement sync functionality using ids
+    val id: String,  // TODO implement sync functionality using ids
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "description")
     val description: String,
-    @ColumnInfo(name = "is_important")
-    val isImportant: Boolean = false,
+    @ColumnInfo(name = "is_synced")
+    val isSynced: Boolean = false,
     @ColumnInfo(name = "is_deleted")
-    val isDeleted: Boolean = false,
+    val isDeleted: Int = 0, // 0 => no, 1 => tempdelete, -1 => permanentdelete
     @ColumnInfo(name = "color")
     val color: Int,
-    @ColumnInfo(name = "is_complete") // TODO remove
-    val isComplete: Boolean = false,
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at")

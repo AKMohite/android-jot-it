@@ -13,18 +13,16 @@ class NotesRepository(
         return local.getAllNotes()
     }
 
-    override suspend fun getNoteById(id: Long): NoteEntity? {
+    override suspend fun getNoteById(id: String): NoteEntity? {
         return local.getNoteById(id)
     }
 
     override suspend fun insertNote(noteEntity: NoteEntity) {
-        val id = local.insertNote(noteEntity)
-        val isSuccess = id != null
+        local.insertNote(noteEntity)
     }
 
-    override suspend fun deleteNote(noteEntity: NoteEntity) {
-        val id = local.deleteNote(noteEntity)
-        val isSuccess = id != null
+    override suspend fun tempDelete(noteEntity: NoteEntity) {
+        local.tempDeleteNote(noteEntity)
     }
 
 }
