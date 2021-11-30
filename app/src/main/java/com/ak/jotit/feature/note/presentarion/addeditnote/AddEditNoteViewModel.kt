@@ -37,17 +37,17 @@ class AddEditNoteViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UIAddEditEvent>()
     val eventFlow: SharedFlow<UIAddEditEvent> = _eventFlow
 
-    private var currentNoteId: Long? = null
+    private var currentNoteId: String = ""
 
     init {
-        savedStateHandle.get<Long>("noteId")?.let { noteId ->
-            if (noteId > 0) {
+        savedStateHandle.get<String>("noteId")?.let { noteId ->
+            if (!noteId.isNullOrBlank()) {
                 getNoteById(noteId)
             }
         }
     }
 
-    private fun getNoteById(noteId: Long) {
+    private fun getNoteById(noteId: String) {
         viewModelScope.launch {
             notes.getNote(noteId)?.also { note ->
                 currentNoteId = note.id

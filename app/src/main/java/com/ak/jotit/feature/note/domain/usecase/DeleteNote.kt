@@ -10,7 +10,7 @@ class DeleteNote (
     suspend operator fun invoke(
         note: NoteEntity
     ) {
-        repository.deleteNote(note)
+        repository.tempDelete(note)
     }
 
 }

@@ -49,8 +49,8 @@ class HomeActivity : ComponentActivity() {
                                 navArgument(
                                     name = "noteId"
                                 ) {
-                                    type = NavType.LongType
-                                    defaultValue = -1
+                                    type = NavType.StringType
+                                    defaultValue = ""
                                 },
                                 navArgument(
                                     name = "noteColor"
