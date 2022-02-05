@@ -19,7 +19,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ak.jotit.HiltTestRunner"
 
         kapt {
             arguments {
@@ -115,11 +115,6 @@ dependencies {
     testImplementation libs.junit.base
     testImplementation libs.google.truth
     androidTestImplementation libs.test.ext.junit
-    androidTestImplementation libs.espresso.core
-    testImplementation libs.test.core.ktx
-    testImplementation libs.robolectric
-    testImplementation libs.ext.junit.ktx
-    testImplementation libs.arch.core.testing
     testImplementation libs.kotlinx.coroutines.test
 
     // AndroidX Test . Instrumented testing
@@ -130,8 +125,6 @@ dependencies {
     androidTestImplementation libs.hilt.test.android
     kaptAndroidTest libs.hilt.test.compiler
     androidTestImplementation libs.kotlinx.coroutines.test
-    androidTestImplementation libs.mockito.core
-    androidTestImplementation libs.dexmaker.mockito
     androidTestImplementation libs.espresso.contrib
     androidTestImplementation libs.arch.core.testing
     androidTestImplementation libs.compose.test

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,7 @@ fun NotesScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.List,
-                        contentDescription = "Sort notes"
+                        contentDescription = stringResource(R.string.sort_notes)
                     )
                 }
             }
@@ -84,7 +85,8 @@ fun NotesScreen(
                 OrderSection(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp),
+                        .padding(vertical = 16.dp)
+                        .testTag(stringResource(id = R.string.filter_note)),
                     noteOrderBy = state.noteOrderBy,
                     onOrderChange = { order ->
                         viewModel.onEvent(NotesEvent.OrderNotes(order))
