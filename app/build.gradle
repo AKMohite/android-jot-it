@@ -95,7 +95,6 @@ dependencies {
 
     // Dagger Hilt
     implementation libs.hilt.library
-    implementation libs.hilt.viewmodel
     kapt libs.hilt.compiler
 
     // DataStore

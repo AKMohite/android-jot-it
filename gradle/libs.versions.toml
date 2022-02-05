@@ -7,8 +7,8 @@ dataStoreVersion = "1.0.0-alpha02"
 espressoVersion = "3.3.0"
 googleTruth = "1.1.3"
 gradleVersion = "7.1.0"
-hiltAndroidXVersion = "1.0.0-alpha02"
-hiltVersion = "2.38.1"
+hiltAndroidXVersion = "1.0.0-alpha03"
+hiltVersion = "2.40.5"
 junitVersion = "4.13.1"
 kotlinVersion = "1.6.10"
 ktxVersion = "1.8.0-alpha03"
@@ -47,7 +47,6 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion"}
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion"}
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion"}
 hilt-library = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion"}
-hilt-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltAndroidXVersion"}
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion"}
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStoreVersion"}
 compose-androidx = { module = "androidx.compose.ui:ui", version.ref = "composeVersion"}
