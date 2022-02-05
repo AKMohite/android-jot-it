@@ -73,18 +73,10 @@ dependencies {
     implementation libs.appcompat
     implementation libs.google.material
     implementation libs.constraint.layout
-    implementation libs.legacy.support.v4
-
-    // Fragment
-    implementation libs.fragment.ktx
 
     // Lifecycle + ViewModel & LiveData
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.lifecycle.livedata.ktx
-
-    // Navigation Component
-    implementation libs.navigation.fragment.ktx
-    implementation libs.navigation.ui.ktx
 
     // Room
     implementation libs.room.runtime
