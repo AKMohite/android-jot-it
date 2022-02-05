@@ -113,6 +113,7 @@ dependencies {
 
     // Dependencies for local unit tests
     testImplementation libs.junit.base
+    testImplementation libs.google.truth
     androidTestImplementation libs.test.ext.junit
     androidTestImplementation libs.espresso.core
     testImplementation libs.test.core.ktx
