@@ -19,9 +19,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ak.jotit.R
 import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
@@ -69,7 +71,7 @@ fun AddEditNoteScreen(
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
-                Icon(imageVector = Icons.Default.Done, contentDescription = "Save Note")
+                Icon(imageVector = Icons.Default.Done, contentDescription = stringResource(R.string.save_note))
             }
         },
         scaffoldState = scaffoldState

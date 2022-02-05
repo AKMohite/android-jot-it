@@ -45,7 +45,7 @@ fun NotesScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add a note"
+                    contentDescription = stringResource(id = R.string.add_note)
                 )
             }
         },
