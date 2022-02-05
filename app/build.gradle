@@ -127,6 +127,8 @@ dependencies {
 
     // Dependencies for Android instrumented unit tests
     androidTestImplementation libs.junit.base
+    androidTestImplementation libs.hilt.test.android
+    kaptAndroidTest libs.hilt.test.compiler
     androidTestImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.mockito.core
     androidTestImplementation libs.dexmaker.mockito

@@ -65,6 +65,8 @@ compose-activity = { module = "androidx.activity:activity-compose", version.ref 
 
 junit-base = { module = "junit:junit", version.ref = "junitVersion" }
 google-truth = { module = "com.google.truth:truth", version.ref = "googleTruth" }
+hilt-test-android = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }
+hilt-test-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltVersion" }
 test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "testExtJunitVersion" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoVersion" }
 test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidXTestCoreVersion" }
