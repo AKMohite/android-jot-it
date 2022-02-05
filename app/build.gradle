@@ -106,8 +106,6 @@ dependencies {
     // Dependencies for local unit tests
     testImplementation libs.junit.base
     testImplementation libs.google.truth
-    androidTestImplementation libs.test.ext.junit
-    testImplementation libs.kotlinx.coroutines.test
 
     // AndroidX Test . Instrumented testing
     androidTestImplementation libs.test.ext.junit
@@ -118,7 +116,6 @@ dependencies {
     kaptAndroidTest libs.hilt.test.compiler
     androidTestImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.espresso.contrib
-    androidTestImplementation libs.arch.core.testing
     androidTestImplementation libs.compose.test
     debugImplementation libs.compose.tooling.test
 
