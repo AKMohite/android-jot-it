@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath libs.build.gradle
-        classpath libs.kotlin.gradle.plugin
+        classpath libs.kotlin.gradle
         classpath libs.navigation.safe.args
         classpath libs.hilt.gradle
 

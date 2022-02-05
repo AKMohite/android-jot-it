@@ -7,7 +7,7 @@ dataStoreVersion = "1.0.0-alpha02"
 espressoVersion = "3.3.0"
 fragmentVersion = "1.3.0-beta01"
 googleTruth = "1.1.3"
-gradleVersion = "7.0.2"
+gradleVersion = "7.1.0"
 hiltAndroidXVersion = "1.0.0-alpha02"
 hiltVersion = "2.38.1"
 junitVersion = "4.13.1"
@@ -32,7 +32,7 @@ legacyVersion = "1.0.0"
 
 [libraries]
 build-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 navigation-safe-args = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationVersion" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltVersion" }
 
