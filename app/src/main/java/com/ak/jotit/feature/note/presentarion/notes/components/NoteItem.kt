@@ -28,13 +28,14 @@ fun NoteItem(
     note: NoteEntity,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
-    cutCornerSize: Dp = 30.dp,
+    cornerCutSize: Dp = 30.dp,
     onDeleteClick: () -> Unit
 ) {
     Box(
         modifier = modifier
     ) {
         Canvas(modifier = Modifier.matchParentSize()) {
+            val cutCornerSize = if (note.isSynced) 0.dp  else cornerCutSize
             val clipPath = Path().apply {
                 lineTo(size.width - cutCornerSize.toPx(), 0f)
                 lineTo(size.width, cutCornerSize.toPx())

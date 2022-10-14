@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.domain.usecase.Notes
 import com.ak.jotit.feature.note.domain.util.InvalidNoteException
+import com.ak.jotit.util.DESCRIPTION_FIELD
+import com.ak.jotit.util.TITLE_FIELD
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,12 +24,12 @@ class AddEditNoteViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _title = mutableStateOf(NoteTextFieldState(
-        hint = "Enter title"
+        hint = TITLE_FIELD
     ))
     val title: State<NoteTextFieldState> = _title
 
     private val _description = mutableStateOf(NoteTextFieldState(
-        hint = "Enter description"
+        hint = DESCRIPTION_FIELD
     ))
     val description: State<NoteTextFieldState> = _description
 
@@ -40,7 +42,7 @@ class AddEditNoteViewModel @Inject constructor(
     private var currentNoteId: String = ""
 
     init {
-        savedStateHandle.get<String>("noteId")?.let { noteId ->
+        savedStateHandle.get<String>("noteId").let { noteId ->
             if (!noteId.isNullOrBlank()) {
                 getNoteById(noteId)
             }

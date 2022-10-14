@@ -26,4 +26,7 @@
     <string name="order_color">Color</string>
     <string name="order_ascending">Ascending</string>
     <string name="order_descending">Descending</string>
+    <string name="filter_note">Filter notes</string>
+    <string name="sort_notes">Sort notes</string>
+    <string name="save_note">Save Note</string>
 </resources>

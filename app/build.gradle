@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
@@ -10,16 +9,16 @@ plugins {
 
 android {
 
-    compileSdkVersion 30
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.ak.jotit"
         minSdkVersion 22
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ak.jotit.HiltTestRunner"
 
         kapt {
             arguments {
@@ -39,7 +38,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose true
     }
     compileOptions {
@@ -73,18 +71,10 @@ dependencies {
     implementation libs.appcompat
     implementation libs.google.material
     implementation libs.constraint.layout
-    implementation libs.legacy.support.v4
-
-    // Fragment
-    implementation libs.fragment.ktx
 
     // Lifecycle + ViewModel & LiveData
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.lifecycle.livedata.ktx
-
-    // Navigation Component
-    implementation libs.navigation.fragment.ktx
-    implementation libs.navigation.ui.ktx
 
     // Room
     implementation libs.room.runtime
@@ -105,7 +95,6 @@ dependencies {
 
     // Dagger Hilt
     implementation libs.hilt.library
-    implementation libs.hilt.viewmodel
     kapt libs.hilt.compiler
 
     // DataStore
@@ -113,24 +102,17 @@ dependencies {
 
     // Dependencies for local unit tests
     testImplementation libs.junit.base
-    androidTestImplementation libs.test.ext.junit
-    androidTestImplementation libs.espresso.core
-    testImplementation libs.test.core.ktx
-    testImplementation libs.robolectric
-    testImplementation libs.ext.junit.ktx
-    testImplementation libs.arch.core.testing
-    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.google.truth
 
     // AndroidX Test . Instrumented testing
     androidTestImplementation libs.test.ext.junit
 
     // Dependencies for Android instrumented unit tests
     androidTestImplementation libs.junit.base
+    androidTestImplementation libs.hilt.test.android
+    kaptAndroidTest libs.hilt.test.compiler
     androidTestImplementation libs.kotlinx.coroutines.test
-    androidTestImplementation libs.mockito.core
-    androidTestImplementation libs.dexmaker.mockito
     androidTestImplementation libs.espresso.contrib
-    androidTestImplementation libs.arch.core.testing
     androidTestImplementation libs.compose.test
     debugImplementation libs.compose.tooling.test
 
