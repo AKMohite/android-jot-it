@@ -47,7 +47,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        useIR = true
     }
 
 // this fix is added because of androidTest issues
@@ -59,7 +58,7 @@ android {
         }
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeVersion.get()
+        kotlinCompilerExtensionVersion libs.versions.composeCompilerVersion.get()
     }
 
 }
@@ -95,6 +94,7 @@ dependencies {
 
     // Dagger Hilt
     implementation libs.hilt.library
+    implementation libs.hilt.navigation
     kapt libs.hilt.compiler
 
     // DataStore

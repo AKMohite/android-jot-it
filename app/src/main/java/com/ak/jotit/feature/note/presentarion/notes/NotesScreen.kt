@@ -51,17 +51,17 @@ fun NotesScreen(
                 },
 //                expanded = listState.isScrollingUp(),
                 onClick = {
-                          navController.navigate(ScreenRoute.AddEditNoteScreen.route)
-                }, 
+                    navController.navigate(ScreenRoute.AddEditNoteScreen.route)
+                },
                 contentColor = MaterialTheme.colors.primary,
             )
         },
         scaffoldState = scaffoldState
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(paddingValues)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
