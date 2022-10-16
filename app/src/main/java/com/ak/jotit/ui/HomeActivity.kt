@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,47 +23,43 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JotItTheme {
-                Surface(
-                    color = MaterialTheme.colors.background
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenRoute.SplashScreen.route
                 ) {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = ScreenRoute.SplashScreen.route
+                    composable(route = ScreenRoute.SplashScreen.route) {
+                        SplashScreen(
+                            navController = navController
+                        )
+                    }
+                    composable(
+                        route = ScreenRoute.NotesScreen.route
                     ) {
-                        composable(route = ScreenRoute.SplashScreen.route) {
-                            SplashScreen(
-                                navController = navController
-                            )
-                        }
-                        composable(
-                            route = ScreenRoute.NotesScreen.route
-                        ) {
-                            NotesScreen(navController = navController)
-                        }
-                        composable(
-                            route = ScreenRoute.AddEditNoteScreen.route + "?noteId={noteId}&noteColor={noteColor}",
-                            arguments = listOf(
-                                navArgument(
-                                    name = "noteId"
-                                ) {
-                                    type = NavType.StringType
-                                    defaultValue = ""
-                                },
-                                navArgument(
-                                    name = "noteColor"
-                                ) {
-                                    type = NavType.IntType
-                                    defaultValue = -1
-                                }
-                            )
-                        ) { entry ->
-                            val color = entry.arguments?.getInt("noteColor") ?: -1
-                            AddEditNoteScreen(
-                                navController = navController,
-                                noteColor = color
-                            )
-                        }
+                        NotesScreen(navController = navController)
+                    }
+                    composable(
+                        route = ScreenRoute.AddEditNoteScreen.route + "?noteId={noteId}&noteColor={noteColor}",
+                        arguments = listOf(
+                            navArgument(
+                                name = "noteId"
+                            ) {
+                                type = NavType.StringType
+                                defaultValue = ""
+                            },
+                            navArgument(
+                                name = "noteColor"
+                            ) {
+                                type = NavType.IntType
+                                defaultValue = -1
+                            }
+                        )
+                    ) { entry ->
+                        val color = entry.arguments?.getInt("noteColor") ?: -1
+                        AddEditNoteScreen(
+                            navController = navController,
+                            noteColor = color
+                        )
                     }
                 }
             }

@@ -7,10 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +25,7 @@ import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @Composable
 fun NotesScreen(
@@ -32,7 +33,7 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
@@ -42,26 +43,26 @@ fun NotesScreen(
                 text = { Text(stringResource(id = R.string.add_note)) },
                 icon = {
 //                    TODO remove AnimatedVisibility and uncomment expanded for Material 3
-                    AnimatedVisibility(visible = listState.isScrollingUp()) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(id = R.string.add_note)
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.add_note)
+                    )
                 },
-//                expanded = listState.isScrollingUp(),
+                expanded = listState.isScrollingUp(),
                 onClick = {
                     navController.navigate(ScreenRoute.AddEditNoteScreen.route)
                 },
-                contentColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium
             )
         },
-        scaffoldState = scaffoldState
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
+        val padding = paddingValues.calculateTopPadding() + 8.dp
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(top = padding, start = padding, end = padding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -70,7 +71,7 @@ fun NotesScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.h4
+                    style = MaterialTheme.typography.headlineMedium
                 )
                 IconButton(
                     onClick = {
@@ -116,7 +117,7 @@ fun NotesScreen(
                         onDeleteClick = {
                             viewModel.onEvent(NotesEvent.DeleteNote(note))
                             scope.launch {
-                                val result = scaffoldState.snackbarHostState.showSnackbar(
+                                val result = snackbarHostState.showSnackbar(
                                     message = "Note Deleted",
                                     actionLabel = "Undo"
                                 )
