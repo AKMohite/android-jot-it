@@ -17,11 +17,15 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import com.ak.jotit.feature.note.domain.model.NoteEntity
+import com.ak.jotit.ui.theme.getNoteBgColors
+import com.ak.jotit.ui.theme.getRandomColor
 
 @Composable
 fun NoteItem(
@@ -31,6 +35,7 @@ fun NoteItem(
     cornerCutSize: Dp = 30.dp,
     onDeleteClick: () -> Unit
 ) {
+    val bgColor = colorResource(id = (getNoteBgColors()[note.color] ?: getRandomColor()).colorRes).toArgb()
     Box(
         modifier = modifier
     ) {
@@ -46,14 +51,14 @@ fun NoteItem(
 
             clipPath(clipPath) {
                 drawRoundRect(
-                    color = Color(note.color),
+                    color = Color(bgColor),
                     size = size,
                     cornerRadius = CornerRadius(cornerRadius.toPx())
                 )
 
                 drawRoundRect(
                     color = Color(
-                        ColorUtils.blendARGB(note.color, 0x000000, 0.2f)
+                        ColorUtils.blendARGB(bgColor, 0x000000, 0.2f)
                     ),
                     topLeft = Offset(size.width - cutCornerSize.toPx(), -100f),
                     size = Size(cutCornerSize.toPx() + 100f, cutCornerSize.toPx() + 100f),

@@ -3,4 +3,11 @@
     <color name="title_text_color">#D6D6D6</color>
     <color name="white">#FF000000</color>
     <color name="black">#FFFFFFFF</color>
+
+    <color name="note_bg_orange">#FFA8381E</color>
+    <color name="note_bg_pink">#FFB16161</color>
+    <color name="note_bg_blue">#FF083AA9</color>
+    <color name="note_bg_violet">#FF3F0071</color>
+    <color name="note_bg_green">#FF425F57</color>
+
 </resources>

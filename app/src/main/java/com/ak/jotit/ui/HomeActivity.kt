@@ -50,12 +50,12 @@ class HomeActivity : ComponentActivity() {
                             navArgument(
                                 name = "noteColor"
                             ) {
-                                type = NavType.IntType
-                                defaultValue = -1
+                                type = NavType.StringType
+                                defaultValue = ""
                             }
                         )
                     ) { entry ->
-                        val color = entry.arguments?.getInt("noteColor") ?: -1
+                        val color = entry.arguments?.getString("noteColor")
                         AddEditNoteScreen(
                             navController = navController,
                             noteColor = color
