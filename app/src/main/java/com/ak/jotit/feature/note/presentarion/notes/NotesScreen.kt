@@ -17,12 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ak.jotit.R
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,36 +105,83 @@ fun NotesScreen(
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                state = listState
-            ) {
-                items(state.notes) { note ->
-                    NoteItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
-                            },
-                        note = note,
-                        onDeleteClick = {
-                            viewModel.onEvent(NotesEvent.DeleteNote(note))
-                            scope.launch {
-                                val result = snackbarHostState.showSnackbar(
-                                    message = "Note Deleted",
-                                    actionLabel = "Undo"
-                                )
-
-                                if (result == SnackbarResult.ActionPerformed) {
-                                    viewModel.onEvent(NotesEvent.RestoreNote)
-                                }
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
+            AnimatedContent(targetState = state.notes) { targetState ->
+                
+                when {
+                    !targetState.isNullOrEmpty() -> {
+                        NotesList(
+                            listState,
+                            targetState,
+                            navController,
+                            viewModel,
+                            scope,
+                            snackbarHostState
+                        )
+                    }
+                    
+                    else -> EmptyState()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun EmptyState(
+    modifier: Modifier = Modifier
+) {
+    CompositionLocalProvider(LocalContentColor provides LocalContentColor.current.copy(alpha = 0.4f)) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .then(modifier),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(stringResource(R.string.sad_face), fontSize = 72.sp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = stringResource(R.string.notes_empty_text), style = MaterialTheme.typography.bodySmall)
+        }
+    }
+}
+
+@Composable
+private fun NotesList(
+    listState: LazyListState,
+    targetState: List<NoteEntity>,
+    navController: NavController,
+    viewModel: NotesViewModel,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState
+    ) {
+        items(targetState) { note ->
+            NoteItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
+                    },
+                note = note,
+                onDeleteClick = {
+                    viewModel.onEvent(NotesEvent.DeleteNote(note))
+                    scope.launch {
+                        val result = snackbarHostState.showSnackbar(
+                            message = "Note Deleted",
+                            actionLabel = "Undo"
+                        )
+
+                        if (result == SnackbarResult.ActionPerformed) {
+                            viewModel.onEvent(NotesEvent.RestoreNote)
+                        }
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

@@ -29,4 +29,6 @@
     <string name="filter_note">Filter notes</string>
     <string name="sort_notes">Sort notes</string>
     <string name="save_note">Save Note</string>
+    <string name="sad_face">📓</string>
+    <string name="notes_empty_text">Nothing to see. Add Notes</string>
 </resources>
