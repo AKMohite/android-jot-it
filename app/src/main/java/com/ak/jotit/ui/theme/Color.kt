@@ -1,7 +1,10 @@
 package com.ak.jotit.ui.theme
 
 import androidx.annotation.ColorRes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import com.ak.jotit.R
 
 val md_theme_light_primary = Color(0xFF5555A9)
@@ -70,17 +73,50 @@ fun getRandomColor(): JotItNoteBgColor {
     return getNoteBgColors().entries.shuffled().first().value
 }
 
+// TODO use hex values directly with colorIsLight() condition
 fun getNoteBgColors(): Map<String, JotItNoteBgColor> {
     val colorsMap = mutableMapOf<String, JotItNoteBgColor>()
-    colorsMap["note_bg_orange"] = JotItNoteBgColor("note_bg_orange", R.color.note_bg_orange)
-    colorsMap["note_bg_pink"] = JotItNoteBgColor("note_bg_pink", R.color.note_bg_pink)
-    colorsMap["note_bg_blue"] = JotItNoteBgColor("note_bg_blue", R.color.note_bg_blue)
-    colorsMap["note_bg_violet"] = JotItNoteBgColor("note_bg_violet", R.color.note_bg_violet)
-    colorsMap["note_bg_green"] = JotItNoteBgColor("note_bg_green", R.color.note_bg_green)
+    colorsMap["note_bg_orange"] = JotItNoteBgColor(
+        colorName = "note_bg_orange",
+        colorRes = R.color.note_bg_orange,
+        lightColor = 0xFFFD841F,
+        darkColor = 0xFFA8381E
+    )
+    colorsMap["note_bg_pink"] = JotItNoteBgColor(
+        colorName = "note_bg_pink",
+        colorRes = R.color.note_bg_pink,
+        lightColor = 0xFFFFD1D,
+        darkColor = 0xFFB16161
+    )
+    colorsMap["note_bg_blue"] = JotItNoteBgColor(
+        colorName = "note_bg_blue",
+        colorRes = R.color.note_bg_blue,
+        lightColor = 0xFF4D76D1,
+        darkColor = 0xFF083AA9
+    )
+    colorsMap["note_bg_violet"] = JotItNoteBgColor(
+        colorName = "note_bg_violet",
+        colorRes = R.color.note_bg_violet,
+        lightColor = 0xFF9A54D3,
+        darkColor = 0xFF3F0071
+    )
+    colorsMap["note_bg_green"] = JotItNoteBgColor(
+        colorName = "note_bg_green",
+        colorRes = R.color.note_bg_green,
+        lightColor = 0xFFC8DBBE,
+        darkColor = 0xFF425F57
+    )
     return colorsMap
+}
+
+@Composable
+fun colorIsLight(): Boolean {
+    return MaterialTheme.colorScheme.background.luminance() > 0.5
 }
 
 data class JotItNoteBgColor(
     val colorName: String,
-    @ColorRes val colorRes: Int
+    @ColorRes val colorRes: Int,
+    val lightColor: Long,
+    val darkColor: Long
 )
