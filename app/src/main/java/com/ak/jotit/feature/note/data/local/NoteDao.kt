@@ -12,7 +12,7 @@ interface NoteDao: BaseDao<NoteEntity> {
     fun getAllNotes(): Flow<List<NoteEntity>>
 
     @Query("SELECT * FROM note_table WHERE id = :id")
-    suspend fun getNoteById(id: String): NoteEntity?
+    fun getNoteById(id: String): NoteEntity?
 
     @Query("SELECT * FROM note_table WHERE id = :id")
     fun getNote(id: Long): Flow<NoteEntity>

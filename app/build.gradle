@@ -9,12 +9,12 @@ plugins {
 
 android {
 
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.ak.jotit"
         minSdkVersion 22
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -47,7 +47,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        useIR = true
     }
 
 // this fix is added because of androidTest issues
@@ -59,7 +58,7 @@ android {
         }
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeVersion.get()
+        kotlinCompilerExtensionVersion libs.versions.composeCompilerVersion.get()
     }
 
 }
@@ -69,7 +68,6 @@ dependencies {
     implementation libs.kotlin.stdlib
     implementation libs.core.ktx
     implementation libs.appcompat
-    implementation libs.google.material
     implementation libs.constraint.layout
 
     // Lifecycle + ViewModel & LiveData
@@ -95,6 +93,7 @@ dependencies {
 
     // Dagger Hilt
     implementation libs.hilt.library
+    implementation libs.hilt.navigation
     kapt libs.hilt.compiler
 
     // DataStore

@@ -7,16 +7,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
@@ -29,6 +28,7 @@ import com.ak.jotit.feature.note.presentarion.addeditnote.components.Transparent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditNoteScreen(
     navController: NavController,
@@ -38,7 +38,7 @@ fun AddEditNoteScreen(
     val titleState = viewModel.title.value
     val descState = viewModel.description.value
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val noteBgAnimatable = remember {
         Animatable(
@@ -55,7 +55,7 @@ fun AddEditNoteScreen(
                     navController.navigateUp()
                 }
                 is AddEditNoteViewModel.UIAddEditEvent.ShowSnackBar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
+                    snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
@@ -69,18 +69,20 @@ fun AddEditNoteScreen(
                 onClick = {
                     viewModel.onEvent(AddEditNoteEvent.SaveNote)
                 },
-                backgroundColor = MaterialTheme.colors.primary
+                contentColor = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium
             ) {
                 Icon(imageVector = Icons.Default.Done, contentDescription = stringResource(R.string.save_note))
             }
         },
-        scaffoldState = scaffoldState
-    ) {
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        val padding = paddingValues.calculateTopPadding() + 8.dp
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(noteBgAnimatable.value)
-                .padding(16.dp)
+                .padding(top = padding, start = padding, end = padding)
         ) {
             Row(
                 modifier = Modifier
@@ -98,7 +100,7 @@ fun AddEditNoteScreen(
                             .border(
                                 width = 2.dp,
                                 color = if (viewModel.color.value == colorInt) {
-                                    Color.Black
+                                    MaterialTheme.colorScheme.onSurface
                                 } else {
                                     Color.Transparent
                                 },
@@ -130,7 +132,7 @@ fun AddEditNoteScreen(
                 },
                 isHintVisible = titleState.isHintVisible,
                 singleLine = true,
-                textStyle = MaterialTheme.typography.h5
+                textStyle = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.onSurface)
             )
             Spacer(modifier = Modifier.height(16.dp))
             TransparentHintTextField(
@@ -143,8 +145,8 @@ fun AddEditNoteScreen(
                     viewModel.onEvent(AddEditNoteEvent.ChangeDescriptionFocus(focusState))
                 },
                 isHintVisible = descState.isHintVisible,
-                textStyle = MaterialTheme.typography.body1,
-                modifier = Modifier.fillMaxHeight()
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

@@ -31,6 +31,7 @@ allprojects {
  * Get updated dependency versions
  */
 tasks.named("dependencyUpdates").configure {
+    checkForGradleUpdate = true
     outputFormatter = { result ->
         def updatable = result.outdated.dependencies
         if (!updatable.isEmpty()){
@@ -64,6 +65,8 @@ tasks.named("dependencyUpdates").configure {
             println writer.toString()
         }
     }
+    outputDir = "build/dependencyUpdates"
+    reportfileName = "dependency_update_report"
 }
 
 
