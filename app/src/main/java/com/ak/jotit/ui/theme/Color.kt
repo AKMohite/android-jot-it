@@ -1,6 +1,8 @@
 package com.ak.jotit.ui.theme
 
+import androidx.annotation.ColorRes
 import androidx.compose.ui.graphics.Color
+import com.ak.jotit.R
 
 val md_theme_light_primary = Color(0xFF5555A9)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -69,3 +71,20 @@ val RedPink = Color(0xfff48fb1)
 val BabyBlue = Color(0xff81deea)
 val Violet = Color(0xffcf94da)
 val LightGreen = Color(0xffe7ed9b)
+
+
+
+fun getNoteBgColors(): Map<String, JotItNoteBgColor> {
+    val colorsMap = mutableMapOf<String, JotItNoteBgColor>()
+    colorsMap["note_bg_orange"] = JotItNoteBgColor("note_bg_orange", R.color.note_bg_orange)
+    colorsMap["note_bg_pink"] = JotItNoteBgColor("note_bg_pink", R.color.note_bg_pink)
+    colorsMap["note_bg_blue"] = JotItNoteBgColor("note_bg_blue", R.color.note_bg_blue)
+    colorsMap["note_bg_violet"] = JotItNoteBgColor("note_bg_violet", R.color.note_bg_violet)
+    colorsMap["note_bg_green"] = JotItNoteBgColor("note_bg_green", R.color.note_bg_green)
+    return colorsMap
+}
+
+data class JotItNoteBgColor(
+    val colorName: String,
+    @ColorRes val colorRes: Int
+)
