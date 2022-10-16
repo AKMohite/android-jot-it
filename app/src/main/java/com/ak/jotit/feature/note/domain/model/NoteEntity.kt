@@ -20,13 +20,10 @@ data class NoteEntity(
     @ColumnInfo(name = "is_deleted")
     val isDeleted: Int = 0, // 0 => no, 1 => tempdelete, -1 => permanentdelete
     @ColumnInfo(name = "color")
-    val color: Int,
+    val color: String,
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long = System.currentTimeMillis(),
 ) {
-    companion object {
-        val noteColors = listOf(RedOrange, LightGreen, Violet, BabyBlue, RedPink)
-    }
 }

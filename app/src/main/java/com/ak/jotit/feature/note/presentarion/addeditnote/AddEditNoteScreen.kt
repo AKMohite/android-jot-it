@@ -18,13 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ak.jotit.R
-import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
+import com.ak.jotit.ui.theme.getNoteBgColors
+import com.ak.jotit.ui.theme.getRandomColor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,17 +34,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditNoteScreen(
     navController: NavController,
-    noteColor: Int,
+    noteColor: String?,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val titleState = viewModel.title.value
     val descState = viewModel.description.value
 
     val snackbarHostState = remember { SnackbarHostState() }
-
+    val bgColorName = if (!noteColor.isNullOrBlank()) noteColor else viewModel.color.value
+    val bgColor = colorResource(id = (getNoteBgColors()[bgColorName] ?: getRandomColor()).colorRes).toArgb()
     val noteBgAnimatable = remember {
         Animatable(
-            Color(if (noteColor != -1) noteColor else viewModel.color.value)
+            Color(bgColor)
         )
     }
 
@@ -90,16 +93,17 @@ fun AddEditNoteScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                NoteEntity.noteColors.forEach{ color ->
-                    val colorInt = color.toArgb()
+                getNoteBgColors().forEach{ bgColor ->
+                    val noteBgColor = colorResource(id = (getNoteBgColors()[bgColor.key] ?: getRandomColor()).colorRes).toArgb()
+                    val colorInt = bgColor.value.colorRes
                     Box(
                         modifier = Modifier
                             .size(50.dp)
                             .clip(CircleShape)
-                            .background(color)
+                            .background(colorResource(id = colorInt))
                             .border(
                                 width = 2.dp,
-                                color = if (viewModel.color.value == colorInt) {
+                                color = if (viewModel.color.value == bgColor.key) {
                                     MaterialTheme.colorScheme.onSurface
                                 } else {
                                     Color.Transparent
@@ -109,13 +113,13 @@ fun AddEditNoteScreen(
                             .clickable {
                                 scope.launch {
                                     noteBgAnimatable.animateTo(
-                                        targetValue = Color(colorInt),
+                                        targetValue = Color(noteBgColor),
                                         animationSpec = tween(
                                             durationMillis = 500
                                         )
                                     )
                                 }
-                                viewModel.onEvent(AddEditNoteEvent.ChangeColor(colorInt))
+                                viewModel.onEvent(AddEditNoteEvent.ChangeColor(bgColor.key))
                             }
                     )
                 }

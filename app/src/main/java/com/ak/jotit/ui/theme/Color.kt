@@ -66,13 +66,9 @@ val md_theme_dark_surfaceTint = Color(0xFFC2C1FF)
 val seed = Color(0xFF1A1A40)
 
 
-val RedOrange = Color(0xffffab91)
-val RedPink = Color(0xfff48fb1)
-val BabyBlue = Color(0xff81deea)
-val Violet = Color(0xffcf94da)
-val LightGreen = Color(0xffe7ed9b)
-
-
+fun getRandomColor(): JotItNoteBgColor {
+    return getNoteBgColors().entries.shuffled().first().value
+}
 
 fun getNoteBgColors(): Map<String, JotItNoteBgColor> {
     val colorsMap = mutableMapOf<String, JotItNoteBgColor>()

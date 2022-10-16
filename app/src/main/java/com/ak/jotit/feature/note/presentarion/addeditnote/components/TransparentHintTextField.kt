@@ -3,6 +3,7 @@ package com.ak.jotit.feature.note.presentarion.addeditnote.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,7 +44,7 @@ fun TransparentHintTextField(
             Text(
                 text = hint,
                 style = textStyle,
-                color = Color.DarkGray
+                color = MaterialTheme.colorScheme.outline
             )
         }
     }

@@ -4,8 +4,8 @@
     <color name="white">#FF000000</color>
     <color name="black">#FFFFFFFF</color>
 
-    <color name="note_bg_orange">#732A13</color>
-    <color name="note_bg_pink">#7E2140</color>
+    <color name="note_bg_orange">#AC3E1B</color>
+    <color name="note_bg_pink">#971C45</color>
     <color name="note_bg_blue">#1B6973</color>
     <color name="note_bg_violet">#611D6E</color>
     <color name="note_bg_green">#595E19</color>
