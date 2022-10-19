@@ -44,7 +44,7 @@ fun TransparentHintTextField(
             Text(
                 text = hint,
                 style = textStyle,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

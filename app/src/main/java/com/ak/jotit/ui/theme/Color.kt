@@ -82,9 +82,9 @@ fun getNoteBgColors(): Map<String, JotItNoteBgColor> {
         lightColor = 0xFFFD841F,
         darkColor = 0xFFA8381E
     )
-    colorsMap["note_bg_pink"] = JotItNoteBgColor(
-        colorName = "note_bg_pink",
-        colorRes = R.color.note_bg_pink,
+    colorsMap["note_bg_red"] = JotItNoteBgColor(
+        colorName = "note_bg_red",
+        colorRes = R.color.note_bg_red,
         lightColor = 0xFFFFD1D,
         darkColor = 0xFFB16161
     )
