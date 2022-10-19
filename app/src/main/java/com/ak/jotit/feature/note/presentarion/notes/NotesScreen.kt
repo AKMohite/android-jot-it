@@ -156,9 +156,12 @@ private fun NotesList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        state = listState
+        state = listState,
     ) {
-        items(targetState) { note ->
+        items(
+            key = { note -> note.id },
+            items = targetState
+        ) { note ->
             NoteItem(
                 modifier = Modifier
                     .fillMaxWidth()
