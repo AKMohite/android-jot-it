@@ -39,33 +39,13 @@ fun NoteItem(
     Box(
         modifier = modifier
     ) {
-        Canvas(modifier = Modifier.matchParentSize()) {
-            val cutCornerSize = if (note.isSynced) 0.dp  else cornerCutSize
-            val clipPath = Path().apply {
-                lineTo(size.width - cutCornerSize.toPx(), 0f)
-                lineTo(size.width, cutCornerSize.toPx())
-                lineTo(size.width, size.height)
-                lineTo(0f, size.height)
-                close()
-            }
-
-            clipPath(clipPath) {
-                drawRoundRect(
-                    color = Color(bgColor),
-                    size = size,
-                    cornerRadius = CornerRadius(cornerRadius.toPx())
-                )
-
-                drawRoundRect(
-                    color = Color(
-                        ColorUtils.blendARGB(bgColor, 0x000000, 0.2f)
-                    ),
-                    topLeft = Offset(size.width - cutCornerSize.toPx(), -100f),
-                    size = Size(cutCornerSize.toPx() + 100f, cutCornerSize.toPx() + 100f),
-                    cornerRadius = CornerRadius(cornerRadius.toPx())
-                )
-            }
-        }
+        NoteClippedCanvas(
+            modifier = Modifier.matchParentSize(),
+            bgColor = bgColor,
+            cornerRadius = cornerRadius,
+            cornerCutSize = cornerCutSize,
+            canCutCornerSize = note.isSynced
+        )
 
         Column(
             modifier = Modifier
@@ -100,6 +80,44 @@ fun NoteItem(
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Delete note",
                 tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+fun NoteClippedCanvas(
+    modifier: Modifier = Modifier,
+    bgColor: Int,
+    cornerRadius: Dp,
+    cornerCutSize: Dp,
+    canCutCornerSize: Boolean = true
+) {
+    val clippedColor = MaterialTheme.colorScheme.onSurface.toArgb()
+    Canvas(modifier = modifier) {
+        val cutCornerSize = if (canCutCornerSize) 0.dp  else cornerCutSize
+        val clipPath = Path().apply {
+            lineTo(size.width - cutCornerSize.toPx(), 0f)
+            lineTo(size.width, cutCornerSize.toPx())
+            lineTo(size.width, size.height)
+            lineTo(0f, size.height)
+            close()
+        }
+
+        clipPath(clipPath) {
+            drawRoundRect(
+                color = Color(bgColor),
+                size = size,
+                cornerRadius = CornerRadius(cornerRadius.toPx())
+            )
+
+            drawRoundRect(
+                color = Color(
+                    ColorUtils.blendARGB(bgColor, clippedColor, 0.4f)
+                ),
+                topLeft = Offset(size.width - cutCornerSize.toPx(), -100f),
+                size = Size(cutCornerSize.toPx() + 100f, cutCornerSize.toPx() + 100f),
+                cornerRadius = CornerRadius(cornerRadius.toPx())
             )
         }
     }

@@ -105,22 +105,18 @@ fun NotesScreen(
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            AnimatedContent(targetState = state.notes) { targetState ->
-                
-                when {
-                    !targetState.isNullOrEmpty() -> {
-                        NotesList(
-                            listState,
-                            targetState,
-                            navController,
-                            viewModel,
-                            scope,
-                            snackbarHostState
-                        )
-                    }
-                    
-                    else -> EmptyState()
-                }
+            if (state.notes.isEmpty()) {
+                EmptyState()
+            }
+            else {
+                NotesList(
+                    listState,
+                    state.notes,
+                    navController,
+                    viewModel,
+                    scope,
+                    snackbarHostState
+                )
             }
         }
     }
@@ -164,6 +160,7 @@ private fun NotesList(
         ) { note ->
             NoteItem(
                 modifier = Modifier
+                    .animateItemPlacement()
                     .fillMaxWidth()
                     .clickable {
                         navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
