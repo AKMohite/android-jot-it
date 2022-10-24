@@ -76,36 +76,61 @@ fun getRandomColor(): JotItNoteBgColor {
 // TODO use hex values directly with colorIsLight() condition
 fun getNoteBgColors(): Map<String, JotItNoteBgColor> {
     val colorsMap = mutableMapOf<String, JotItNoteBgColor>()
-    colorsMap["note_bg_orange"] = JotItNoteBgColor(
-        colorName = "note_bg_orange",
-        colorRes = R.color.note_bg_orange,
-        lightColor = 0xFFFD841F,
-        darkColor = 0xFFA8381E
-    )
     colorsMap["note_bg_red"] = JotItNoteBgColor(
         colorName = "note_bg_red",
         colorRes = R.color.note_bg_red,
-        lightColor = 0xFFFFD1D,
-        darkColor = 0xFFB16161
+        defaultHexColor = 0xFFF28B82
     )
-    colorsMap["note_bg_blue"] = JotItNoteBgColor(
-        colorName = "note_bg_blue",
-        colorRes = R.color.note_bg_blue,
-        lightColor = 0xFF4D76D1,
-        darkColor = 0xFF083AA9
+    colorsMap["note_bg_orange"] = JotItNoteBgColor(
+        colorName = "note_bg_orange",
+        colorRes = R.color.note_bg_orange,
+        defaultHexColor = 0xFFFBBC05
     )
-    colorsMap["note_bg_violet"] = JotItNoteBgColor(
-        colorName = "note_bg_violet",
-        colorRes = R.color.note_bg_violet,
-        lightColor = 0xFF9A54D3,
-        darkColor = 0xFF3F0071
+    colorsMap["note_bg_yellow"] = JotItNoteBgColor(
+        colorName = "note_bg_yellow",
+        colorRes = R.color.note_bg_yellow,
+        defaultHexColor = 0xFFFFF475
     )
     colorsMap["note_bg_green"] = JotItNoteBgColor(
         colorName = "note_bg_green",
         colorRes = R.color.note_bg_green,
-        lightColor = 0xFFC8DBBE,
-        darkColor = 0xFF425F57
+        defaultHexColor = 0xFFCCFF90
     )
+    colorsMap["note_bg_teal"] = JotItNoteBgColor(
+        colorName = "note_bg_teal",
+        colorRes = R.color.note_bg_teal,
+        defaultHexColor = 0xFFA7FFEB
+    )
+    /*colorsMap["note_bg_blue"] = JotItNoteBgColor(
+        colorName = "note_bg_blue",
+        colorRes = R.color.note_bg_blue,
+        defaultHexColor = 0xFFCBF0F8
+    )
+    colorsMap["note_bg_dark_blue"] = JotItNoteBgColor(
+        colorName = "note_bg_dark_blue",
+        colorRes = R.color.note_bg_dark_blue,
+        defaultHexColor = 0xFFAECBFA
+    )
+    colorsMap["note_bg_purple"] = JotItNoteBgColor(
+        colorName = "note_bg_purple",
+        colorRes = R.color.note_bg_purple,
+        defaultHexColor = 0xFFD7AEFB
+    )
+    colorsMap["note_bg_pink"] = JotItNoteBgColor(
+        colorName = "note_bg_pink",
+        colorRes = R.color.note_bg_pink,
+        defaultHexColor = 0xFFFDCFE8
+    )
+    colorsMap["note_bg_brown"] = JotItNoteBgColor(
+        colorName = "note_bg_brown",
+        colorRes = R.color.note_bg_brown,
+        defaultHexColor = 0xFFE6C9A8
+    )
+    colorsMap["note_bg_grey"] = JotItNoteBgColor(
+        colorName = "note_bg_grey",
+        colorRes = R.color.note_bg_grey,
+        defaultHexColor = 0xFFE8EAED
+    )*/
     return colorsMap
 }
 
@@ -117,6 +142,5 @@ fun colorIsLight(): Boolean {
 data class JotItNoteBgColor(
     val colorName: String,
     @ColorRes val colorRes: Int,
-    val lightColor: Long,
-    val darkColor: Long
+    val defaultHexColor: Long
 )

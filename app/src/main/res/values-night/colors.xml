@@ -4,15 +4,20 @@
     <color name="white">#FF000000</color>
     <color name="black">#FFFFFFFF</color>
 
-    <color name="note_bg_red">#7F0000</color>
-    <color name="note_bg_pink">#560027</color>
-    <color name="note_bg_purple">#12005E</color>
-    <color name="note_bg_indigo">#000051</color>
-    <color name="note_bg_blue">#002171</color>
-    <color name="note_bg_cyan">#00363a</color>
-    <color name="note_bg_yellow">#524C00</color>
-    <color name="note_bg_orange">#AC1900</color>
-    <color name="note_bg_violet">#000063</color>
-    <color name="note_bg_green">#003300</color>
+    <color name="note_bg_red">#71423E</color>
+    <color name="note_bg_orange">#5A460C</color>
+    <color name="note_bg_yellow">#5A5512</color>
+    <color name="note_bg_green">#4E6137</color>
+    <color name="note_bg_teal">#3C5751</color>
+    <color name="note_bg_blue">#546367</color>
+    <color name="note_bg_dark_blue">#434D5E</color>
+    <color name="note_bg_purple">#4B3D57</color>
+    <color name="note_bg_pink">#55464E</color>
+    <color name="note_bg_brown">#615547</color>
+    <color name="note_bg_grey">#4F4F50</color>
+
+    <color name="note_bg_indigo">#3F4255</color>
+    <color name="note_bg_cyan">#386167</color>
+    <color name="note_bg_violet">#4E455E</color>
 
 </resources>
