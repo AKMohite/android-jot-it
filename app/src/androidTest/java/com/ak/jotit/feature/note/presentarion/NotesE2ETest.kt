@@ -67,7 +67,7 @@ class NotesE2ETest {
                             }
                         )
                     ) { entry ->
-                        val color = entry.arguments?.getInt("noteColor") ?: -1
+                        val color = entry.arguments?.getString("noteColor")
                         AddEditNoteScreen(
                             navController = navController,
                             noteColor = color
