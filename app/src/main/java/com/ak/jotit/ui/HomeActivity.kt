@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.ak.jotit.feature.login.LoginScreen
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteScreen
 import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
@@ -26,8 +27,12 @@ class HomeActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = ScreenRoute.SplashScreen.route
+                    startDestination = ScreenRoute.LoginScreen.route
                 ) {
+                    composable(route = ScreenRoute.LoginScreen.route) {
+                        LoginScreen()
+                    }
+
                     composable(route = ScreenRoute.SplashScreen.route) {
                         SplashScreen(
                             navController = navController
