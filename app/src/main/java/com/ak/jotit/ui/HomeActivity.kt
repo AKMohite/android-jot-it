@@ -30,7 +30,14 @@ class HomeActivity : ComponentActivity() {
                     startDestination = ScreenRoute.LoginScreen.route
                 ) {
                     composable(route = ScreenRoute.LoginScreen.route) {
-                        LoginScreen()
+                        LoginScreen(
+                            onAuthenticate = {
+                                 navController.navigate(ScreenRoute.NotesScreen.route)
+                            },
+                            onSignup = {
+                                navController.navigate(ScreenRoute.SignupScreen.route)
+                            }
+                        )
                     }
 
                     composable(route = ScreenRoute.SplashScreen.route) {

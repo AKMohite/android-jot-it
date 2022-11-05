@@ -32,9 +32,7 @@ fun JIButton(
         colors = colors,
         contentPadding = contentPadding,
         content = {
-            ProvideTextStyle(value = MaterialTheme.typography.labelSmall) {
-                content()
-            }
+            content()
         }
     )
 }
