@@ -32,7 +32,8 @@ internal class LoginViewModel @Inject constructor(
             email = email,
             emailHasError = modelState.emailHasError,
             password = password,
-            passwordHasError = modelState.passwordHasError
+            passwordHasError = modelState.passwordHasError,
+            isAuthenticated = modelState.isAuthenticated
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LoginState())
 //    endregion
@@ -47,7 +48,9 @@ internal class LoginViewModel @Inject constructor(
         modelState.value = modelState.value.copy(passwordHasError = false)
     }
 
-    override fun onLogin() {}
+    override fun onLogin() {
+        modelState.value = modelState.value.copy(isAuthenticated = true)
+    }
 
 }
 
@@ -62,11 +65,13 @@ internal class LoginState(
     private val emailHasError: Boolean = false,
     val password: String = "",
     private val passwordHasError: Boolean = false,
-    val isSubmitEnabled: Boolean = !emailHasError && !passwordHasError
+    val isSubmitEnabled: Boolean = !emailHasError && !passwordHasError,
+    val isAuthenticated: Boolean = false
 ) {
     internal data class ModelState(
         val emailHasError: Boolean = false,
         val passwordHasError: Boolean = false,
-        val isSubmitEnabled: Boolean = false
+        val isSubmitEnabled: Boolean = false,
+        val isAuthenticated: Boolean = false
     )
 }
