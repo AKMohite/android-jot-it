@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -33,7 +34,8 @@ fun JITextField(
     errorMessage: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     enabled: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
 
     Column {
@@ -50,7 +52,8 @@ fun JITextField(
             isError = errorMessage != null,
             visualTransformation = visualTransformation,
             enabled = enabled,
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions
         )
 
         if (errorMessage != null) {
