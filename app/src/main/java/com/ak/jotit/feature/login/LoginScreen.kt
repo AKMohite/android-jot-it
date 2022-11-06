@@ -1,5 +1,6 @@
 package com.ak.jotit.feature.login
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,11 +34,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ak.jotit.R
 import com.ak.jotit.core.components.JIButton
 import com.ak.jotit.core.components.JITextField
+import com.ak.jotit.ui.theme.JotItTheme
 
 /**
  * Reference:
@@ -111,7 +115,8 @@ private fun LoginContent(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
-            )
+            ),
+            enabled = state.formEnabled
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -131,7 +136,8 @@ private fun LoginContent(
                     localFocusManager.clearFocus()
                     onLogin()
                 }
-            )
+            ),
+            enabled = state.formEnabled
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -142,7 +148,8 @@ private fun LoginContent(
             onClick = {
                 localFocusManager.clearFocus()
                 onLogin()
-            }
+            },
+            enabled = state.isSubmitEnabled
         ) {
             Text(text = stringResource(id = R.string.login_btn))
         }
@@ -161,4 +168,32 @@ private fun LoginContent(
         )
     }
 
+}
+
+
+@Preview(
+    name = "light theme",
+    group = "theme",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "dark theme",
+    group = "theme",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun LoginContentPreview() {
+    JotItTheme {
+        Surface {
+            LoginContent(
+                state = LoginState(),
+                onEmailChange = {},
+                onPasswordChange = {},
+                onLogin = {},
+                onSignup = {}
+            )
+        }
+    }
 }

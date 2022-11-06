@@ -4,11 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val SAVED_LOGIN_EMAIL = "saved_login_email"
@@ -33,7 +35,8 @@ internal class LoginViewModel @Inject constructor(
             emailHasError = modelState.emailHasError,
             password = password,
             passwordHasError = modelState.passwordHasError,
-            isAuthenticated = modelState.isAuthenticated
+            isAuthenticated = modelState.isAuthenticated,
+            formEnabled = modelState.formEnabled
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LoginState())
 //    endregion
@@ -49,7 +52,11 @@ internal class LoginViewModel @Inject constructor(
     }
 
     override fun onLogin() {
-        modelState.value = modelState.value.copy(isAuthenticated = true)
+        viewModelScope.launch {
+            modelState.emit(modelState.value.copy(formEnabled = false))
+            delay(3_000)
+            modelState.emit(modelState.value.copy(isAuthenticated = true))
+        }
     }
 
 }
@@ -65,13 +72,15 @@ internal class LoginState(
     private val emailHasError: Boolean = false,
     val password: String = "",
     private val passwordHasError: Boolean = false,
-    val isSubmitEnabled: Boolean = !emailHasError && !passwordHasError,
+    val formEnabled: Boolean = true,
+    val isSubmitEnabled: Boolean = (email.isNotBlank() && password.isNotBlank()),
     val isAuthenticated: Boolean = false
 ) {
+
     internal data class ModelState(
         val emailHasError: Boolean = false,
         val passwordHasError: Boolean = false,
-        val isSubmitEnabled: Boolean = false,
-        val isAuthenticated: Boolean = false
+        val isAuthenticated: Boolean = false,
+        val formEnabled: Boolean = true
     )
 }
