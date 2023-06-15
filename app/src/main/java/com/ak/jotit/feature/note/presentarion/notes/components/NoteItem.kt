@@ -1,13 +1,19 @@
 package com.ak.jotit.feature.note.presentarion.notes.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +30,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import com.ak.jotit.feature.note.domain.model.NoteEntity
+import com.ak.jotit.material2.JISwipeToDismiss
+import com.ak.jotit.material2.SwipeActionsConfig
 import com.ak.jotit.ui.theme.getNoteBgColors
 import com.ak.jotit.ui.theme.getRandomColor
 
@@ -32,55 +40,57 @@ fun NoteItem(
     note: NoteEntity,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
-    cornerCutSize: Dp = 30.dp,
+    cornerCutSize: Dp = 20.dp,
     onDeleteClick: () -> Unit
 ) {
     val bgColor = colorResource(id = (getNoteBgColors()[note.color] ?: getRandomColor()).colorRes).toArgb()
-    Box(
-        modifier = modifier
+    JISwipeToDismiss(
+        modifier = Modifier.fillMaxWidth(),
+        endActionsConfig = SwipeActionsConfig(
+            threshold = 0.1f,
+            background = MaterialTheme.colorScheme.error,
+            iconTint = MaterialTheme.colorScheme.onError,
+            icon = Icons.Default.Delete,
+            stayDismissed = true,
+            onDismiss = onDeleteClick
+        ),
+//        showTutorial = index == 0
     ) {
-        NoteClippedCanvas(
-            modifier = Modifier.matchParentSize(),
-            bgColor = bgColor,
-            cornerRadius = cornerRadius,
-            cornerCutSize = cornerCutSize,
-            canCutCornerSize = note.isSynced
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(end = 32.dp)
+        Box(
+            modifier = modifier
         ) {
-            Text(
-                text = note.title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+            NoteClippedCanvas(
+                modifier = Modifier.matchParentSize(),
+                bgColor = bgColor,
+                cornerRadius = cornerRadius,
+                cornerCutSize = cornerCutSize,
+                canCutCornerSize = note.isSynced
             )
-            
-            Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = note.description,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        
-        IconButton(
-            onClick = onDeleteClick,
-            modifier = Modifier.align(Alignment.BottomEnd)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Delete note",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .padding(end = 32.dp)
+            ) {
+                Text(
+                    text = note.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = note.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
