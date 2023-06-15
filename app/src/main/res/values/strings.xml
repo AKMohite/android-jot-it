@@ -31,4 +31,8 @@
     <string name="save_note">Save Note</string>
     <string name="sad_face">📓</string>
     <string name="notes_empty_text">Nothing to see. Add Notes</string>
+    <string name="email">Email ID</string>
+    <string name="password">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="login_signup_btn">Don\'t have an account? Signup</string>
 </resources>

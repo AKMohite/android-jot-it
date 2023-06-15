@@ -3,3 +3,4 @@ include ':app'
 
 // dependency version catalogs: https://docs.gradle.org/current/userguide/platforms.html
 enableFeaturePreview("VERSION_CATALOGS")
+include ':core:material2'

@@ -28,7 +28,7 @@ class GetNotesTest {
                     id = index.toString(),
                     title = c.toString(),
                     description = c.toString(),
-                    color = index,
+                    color = "${index}_${c}_color",
                     createdAt = index.toLong(),
                     updatedAt = index.toLong()
                 )
@@ -90,7 +90,7 @@ class GetNotesTest {
     fun `Order notes by color descending, correct order`() = runBlocking {
         val notes = getNotes(NoteOrderBy.Color(OrderType.Descending)).first()
         for (i in 0..notes.size - 2) {
-            assertThat(notes[i].title).isGreaterThan(notes[i+1].title)
+            assertThat(notes[i].color).isGreaterThan(notes[i+1].color)
         }
     }
 }
