@@ -3,6 +3,9 @@ package com.ak.jotit.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ak.jotit.R
 import com.ak.jotit.core.navigation.AppNavigation
@@ -80,11 +84,20 @@ class HomeActivity : ComponentActivity() {
                 Surface {
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
-                    var selectedItemIndex by rememberSaveable {
-                        mutableStateOf(0)
-                    }
+                    var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
+                    var isDrawerAccessible by rememberSaveable { mutableStateOf(false) }
                     val navController = rememberNavController()
+
+                    // Subscribe to navBackStackEntry, required to get current route
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+                    isDrawerAccessible = when(navBackStackEntry?.destination?.route) {
+                        ScreenRoute.NotesScreen.route, ScreenRoute.DeletedNotesScreen.route, ScreenRoute.SettingsScreen.route -> true
+                        else -> false
+                    }
+
                     ModalNavigationDrawer(
+                        gesturesEnabled = isDrawerAccessible,
                         drawerContent = {
                             ModalDrawerSheet {
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -125,23 +138,29 @@ class HomeActivity : ComponentActivity() {
                     ) {
                         Scaffold(
                             topBar = {
-                                TopAppBar(
-                                    title = {
-                                        Text(text = stringResource(id = R.string.app_name))
-                                    },
-                                    navigationIcon = {
-                                        IconButton(onClick = {
-                                            scope.launch {
-                                                drawerState.open()
+                                AnimatedVisibility(
+                                    visible = isDrawerAccessible,
+//                                    enter = slideInVertically(initialOffsetY = { -it }),
+//                                    exit = slideOutVertically(targetOffsetY = { -it }),
+                                ) {
+                                    TopAppBar(
+                                        title = {
+                                            Text(text = stringResource(id = R.string.app_name))
+                                        },
+                                        navigationIcon = {
+                                            IconButton(onClick = {
+                                                scope.launch {
+                                                    drawerState.open()
+                                                }
+                                            }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Menu,
+                                                    contentDescription = stringResource(id = R.string.top_bar_menu)
+                                                )
                                             }
-                                        }) {
-                                            Icon(
-                                                imageVector = Icons.Default.Menu,
-                                                contentDescription = stringResource(id = R.string.top_bar_menu)
-                                            )
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             },
                         ) { innerPadding ->
                             AppNavigation(
