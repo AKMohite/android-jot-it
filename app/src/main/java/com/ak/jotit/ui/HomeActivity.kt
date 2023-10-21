@@ -99,7 +99,11 @@ class HomeActivity : ComponentActivity() {
                                             scope.launch {
                                                 drawerState.close()
                                             }
-                                            navController.navigate(item.route.route)
+                                            navController.navigate(item.route.route) {
+                                                val startRoute = navController.graph.startDestinationRoute ?: return@navigate
+                                                popUpTo(startRoute)
+                                                launchSingleTop = true
+                                            }
                                         },
                                         icon = {
                                             Icon(
