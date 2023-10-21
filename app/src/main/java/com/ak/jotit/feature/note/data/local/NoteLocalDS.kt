@@ -4,7 +4,7 @@ import com.ak.jotit.feature.note.domain.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
-class NoteLocalDS(
+internal class NoteLocalDS(
     private val noteDao: NoteDao
 ): INoteLocalDS {
 

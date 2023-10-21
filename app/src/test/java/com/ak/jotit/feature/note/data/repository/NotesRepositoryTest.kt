@@ -1,50 +1,65 @@
 package com.ak.jotit.feature.note.data.repository
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ak.jotit.feature.note.data.local.NoteLocalDS
-import com.ak.jotit.feature.note.data.local.NotesDatabase
-import com.ak.jotit.util.MainCoroutineRule
+import com.ak.jotit.feature.note.domain.model.NoteEntity
+import com.ak.jotit.feature.note.domain.repository.INotesRepository
+import com.ak.jotit.feature.note.fake.FakeNotesDatasource
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 
-@RunWith(AndroidJUnit4::class)
 class NotesRepositoryTest {
 
-    @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private lateinit var appDatabase: NotesDatabase
-    private lateinit var sut: NotesRepository
+    private lateinit var sut: INotesRepository
 
     @Before
     fun setup() {
-        appDatabase = Room
-            .inMemoryDatabaseBuilder(
-                ApplicationProvider.getApplicationContext(),
-                NotesDatabase::class.java
-            )
-            .allowMainThreadQueries()
-            .build()
 
-        sut = NotesRepository(local = NoteLocalDS(appDatabase.noteDao()))
+        sut = NotesRepository(local = FakeNotesDatasource())
     }
 
     @After
     fun tearDown() {
-        appDatabase.close()
     }
 
     @Test
-    fun `get notes when no notes are inserted`() = runBlocking {
-        val notes: String? = null
+    fun `get notes when no notes are inserted`() = runTest {
+        val notes = sut.getAllNotes().first()
         assertThat(notes).isEmpty()
+    }
+
+    @Test
+    fun `insert note should return when fetch`() = runTest{
+        val note = createNoteFor("A")
+        sut.insertNote(note)
+
+        val notes = sut.getAllNotes().first()
+
+        assertThat(notes.first().id).isNotEmpty()
+        assertThat(notes.first().title).isEqualTo(note.title)
+        assertThat(notes.first().description).isEqualTo(note.description)
+    }
+
+    @Test
+    fun `update inserted note should return with updated note`() = runTest{
+        val note = createNoteFor("A")
+        sut.insertNote(note)
+        val notesList = sut.getAllNotes().first()
+        val insertedNote = notesList.first()
+
+        sut.insertNote(insertedNote)
+
+        val notes = sut.getAllNotes().first()
+
+        assertThat(notes.first().title).isEqualTo(note.title)
+        assertThat(notes.first().description).isEqualTo(note.description)
+    }
+
+    private fun createNoteFor(title: String): NoteEntity {
+        return NoteEntity(id = "", title = title, description = title, color = "")
     }
 }

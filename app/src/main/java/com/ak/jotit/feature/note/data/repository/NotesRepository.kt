@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class NotesRepository(
+internal class NotesRepository(
     private val local: INoteLocalDS
 ) : INotesRepository {
 
