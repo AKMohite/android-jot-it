@@ -6,5 +6,7 @@ sealed class ScreenRoute(val route: String) {
 
     object SplashScreen: ScreenRoute("splash_screen")
     object NotesScreen: ScreenRoute("notes_screen")
+    object DeletedNotesScreen: ScreenRoute("deleted_notes_screen")
+    object SettingsScreen: ScreenRoute("settings_screen")
     object AddEditNoteScreen: ScreenRoute("add_edit_note_screen")
 }
