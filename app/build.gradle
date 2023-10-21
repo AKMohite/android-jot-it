@@ -114,6 +114,7 @@ dependencies {
     androidTestImplementation libs.junit.base
     androidTestImplementation libs.hilt.test.android
     kaptAndroidTest libs.hilt.test.compiler
+    androidTestImplementation libs.test.core.ktx
     androidTestImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.espresso.contrib
     androidTestImplementation libs.compose.test

@@ -1,5 +1,5 @@
 [versions]
-androidXTestCoreVersion = "1.2.0"
+androidXTestCoreVersion = "1.5.0"
 androidXTestExtKotlinRunnerVersion = "1.1.1"
 androidXTestRulesVersion = "1.2.0-beta01"
 appCompatVersion = "1.4.1"
