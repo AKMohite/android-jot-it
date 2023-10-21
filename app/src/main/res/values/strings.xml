@@ -35,4 +35,5 @@
     <string name="password">Password</string>
     <string name="login_btn">Login</string>
     <string name="login_signup_btn">Don\'t have an account? Signup</string>
+    <string name="top_bar_menu">Menu</string>
 </resources>
