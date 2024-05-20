@@ -11,67 +11,49 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.ak.jotit.R
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
 import com.ak.jotit.ui.theme.getNoteBgColors
 import com.ak.jotit.ui.theme.getRandomColor
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditNoteScreen(
-    navController: NavController,
-    noteColor: String?,
-    viewModel: AddEditNoteViewModel = hiltViewModel()
+    noteColor: String,
+    description: NoteTextFieldState,
+    title: NoteTextFieldState,
+    onSaveNote: () -> Unit,
+    onChangeColor: (String) -> Unit,
+    onTitleChange: (String) -> Unit,
+    onTitleFocusChange: (FocusState) -> Unit,
+    onDescChange: (String) -> Unit,
+    onDescFocusChange: (FocusState) -> Unit
 ) {
-    val titleState = viewModel.title.value
-    val descState = viewModel.description.value
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val bgColorName = if (!noteColor.isNullOrBlank()) noteColor else viewModel.color.value
-    val bgColor = colorResource(id = (getNoteBgColors()[bgColorName] ?: getRandomColor()).colorRes).toArgb()
+    val bgColor = colorResource(id = (getNoteBgColors()[noteColor] ?: getRandomColor()).colorRes).toArgb()
     val noteBgAnimatable = remember {
         Animatable(
             Color(bgColor)
         )
     }
-
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is AddEditNoteViewModel.UIAddEditEvent.SaveNote -> {
-                    navController.navigateUp()
-                }
-                is AddEditNoteViewModel.UIAddEditEvent.ShowSnackBar -> {
-                    snackbarHostState.showSnackbar(
-                        message = event.message
-                    )
-                }
-            }
-        }
-    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    viewModel.onEvent(AddEditNoteEvent.SaveNote)
-                },
+                onClick = onSaveNote,
                 contentColor = MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -103,7 +85,7 @@ fun AddEditNoteScreen(
                             .background(colorResource(id = colorInt))
                             .border(
                                 width = 2.dp,
-                                color = if (viewModel.color.value == bgColor.key) {
+                                color = if (noteColor == bgColor.key) {
                                     MaterialTheme.colorScheme.onSurface
                                 } else {
                                     Color.Transparent
@@ -119,36 +101,28 @@ fun AddEditNoteScreen(
                                         )
                                     )
                                 }
-                                viewModel.onEvent(AddEditNoteEvent.ChangeColor(bgColor.key))
+                                onChangeColor(bgColor.key)
                             }
                     )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
             TransparentHintTextField(
-                text = titleState.text,
-                hint = titleState.hint,
-                onValueChange = { title ->
-                    viewModel.onEvent(AddEditNoteEvent.EnteredTitle(title))
-                },
-                onFocusChange = { focusState ->
-                    viewModel.onEvent(AddEditNoteEvent.ChangeTitleFocus(focusState))
-                },
-                isHintVisible = titleState.isHintVisible,
+                text = title.text,
+                hint = title.hint,
+                onValueChange = onTitleChange,
+                onFocusChange = onTitleFocusChange,
+                isHintVisible = title.isHintVisible,
                 singleLine = true,
                 textStyle = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.onSurface)
             )
             Spacer(modifier = Modifier.height(16.dp))
             TransparentHintTextField(
-                text = descState.text,
-                hint = descState.hint,
-                onValueChange = { desc ->
-                    viewModel.onEvent(AddEditNoteEvent.EnteredDescription(desc))
-                },
-                onFocusChange = { focusState ->
-                    viewModel.onEvent(AddEditNoteEvent.ChangeDescriptionFocus(focusState))
-                },
-                isHintVisible = descState.isHintVisible,
+                text = description.text,
+                hint = description.hint,
+                onValueChange = onDescChange,
+                onFocusChange = onDescFocusChange,
+                isHintVisible = description.isHintVisible,
                 textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.fillMaxSize()
             )

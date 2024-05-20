@@ -4,6 +4,7 @@ package com.ak.jotit.core.navigation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -13,11 +14,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ak.jotit.feature.login.LoginScreen
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
+import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteEvent
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteScreen
+import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteViewModel
 import com.ak.jotit.feature.note.presentarion.notes.NotesEvent
 import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
 import com.ak.jotit.feature.note.presentarion.notes.NotesViewModel
 import com.ak.jotit.feature.splash.presentation.SplashScreen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun AppNavigation(
@@ -97,10 +101,46 @@ internal fun AppNavigation(
                 }
             )
         ) { entry ->
+            val viewModel: AddEditNoteViewModel = hiltViewModel()
             val color = entry.arguments?.getString("noteColor")
+            val noteColor = if (!color.isNullOrBlank()) color else viewModel.color.value
+            LaunchedEffect(key1 = true) {
+                viewModel.eventFlow.collectLatest { event ->
+                    when (event) {
+                        is AddEditNoteViewModel.UIAddEditEvent.SaveNote -> {
+                            navController.navigateUp()
+                        }
+                        is AddEditNoteViewModel.UIAddEditEvent.ShowSnackBar -> {
+//                            TODO handle snackbar
+//                            snackbarHostState.showSnackbar(
+//                                message = event.message
+//                            )
+                        }
+                    }
+                }
+            }
             AddEditNoteScreen(
-                navController = navController,
-                noteColor = color
+                noteColor = noteColor,
+                description = viewModel.description.value,
+                title = viewModel.title.value,
+                onSaveNote = {
+                    viewModel.onEvent(AddEditNoteEvent.SaveNote)
+                },
+                onChangeColor = {
+                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(it))
+                },
+                onTitleChange = { title ->
+                    viewModel.onEvent(AddEditNoteEvent.EnteredTitle(title))
+                },
+                onTitleFocusChange = { focusState ->
+                    viewModel.onEvent(AddEditNoteEvent.ChangeTitleFocus(focusState))
+                },
+                onDescChange = { desc ->
+                    viewModel.onEvent(AddEditNoteEvent.EnteredDescription(desc))
+                },
+                onDescFocusChange = { focusState ->
+                    viewModel.onEvent(AddEditNoteEvent.ChangeDescriptionFocus(focusState))
+                }
             )
         }
 
