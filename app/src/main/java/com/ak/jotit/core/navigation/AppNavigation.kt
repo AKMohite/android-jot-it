@@ -32,7 +32,14 @@ internal fun AppNavigation(
 
         composable(route = ScreenRoute.SplashScreen.route) {
             SplashScreen(
-                navController = navController
+                onNextScreen = {
+                    navController
+                        .navigate(ScreenRoute.NotesScreen.route){
+                            popUpTo(ScreenRoute.SplashScreen.route){
+                                inclusive = true
+                            }
+                        }
+                }
             )
         }
 

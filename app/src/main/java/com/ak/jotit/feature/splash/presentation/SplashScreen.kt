@@ -20,7 +20,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavController
+    onNextScreen: () -> Unit
 ) {
 
     val scale = remember {
@@ -38,12 +38,7 @@ fun SplashScreen(
             )
         )
         delay(3_000L)
-        navController
-            .navigate(ScreenRoute.NotesScreen.route){
-                popUpTo(ScreenRoute.SplashScreen.route){
-                    inclusive = true
-                }
-            }
+        onNextScreen()
     }
     Box(
         contentAlignment = Alignment.Center,
