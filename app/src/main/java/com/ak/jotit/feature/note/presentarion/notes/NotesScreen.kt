@@ -45,11 +45,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.ak.jotit.R
 import com.ak.jotit.feature.note.domain.model.NoteEntity
-import com.ak.jotit.feature.note.domain.util.ScreenRoute
+import com.ak.jotit.feature.note.domain.util.NoteOrderBy
 import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
 import kotlinx.coroutines.CoroutineScope
@@ -57,10 +55,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NotesScreen(
-    navController: NavController,
-    viewModel: NotesViewModel = hiltViewModel()
+    state: NotesState,
+    onAddEditClick: () -> Unit,
+    toggleNotesFilter: () -> Unit,
+    onFilterChange: (NoteOrderBy) -> Unit,
+    onNoteClick: (Pair<String, String>) -> Unit,
+    onDeleteNote: (note: NoteEntity) -> Unit,
+    onRestoreNote: () -> Unit
 ) {
-    val state = viewModel.state.value
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -77,9 +79,7 @@ fun NotesScreen(
                     )
                 },
                 expanded = listState.isScrollingUp(),
-                onClick = {
-                    navController.navigate(ScreenRoute.AddEditNoteScreen.route)
-                },
+                onClick = onAddEditClick,
                 contentColor = MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.medium
             )
@@ -102,9 +102,7 @@ fun NotesScreen(
                     style = MaterialTheme.typography.headlineMedium
                 )
                 IconButton(
-                    onClick = {
-                        viewModel.onEvent(NotesEvent.ToggleOrderSection)
-                    }
+                    onClick = toggleNotesFilter
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_sort),
@@ -124,9 +122,7 @@ fun NotesScreen(
                         .padding(vertical = 16.dp)
                         .testTag(stringResource(id = R.string.filter_note)),
                     noteOrderBy = state.noteOrderBy,
-                    onOrderChange = { order ->
-                        viewModel.onEvent(NotesEvent.OrderNotes(order))
-                    }
+                    onOrderChange = onFilterChange
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -137,10 +133,11 @@ fun NotesScreen(
                 NotesList(
                     listState,
                     state.notes,
-                    navController,
-                    viewModel,
                     scope,
-                    snackbarHostState
+                    snackbarHostState,
+                    onNoteClick = onNoteClick,
+                    onDeleteNote = onDeleteNote,
+                    onRestoreNote = onRestoreNote
                 )
             }
         }
@@ -170,10 +167,11 @@ fun EmptyState(
 private fun NotesList(
     listState: LazyListState,
     targetState: List<NoteEntity>,
-    navController: NavController,
-    viewModel: NotesViewModel,
     scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    onNoteClick: (Pair<String, String>) -> Unit,
+    onDeleteNote: (note: NoteEntity) -> Unit,
+    onRestoreNote: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -188,11 +186,11 @@ private fun NotesList(
                     .animateItemPlacement()
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
+                        onNoteClick(Pair(note.id, note.color))
                     },
                 note = note,
                 onDeleteClick = {
-                    viewModel.onEvent(NotesEvent.DeleteNote(note))
+                    onDeleteNote(note)
                     scope.launch {
                         val result = snackbarHostState.showSnackbar(
                             message = "Note Deleted",
@@ -200,7 +198,7 @@ private fun NotesList(
                         )
 
                         if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.onEvent(NotesEvent.RestoreNote)
+                            onRestoreNote()
                         }
                     }
                 }
