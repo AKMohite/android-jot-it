@@ -34,7 +34,7 @@ class NotesViewModel @Inject constructor(
     fun onEvent(event: NotesEvent) {
         when (event) {
             is NotesEvent.DeleteNote -> {
-                deleteNote(event.note)
+                deleteNote(event.noteId)
             }
             is NotesEvent.OrderNotes -> {
                 if (state.value.noteOrderBy::class == event.noteOrderBy::class
@@ -74,10 +74,10 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    private fun deleteNote(note: NoteEntity) {
+    private fun deleteNote(id: String) {
         viewModelScope.launch {
-            notes.deleteNote(note)
-            recentDeletedNote = note
+            val deletedNote = notes.deleteNote(id)
+            recentDeletedNote = deletedNote
         }
     }
 

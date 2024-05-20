@@ -35,9 +35,10 @@ internal class NoteLocalDS(
 
 
 
-    override suspend fun tempDeleteNote(noteEntity: NoteEntity): String {
+    override suspend fun tempDeleteNote(id: String): NoteEntity? {
+        val noteEntity = getNoteById(id) ?: return null
         noteDao.update(noteEntity.copy(isDeleted = 1))
-        return noteEntity.id
+        return noteEntity
     }
 }
 
@@ -51,5 +52,5 @@ interface INoteLocalDS {
 
     suspend fun updateNote(noteEntity: NoteEntity): String
 
-    suspend fun tempDeleteNote(noteEntity: NoteEntity): String
+    suspend fun tempDeleteNote(id: String): NoteEntity?
 }

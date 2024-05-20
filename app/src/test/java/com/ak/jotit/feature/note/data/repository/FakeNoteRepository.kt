@@ -21,8 +21,10 @@ class FakeNoteRepository : INotesRepository {
         notes.add(noteEntity)
     }
 
-    override suspend fun tempDelete(noteEntity: NoteEntity) {
-        notes.remove(noteEntity)
+    override suspend fun tempDelete(id: String): NoteEntity? {
+        val note = notes.firstOrNull { it.id == id } ?: return null
+        notes.remove(note)
+        return note
     }
 
 }

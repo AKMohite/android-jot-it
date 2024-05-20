@@ -30,9 +30,10 @@ class FakeNotesDatasource : INoteLocalDS {
         return noteEntity.id
     }
 
-    override suspend fun tempDeleteNote(noteEntity: NoteEntity): String {
-        notes.remove(noteEntity)
-        return noteEntity.id
+    override suspend fun tempDeleteNote(id: String): NoteEntity {
+        val note = notes.firstOrNull { it.id == id } ?: throw IllegalStateException("Note not found")
+        notes.remove(note)
+        return note
     }
 
 }

@@ -60,7 +60,7 @@ fun NotesScreen(
     toggleNotesFilter: () -> Unit,
     onFilterChange: (NoteOrderBy) -> Unit,
     onNoteClick: (Pair<String, String>) -> Unit,
-    onDeleteNote: (note: NoteEntity) -> Unit,
+    onDeleteNote: (id: String) -> Unit,
     onRestoreNote: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -170,7 +170,7 @@ private fun NotesList(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
     onNoteClick: (Pair<String, String>) -> Unit,
-    onDeleteNote: (note: NoteEntity) -> Unit,
+    onDeleteNote: (id: String) -> Unit,
     onRestoreNote: () -> Unit
 ) {
     LazyColumn(
@@ -190,7 +190,7 @@ private fun NotesList(
                     },
                 note = note,
                 onDeleteClick = {
-                    onDeleteNote(note)
+                    onDeleteNote(note.id)
                     scope.launch {
                         val result = snackbarHostState.showSnackbar(
                             message = "Note Deleted",

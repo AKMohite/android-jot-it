@@ -69,7 +69,7 @@ internal fun AppNavigation(
                 onNoteClick = { (id, color) ->
                     navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${id}&noteColor=${color}")
                 },
-                onDeleteNote = { note ->  viewModel.onEvent(NotesEvent.DeleteNote(note)) },
+                onDeleteNote = { id ->  viewModel.onEvent(NotesEvent.DeleteNote(id)) },
                 onRestoreNote = { viewModel.onEvent(NotesEvent.RestoreNote) }
             )
         }

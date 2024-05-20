@@ -23,8 +23,8 @@ internal class NotesRepository(
         local.insertNote(noteEntity)
     }
 
-    override suspend fun tempDelete(noteEntity: NoteEntity): Unit = withContext(Dispatchers.IO) {
-        local.tempDeleteNote(noteEntity)
+    override suspend fun tempDelete(id: String): NoteEntity? = withContext(Dispatchers.IO) {
+        local.tempDeleteNote(id)
     }
 
 }

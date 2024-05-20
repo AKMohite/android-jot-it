@@ -8,9 +8,9 @@ class DeleteNote (
 ) {
 
     suspend operator fun invoke(
-        note: NoteEntity
-    ) {
-        repository.tempDelete(note)
+        id: String
+    ): NoteEntity? {
+        return repository.tempDelete(id)
     }
 
 }

@@ -11,5 +11,5 @@ interface INotesRepository {
 
     suspend fun insertNote(noteEntity: NoteEntity)
 
-    suspend fun tempDelete(noteEntity: NoteEntity)
+    suspend fun tempDelete(id: String): NoteEntity?
 }
