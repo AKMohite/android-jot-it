@@ -14,15 +14,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -72,6 +75,19 @@ internal fun NotesScreen(
     Scaffold(
         floatingActionButton = {
             AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER) {
+//                LargeFloatingActionButton(
+//                    onClick = {  },
+//                    modifier = Modifier
+//                        .padding(16.dp),
+//                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+//                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Edit,
+//                        contentDescription = stringResource(id = R.string.add_note),
+//                        modifier = Modifier.size(28.dp)
+//                    )
+//                }
                 ExtendedFloatingActionButton(
                     text = { Text(stringResource(id = R.string.add_note)) },
                     icon = {
@@ -83,7 +99,8 @@ internal fun NotesScreen(
                     },
                     expanded = listState.isScrollingUp(),
                     onClick = onAddEditClick,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     shape = MaterialTheme.shapes.medium
                 )
             }
