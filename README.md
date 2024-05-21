@@ -13,3 +13,7 @@ Jot it app is used to take notes at go.
 | Home                                | Details                               |
 |-------------------------------------|---------------------------------------|
 | ![](art/dark/notes-list-screen.png) | ![](art/dark/notes-detail-screen.png) |
+
+## All screens
+
+[Check here](https://github.com/AKMohite/android-jot-it/tree/all-screen)
