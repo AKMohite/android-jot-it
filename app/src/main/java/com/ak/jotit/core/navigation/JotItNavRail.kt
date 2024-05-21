@@ -9,7 +9,6 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.ak.jotit.ui.NavigationItem
 
 @Composable
 internal fun JotItNavRail(

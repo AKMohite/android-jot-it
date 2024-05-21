@@ -5,13 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
@@ -24,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -33,16 +25,10 @@ import com.ak.jotit.core.navigation.JotItClosedDrawer
 import com.ak.jotit.core.navigation.JotItNavRail
 import com.ak.jotit.core.navigation.JotItPermanentDrawer
 import com.ak.jotit.core.navigation.NavigationType
+import com.ak.jotit.core.navigation.navigationItems
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.ui.theme.JotItTheme
 import dagger.hilt.android.AndroidEntryPoint
-
-data class NavigationItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val route: ScreenRoute
-)
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
@@ -59,26 +45,6 @@ class HomeActivity : ComponentActivity() {
                     WindowWidthSizeClass.Expanded -> NavigationType.PERMANENT_DRAWER
                     else -> NavigationType.CLOSED_DRAWER
                 }
-                val items = listOf(
-                    NavigationItem(
-                        title = "Notes",
-                        selectedIcon = Icons.Filled.Home,
-                        unselectedIcon = Icons.Outlined.Home,
-                        route = ScreenRoute.NotesScreen
-                    ),
-                    NavigationItem(
-                        title = "Trash",
-                        selectedIcon = Icons.Filled.Delete,
-                        unselectedIcon = Icons.Outlined.Delete,
-                        route = ScreenRoute.DeletedNotesScreen
-                    ),
-                    NavigationItem(
-                        title = "Settings",
-                        selectedIcon = Icons.Filled.Settings,
-                        unselectedIcon = Icons.Outlined.Settings,
-                        route = ScreenRoute.SettingsScreen
-                    )
-                )
                 Surface {
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
@@ -98,7 +64,7 @@ class HomeActivity : ComponentActivity() {
                     when (navigationType) {
                         NavigationType.CLOSED_DRAWER -> {
                             JotItClosedDrawer(
-                                items = items,
+                                items = navigationItems,
                                 selectedItemIndex = selectedItemIndex
                             ) { innerPadding ->
                                 AppNavigation(
@@ -109,7 +75,7 @@ class HomeActivity : ComponentActivity() {
                         }
                         NavigationType.NAVIGATION_RAIL -> {
                             JotItNavRail(
-                                items = items,
+                                items = navigationItems,
                                 selectedItemIndex = selectedItemIndex
                             ) {
                                 AppNavigation(
@@ -121,7 +87,7 @@ class HomeActivity : ComponentActivity() {
                         }
                         NavigationType.PERMANENT_DRAWER -> {
                             JotItPermanentDrawer(
-                                items = items,
+                                items = navigationItems,
                                 selectedItemIndex = selectedItemIndex
                             ) {
                                 AppNavigation(
