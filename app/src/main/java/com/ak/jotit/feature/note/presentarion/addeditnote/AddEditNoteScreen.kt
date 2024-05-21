@@ -23,9 +23,107 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ak.jotit.R
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
+import com.ak.jotit.feature.note.presentarion.home.DetailActions
 import com.ak.jotit.ui.theme.getNoteBgColors
 import com.ak.jotit.ui.theme.getRandomColor
 import kotlinx.coroutines.launch
+
+@Composable
+internal fun NoteDetailScreen(
+    noteColor: String,
+    description: NoteTextFieldState,
+    title: NoteTextFieldState,
+    actions: DetailActions
+) {
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val bgColor = colorResource(id = (getNoteBgColors()[noteColor] ?: getRandomColor()).colorRes).toArgb()
+    val noteBgAnimatable = remember {
+        Animatable(
+            Color(bgColor)
+        )
+    }
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = actions::saveNote,
+                contentColor = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Icon(imageVector = Icons.Default.Done, contentDescription = stringResource(R.string.save_note))
+            }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        val padding = paddingValues.calculateTopPadding() + 8.dp
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(noteBgAnimatable.value)
+                .padding(top = padding, start = padding, end = padding)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                getNoteBgColors().forEach{ bgColor ->
+                    val noteBgColor = colorResource(id = (getNoteBgColors()[bgColor.key] ?: getRandomColor()).colorRes).toArgb()
+                    val colorInt = bgColor.value.colorRes
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                            .background(colorResource(id = colorInt))
+                            .border(
+                                width = 2.dp,
+                                color = if (noteColor == bgColor.key) {
+                                    MaterialTheme.colorScheme.onSurface
+                                } else {
+                                    Color.Transparent
+                                },
+                                shape = CircleShape
+                            )
+                            .clickable {
+                                scope.launch {
+                                    noteBgAnimatable.animateTo(
+                                        targetValue = Color(noteBgColor),
+                                        animationSpec = tween(
+                                            durationMillis = 500
+                                        )
+                                    )
+                                }
+                                actions.onChangeColor(bgColor.key)
+                            }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            TransparentHintTextField(
+                text = title.text,
+                hint = title.hint,
+                onValueChange = actions::onTitleChange,
+                onFocusChange = actions::onTitleFocusChange,
+                isHintVisible = title.isHintVisible,
+                singleLine = true,
+                textStyle = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.onSurface)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            TransparentHintTextField(
+                text = description.text,
+                hint = description.hint,
+                onValueChange = actions::onDescChange,
+                onFocusChange = actions::onDescFocusChange,
+                isHintVisible = description.isHintVisible,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

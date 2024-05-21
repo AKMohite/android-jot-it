@@ -2,6 +2,7 @@ package com.ak.jotit.feature.note.presentarion.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.focus.FocusState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,15 +45,15 @@ internal class HomeViewModel @Inject constructor(
         hint = TITLE_FIELD
     )
     )
-    val title: State<NoteTextFieldState> = _title
+    override val title: State<NoteTextFieldState> = _title
     private val _description = mutableStateOf(
         NoteTextFieldState(
         hint = DESCRIPTION_FIELD
     )
     )
-    val description: State<NoteTextFieldState> = _description
+    override val description: State<NoteTextFieldState> = _description
     private val _color = mutableStateOf(getRandomColor().colorName)
-    val color: State<String> = _color
+    override val color: State<String> = _color
 //    endregion
 
     init {
@@ -117,6 +118,31 @@ internal class HomeViewModel @Inject constructor(
 //    endregion
 
 //    region detail
+    override fun onTitleChange(title: String) {
+        _title.value = this.title.value.copy(
+            text = title
+        )
+    }
+
+    override fun onTitleFocusChange(focusState: FocusState) {
+        _title.value = title.value.copy(
+            isHintVisible = !focusState.isFocused && title.value.text.isBlank()
+        )
+    }
+    override fun onDescChange(desc: String) {
+        _description.value = description.value.copy(
+            text = desc
+        )
+    }
+    override fun onDescFocusChange(focusState: FocusState) {
+        _description.value = description.value.copy(
+            isHintVisible = !focusState.isFocused && title.value.text.isBlank()
+        )
+    }
+
+    override fun onChangeColor(color: String) {
+        _color.value = color
+    }
     override fun saveNote() {
     viewModelScope.launch {
         try {

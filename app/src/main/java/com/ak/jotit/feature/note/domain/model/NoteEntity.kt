@@ -26,4 +26,14 @@ data class NoteEntity(
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long = System.currentTimeMillis(),
 ) {
+
+    companion object {
+        val EMPTY = NoteEntity(
+            id = "",
+            title = "",
+            description = "",
+            color = ""
+        )
+    }
+
 }
