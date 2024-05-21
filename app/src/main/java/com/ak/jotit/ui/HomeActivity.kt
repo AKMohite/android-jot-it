@@ -5,16 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -28,7 +26,6 @@ import com.ak.jotit.core.navigation.JotItNavRail
 import com.ak.jotit.core.navigation.JotItPermanentDrawer
 import com.ak.jotit.core.navigation.NavigationType
 import com.ak.jotit.core.navigation.navigationItems
-import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.ui.theme.JotItTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,43 +54,48 @@ class HomeActivity : ComponentActivity() {
 
 @Composable
 internal fun JotItApp(navigationType: NavigationType) {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-    var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
-    var isDrawerAccessible by rememberSaveable { mutableStateOf(false) }
+    var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
     val navController = rememberNavController()
 
     // Subscribe to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    isDrawerAccessible = when {
-        navigationType == NavigationType.NAVIGATION_RAIL || navigationType == NavigationType.PERMANENT_DRAWER -> false
-        listOf(
-            ScreenRoute.NotesScreen.route,
-            ScreenRoute.DeletedNotesScreen.route,
-            ScreenRoute.SettingsScreen.route
-        ).contains(navBackStackEntry?.destination?.route) -> true
-
-        else -> false
-    }
-
     when (navigationType) {
         NavigationType.CLOSED_DRAWER -> {
             JotItClosedDrawer(
                 items = navigationItems,
-                selectedItemIndex = selectedItemIndex
-            ) { innerPadding ->
-                AppNavigation(
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
+                selectedItemIndex = selectedItemIndex,
+                currentRoute = navBackStackEntry?.destination?.route,
+                onClickItem = { index, route ->
+                    selectedItemIndex = index
+                    navController.navigate(route) {
+                        val startRoute = navController.graph.startDestinationRoute ?: return@navigate
+                        popUpTo(startRoute)
+                        launchSingleTop = true
+                    }
+                },
+                navigationType = NavigationType.CLOSED_DRAWER,
+                content = { innerPadding ->
+                    AppNavigation(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                },
+            )
         }
 
         NavigationType.NAVIGATION_RAIL -> {
             JotItNavRail(
                 items = navigationItems,
-                selectedItemIndex = selectedItemIndex
+                selectedItemIndex = selectedItemIndex,
+                onClickItem = { index, route ->
+                    selectedItemIndex = index
+                    navController.navigate(route) {
+                        val startRoute = navController.graph.startDestinationRoute ?: return@navigate
+                        popUpTo(startRoute)
+                        launchSingleTop = true
+                    }
+                }
             ) {
                 AppNavigation(
                     navController = navController,
@@ -106,7 +108,15 @@ internal fun JotItApp(navigationType: NavigationType) {
         NavigationType.PERMANENT_DRAWER -> {
             JotItPermanentDrawer(
                 items = navigationItems,
-                selectedItemIndex = selectedItemIndex
+                selectedItemIndex = selectedItemIndex,
+                onClickItem = { index, route ->
+                    selectedItemIndex = index
+                    navController.navigate(route) {
+                        val startRoute = navController.graph.startDestinationRoute ?: return@navigate
+                        popUpTo(startRoute)
+                        launchSingleTop = true
+                    }
+                }
             ) {
                 AppNavigation(
                     navController = navController,

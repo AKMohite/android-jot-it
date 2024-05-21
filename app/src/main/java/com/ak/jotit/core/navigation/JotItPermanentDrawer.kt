@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -27,12 +28,15 @@ internal fun JotItPermanentDrawer(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
     selectedItemIndex: Int,
+    onClickItem: (Int, String) -> Unit,
     content: @Composable () -> Unit
 ) {
     PermanentNavigationDrawer(
         modifier = modifier,
         drawerContent = {
-            PermanentDrawerSheet {
+            PermanentDrawerSheet(
+                modifier = Modifier.sizeIn(minWidth = 150.dp, maxWidth = 230.dp)
+            ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 items.forEachIndexed { index, item ->
                     NavigationDrawerItem(
@@ -41,15 +45,7 @@ internal fun JotItPermanentDrawer(
                         },
                         selected = index == selectedItemIndex,
                         onClick = {
-//                            selectedItemIndex = index
-//                            scope.launch {
-//                                drawerState.close()
-//                            }
-//                            navController.navigate(item.route.route) {
-//                                val startRoute = navController.graph.startDestinationRoute ?: return@navigate
-//                                popUpTo(startRoute)
-//                                launchSingleTop = true
-//                            }
+                              onClickItem(index, item.route.route)
                         },
                         icon = {
                             Icon(

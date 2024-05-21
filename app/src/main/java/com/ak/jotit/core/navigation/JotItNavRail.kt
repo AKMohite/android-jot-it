@@ -26,6 +26,7 @@ internal fun JotItNavRail(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
     selectedItemIndex: Int,
+    onClickItem: (Int, String) -> Unit,
     content: @Composable () -> Unit
 ) {
     Row {
@@ -39,15 +40,7 @@ internal fun JotItNavRail(
                     },
                     selected = index == selectedItemIndex,
                     onClick = {
-//                        selectedItemIndex = index
-//                        scope.launch {
-//                            drawerState.close()
-//                        }
-//                        navController.navigate(item.route.route) {
-//                            val startRoute = navController.graph.startDestinationRoute ?: return@navigate
-//                            popUpTo(startRoute)
-//                            launchSingleTop = true
-//                        }
+                        onClickItem(index, item.route.route)
                     },
                     icon = {
                         Icon(
