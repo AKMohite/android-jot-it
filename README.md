@@ -16,4 +16,6 @@ Jot it app is used to take notes at go.
 
 ## All screens
 
-[Check here](https://github.com/AKMohite/android-jot-it/tree/all-screen?tab=readme-ov-file#all-screens)
+| Phone                               | Foldable                               | Tablet                               |
+|-------------------------------------|----------------------------------------|--------------------------------------|
+| ![](art/light/notes-home-phone.png) | ![](art/light/notes-home-foldable.png) | ![](art/light/notes-home-tablet.png) |
