@@ -9,12 +9,12 @@ plugins {
 
 android {
 
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.ak.jotit"
-        minSdkVersion 22
-        targetSdkVersion 33
+        minSdk 22
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
