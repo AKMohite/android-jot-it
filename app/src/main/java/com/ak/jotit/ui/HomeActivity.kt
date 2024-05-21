@@ -146,16 +146,15 @@ internal fun JotItApp(
                     }
                 },
                 navigationType = NavigationType.CLOSED_DRAWER,
-                content = { innerPadding ->
-                    AppNavigation(
-                        navController = navController,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        contentType = contentType
-                    )
-                },
-            )
+            ) { innerPadding ->
+                AppNavigation(
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentType = contentType
+                )
+            }
         }
 
         NavigationType.NAVIGATION_RAIL -> {
