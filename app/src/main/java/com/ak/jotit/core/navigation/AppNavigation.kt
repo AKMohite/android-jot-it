@@ -17,9 +17,7 @@ import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteEvent
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteScreen
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteViewModel
-import com.ak.jotit.feature.note.presentarion.notes.NotesEvent
-import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
-import com.ak.jotit.feature.note.presentarion.notes.NotesViewModel
+import com.ak.jotit.feature.note.presentarion.home.HomeRoute
 import com.ak.jotit.feature.splash.presentation.SplashScreen
 import kotlinx.coroutines.flow.collectLatest
 
@@ -66,24 +64,9 @@ internal fun AppNavigation(
         composable(
             route = ScreenRoute.NotesScreen.route
         ) {
-            val viewModel: NotesViewModel = hiltViewModel()
-            NotesScreen(
-                state = viewModel.state.value,
-                onAddEditClick = {
-                    navController.navigate(ScreenRoute.AddEditNoteScreen.route)
-                },
-                toggleNotesFilter = {
-                    viewModel.onEvent(NotesEvent.ToggleOrderSection)
-                },
-                onFilterChange = { filter ->
-                    viewModel.onEvent(NotesEvent.OrderNotes(filter))
-                },
-                onNoteClick = { (id, color) ->
-                    navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${id}&noteColor=${color}")
-                },
-                onDeleteNote = { id ->  viewModel.onEvent(NotesEvent.DeleteNote(id)) },
-                onRestoreNote = { viewModel.onEvent(NotesEvent.RestoreNote) },
-                navigationType = navigationType
+            HomeRoute(
+                navigationType = navigationType,
+                onAddNoteClick = { navController.navigate(ScreenRoute.AddEditNoteScreen.route) }
             )
         }
         composable(

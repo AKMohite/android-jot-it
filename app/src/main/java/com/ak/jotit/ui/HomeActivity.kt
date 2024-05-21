@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -12,7 +13,6 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,6 +26,7 @@ import com.ak.jotit.core.navigation.JotItNavRail
 import com.ak.jotit.core.navigation.JotItPermanentDrawer
 import com.ak.jotit.core.navigation.NavigationType
 import com.ak.jotit.core.navigation.navigationItems
+import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.ui.theme.JotItTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -78,7 +79,9 @@ internal fun JotItApp(navigationType: NavigationType) {
                 content = { innerPadding ->
                     AppNavigation(
                         navController = navController,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
                     )
                 },
             )
@@ -95,11 +98,16 @@ internal fun JotItApp(navigationType: NavigationType) {
                         popUpTo(startRoute)
                         launchSingleTop = true
                     }
+                },
+                onAddNoteClick = {
+                    navController.navigate(ScreenRoute.AddEditNoteScreen.route)
                 }
             ) {
                 AppNavigation(
                     navController = navController,
-                    modifier = Modifier.padding(PaddingValues(8.dp)),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(PaddingValues(8.dp)),
                     navigationType = navigationType
                 )
             }
@@ -116,14 +124,20 @@ internal fun JotItApp(navigationType: NavigationType) {
                         popUpTo(startRoute)
                         launchSingleTop = true
                     }
+                },
+                content = {
+                    AppNavigation(
+                        navController = navController,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(PaddingValues(12.dp)),
+                        navigationType = navigationType
+                    )
+                },
+                onAddNoteClick = {
+                    navController.navigate(ScreenRoute.AddEditNoteScreen.route)
                 }
-            ) {
-                AppNavigation(
-                    navController = navController,
-                    modifier = Modifier.padding(PaddingValues(12.dp)),
-                    navigationType = navigationType
-                )
-            }
+            )
         }
     }
 }

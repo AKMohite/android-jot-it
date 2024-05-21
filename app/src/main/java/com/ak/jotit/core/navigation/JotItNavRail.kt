@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +26,8 @@ internal fun JotItNavRail(
     items: List<NavigationItem>,
     selectedItemIndex: Int,
     onClickItem: (Int, String) -> Unit,
-    content: @Composable () -> Unit
+    onAddNoteClick: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     Row {
         NavigationRail(
@@ -59,7 +59,7 @@ internal fun JotItNavRail(
             }
             Spacer(modifier = Modifier.height(8.dp))
             FloatingActionButton(
-                onClick = {  },
+                onClick = onAddNoteClick,
                 modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer

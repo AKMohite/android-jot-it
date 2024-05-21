@@ -29,7 +29,8 @@ internal fun JotItPermanentDrawer(
     items: List<NavigationItem>,
     selectedItemIndex: Int,
     onClickItem: (Int, String) -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    onAddNoteClick: () -> Unit
 ) {
     PermanentNavigationDrawer(
         modifier = modifier,
@@ -64,7 +65,7 @@ internal fun JotItPermanentDrawer(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 ExtendedFloatingActionButton(
-                    onClick = {  },
+                    onClick = onAddNoteClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp, bottom = 40.dp, start = 8.dp, end = 8.dp),

@@ -14,18 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,7 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -49,29 +46,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ak.jotit.R
+import com.ak.jotit.core.navigation.NavigationType
 import com.ak.jotit.feature.note.domain.model.NoteEntity
-import com.ak.jotit.feature.note.domain.util.NoteOrderBy
+import com.ak.jotit.feature.note.presentarion.home.HomeActions
+import com.ak.jotit.feature.note.presentarion.home.HomeState
 import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
-import com.ak.jotit.core.navigation.NavigationType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun NotesScreen(
-    state: NotesState,
-    onAddEditClick: () -> Unit,
-    toggleNotesFilter: () -> Unit,
-    onFilterChange: (NoteOrderBy) -> Unit,
-    onNoteClick: (Pair<String, String>) -> Unit,
-    onDeleteNote: (id: String) -> Unit,
-    onRestoreNote: () -> Unit,
-    navigationType: NavigationType
+internal fun HomeScreen(
+    uiState: HomeState,
+    actions: HomeActions,
+    navigationType: NavigationType,
+    onAddNoteClick: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-
     Scaffold(
         floatingActionButton = {
             AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER) {
@@ -98,7 +91,7 @@ internal fun NotesScreen(
                         )
                     },
                     expanded = listState.isScrollingUp(),
-                    onClick = onAddEditClick,
+                    onClick = { onAddNoteClick() },
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     shape = MaterialTheme.shapes.medium
@@ -123,7 +116,7 @@ internal fun NotesScreen(
                     style = MaterialTheme.typography.headlineMedium
                 )
                 IconButton(
-                    onClick = toggleNotesFilter
+                    onClick = actions::toggleFilter
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_sort),
@@ -133,7 +126,7 @@ internal fun NotesScreen(
             }
 
             AnimatedVisibility(
-                visible = state.isOrderSectionVisible,
+                visible = uiState.isOrderSectionVisible,
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {
@@ -142,23 +135,23 @@ internal fun NotesScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                         .testTag(stringResource(id = R.string.filter_note)),
-                    noteOrderBy = state.noteOrderBy,
-                    onOrderChange = onFilterChange
+                    noteOrderBy = uiState.noteOrderBy,
+                    onOrderChange = actions::onOrderNotes
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            if (state.notes.isEmpty()) {
+            if (uiState.notes.isEmpty()) {
                 EmptyState()
             }
             else {
                 NotesList(
                     listState,
-                    state.notes,
+                    uiState.notes,
                     scope,
                     snackbarHostState,
-                    onNoteClick = onNoteClick,
-                    onDeleteNote = onDeleteNote,
-                    onRestoreNote = onRestoreNote
+                    onNoteClick = actions::onNoteClick,
+                    onDeleteNote = actions::onDeleteNote,
+                    onRestoreNote = actions::restoreDeletedNote
                 )
             }
         }
@@ -166,7 +159,7 @@ internal fun NotesScreen(
 }
 
 @Composable
-fun EmptyState(
+private fun EmptyState(
     modifier: Modifier = Modifier
 ) {
     CompositionLocalProvider(LocalContentColor provides LocalContentColor.current.copy(alpha = 0.4f)) {
@@ -233,10 +226,10 @@ private fun NotesList(
 @Composable
 private fun LazyListState.isScrollingUp(): Boolean {
     var previousIndex by remember(this) {
-        mutableStateOf(firstVisibleItemIndex)
+        mutableIntStateOf(firstVisibleItemIndex)
     }
     var previousScrollOffset by remember(this) {
-        mutableStateOf(firstVisibleItemScrollOffset)
+        mutableIntStateOf(firstVisibleItemScrollOffset)
     }
 
     return remember(this) {
