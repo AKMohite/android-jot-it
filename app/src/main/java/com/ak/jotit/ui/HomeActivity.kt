@@ -11,12 +11,14 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -46,61 +48,103 @@ class HomeActivity : ComponentActivity() {
                     else -> NavigationType.CLOSED_DRAWER
                 }
                 Surface {
-                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                    val scope = rememberCoroutineScope()
-                    var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
-                    var isDrawerAccessible by rememberSaveable { mutableStateOf(false) }
-                    val navController = rememberNavController()
-
-                    // Subscribe to navBackStackEntry, required to get current route
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-                    isDrawerAccessible = when {
-                        navigationType == NavigationType.NAVIGATION_RAIL || navigationType == NavigationType.PERMANENT_DRAWER -> false
-                        listOf(ScreenRoute.NotesScreen.route, ScreenRoute.DeletedNotesScreen.route, ScreenRoute.SettingsScreen.route).contains(navBackStackEntry?.destination?.route) -> true
-                        else -> false
-                    }
-
-                    when (navigationType) {
-                        NavigationType.CLOSED_DRAWER -> {
-                            JotItClosedDrawer(
-                                items = navigationItems,
-                                selectedItemIndex = selectedItemIndex
-                            ) { innerPadding ->
-                                AppNavigation(
-                                    navController= navController,
-                                    modifier = Modifier.padding(innerPadding)
-                                )
-                            }
-                        }
-                        NavigationType.NAVIGATION_RAIL -> {
-                            JotItNavRail(
-                                items = navigationItems,
-                                selectedItemIndex = selectedItemIndex
-                            ) {
-                                AppNavigation(
-                                    navController= navController,
-                                    modifier = Modifier.padding(PaddingValues(8.dp)),
-                                    navigationType = navigationType
-                                )
-                            }
-                        }
-                        NavigationType.PERMANENT_DRAWER -> {
-                            JotItPermanentDrawer(
-                                items = navigationItems,
-                                selectedItemIndex = selectedItemIndex
-                            ) {
-                                AppNavigation(
-                                    navController= navController,
-                                    modifier = Modifier.padding(PaddingValues(12.dp)),
-                                    navigationType = navigationType
-                                )
-                            }
-                        }
-                    }
+                    JotItApp(navigationType)
                 }
             }
         }
+    }
+}
+
+@Composable
+internal fun JotItApp(navigationType: NavigationType) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
+    var isDrawerAccessible by rememberSaveable { mutableStateOf(false) }
+    val navController = rememberNavController()
+
+    // Subscribe to navBackStackEntry, required to get current route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    isDrawerAccessible = when {
+        navigationType == NavigationType.NAVIGATION_RAIL || navigationType == NavigationType.PERMANENT_DRAWER -> false
+        listOf(
+            ScreenRoute.NotesScreen.route,
+            ScreenRoute.DeletedNotesScreen.route,
+            ScreenRoute.SettingsScreen.route
+        ).contains(navBackStackEntry?.destination?.route) -> true
+
+        else -> false
+    }
+
+    when (navigationType) {
+        NavigationType.CLOSED_DRAWER -> {
+            JotItClosedDrawer(
+                items = navigationItems,
+                selectedItemIndex = selectedItemIndex
+            ) { innerPadding ->
+                AppNavigation(
+                    navController = navController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        NavigationType.NAVIGATION_RAIL -> {
+            JotItNavRail(
+                items = navigationItems,
+                selectedItemIndex = selectedItemIndex
+            ) {
+                AppNavigation(
+                    navController = navController,
+                    modifier = Modifier.padding(PaddingValues(8.dp)),
+                    navigationType = navigationType
+                )
+            }
+        }
+
+        NavigationType.PERMANENT_DRAWER -> {
+            JotItPermanentDrawer(
+                items = navigationItems,
+                selectedItemIndex = selectedItemIndex
+            ) {
+                AppNavigation(
+                    navController = navController,
+                    modifier = Modifier.padding(PaddingValues(12.dp)),
+                    navigationType = navigationType
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun JotItPreview() {
+    JotItTheme {
+        JotItApp(
+            navigationType = NavigationType.CLOSED_DRAWER
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 700)
+@Composable
+fun ReplyAppPreviewTablet() {
+    JotItTheme {
+        JotItApp(
+            navigationType = NavigationType.NAVIGATION_RAIL
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 1000)
+@Composable
+fun ReplyAppPreviewDesktop() {
+    JotItTheme {
+        JotItApp(
+            navigationType = NavigationType.PERMANENT_DRAWER
+        )
     }
 }
 
