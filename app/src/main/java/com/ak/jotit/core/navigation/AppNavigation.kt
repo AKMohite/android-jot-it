@@ -12,6 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.window.layout.DisplayFeature
 import com.ak.jotit.feature.login.LoginScreen
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteEvent
@@ -23,9 +24,10 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun AppNavigation(
-    navController: NavHostController,
+    navigationType: NavigationType = NavigationType.CLOSED_DRAWER,
+    contentType: JotItContentType = JotItContentType.SINGLE_PANE,
     modifier: Modifier,
-    navigationType: NavigationType = NavigationType.CLOSED_DRAWER
+    navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
@@ -66,6 +68,7 @@ internal fun AppNavigation(
         ) {
             HomeRoute(
                 navigationType = navigationType,
+                contentType = contentType,
                 onAddNoteClick = { navController.navigate(ScreenRoute.AddEditNoteScreen.route) }
             )
         }

@@ -181,10 +181,18 @@ internal class HomeViewModel @Inject constructor(
                 )
                 _color.value = note.color
                 _uiState.value = uiState.value.copy(
-                    openedNote = note
+                    openedNote = note,
+                    isDetailOnlyOpen = true
                 )
             }
         }
+    }
+
+    override fun closeDetail() {
+        _uiState.value = uiState.value.copy(
+            isDetailOnlyOpen = false,
+            openedNote = null
+        )
     }
 //    endregion
 

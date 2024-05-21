@@ -90,6 +90,7 @@ dependencies {
     implementation libs.compose.activity
     implementation libs.compose.navigation
     implementation libs.compose.window.size
+    implementation(libs.accompanist.adaptive)
 
     // Coroutines
     implementation libs.coroutines.core

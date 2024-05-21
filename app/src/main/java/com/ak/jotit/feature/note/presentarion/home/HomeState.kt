@@ -12,4 +12,10 @@ internal data class HomeState(
     val isDetailOnlyOpen: Boolean = false,
     val loading: Boolean = false,
     val error: String? = null
-)
+) {
+
+    fun getNoteDetail(): NoteEntity {
+        return openedNote ?: throw IllegalStateException("Note is not found but state has found note")
+    }
+    fun canShowDetail(): Boolean = openedNote != null && isDetailOnlyOpen
+}

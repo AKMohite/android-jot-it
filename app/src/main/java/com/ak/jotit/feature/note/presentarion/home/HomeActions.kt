@@ -26,4 +26,5 @@ internal interface DetailActions {
     fun onChangeColor(color: String)
     fun saveNote()
     fun onNoteSaved()
+    fun closeDetail()
 }

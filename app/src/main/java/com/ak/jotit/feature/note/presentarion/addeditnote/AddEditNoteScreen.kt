@@ -22,6 +22,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ak.jotit.R
+import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.presentarion.addeditnote.components.TransparentHintTextField
 import com.ak.jotit.feature.note.presentarion.home.DetailActions
 import com.ak.jotit.ui.theme.getNoteBgColors
@@ -30,14 +31,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun NoteDetailScreen(
-    noteColor: String,
+    note: NoteEntity,
     description: NoteTextFieldState,
     title: NoteTextFieldState,
     actions: DetailActions
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val bgColor = colorResource(id = (getNoteBgColors()[noteColor] ?: getRandomColor()).colorRes).toArgb()
+    val bgColor = colorResource(id = (getNoteBgColors()[note.color] ?: getRandomColor()).colorRes).toArgb()
     val noteBgAnimatable = remember {
         Animatable(
             Color(bgColor)
@@ -80,7 +81,7 @@ internal fun NoteDetailScreen(
                             .background(colorResource(id = colorInt))
                             .border(
                                 width = 2.dp,
-                                color = if (noteColor == bgColor.key) {
+                                color = if (note.color == bgColor.key) {
                                     MaterialTheme.colorScheme.onSurface
                                 } else {
                                     Color.Transparent

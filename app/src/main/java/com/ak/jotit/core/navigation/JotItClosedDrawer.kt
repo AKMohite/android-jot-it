@@ -51,7 +51,6 @@ internal fun JotItClosedDrawer(
             ScreenRoute.DeletedNotesScreen.route,
             ScreenRoute.SettingsScreen.route
         ).contains(currentRoute) -> true
-
         else -> false
     }
     ModalNavigationDrawer(
