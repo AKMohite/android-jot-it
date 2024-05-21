@@ -21,12 +21,14 @@ import com.ak.jotit.feature.note.presentarion.notes.NotesEvent
 import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
 import com.ak.jotit.feature.note.presentarion.notes.NotesViewModel
 import com.ak.jotit.feature.splash.presentation.SplashScreen
+import com.ak.jotit.ui.NavigationType
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun AppNavigation(
     navController: NavHostController,
-    modifier: Modifier
+    modifier: Modifier,
+    navigationType: NavigationType = NavigationType.CLOSED_DRAWER
 ) {
     NavHost(
         navController = navController,
@@ -81,7 +83,8 @@ internal fun AppNavigation(
                     navController.navigate(ScreenRoute.AddEditNoteScreen.route + "?noteId=${id}&noteColor=${color}")
                 },
                 onDeleteNote = { id ->  viewModel.onEvent(NotesEvent.DeleteNote(id)) },
-                onRestoreNote = { viewModel.onEvent(NotesEvent.RestoreNote) }
+                onRestoreNote = { viewModel.onEvent(NotesEvent.RestoreNote) },
+                navigationType = navigationType
             )
         }
         composable(

@@ -200,7 +200,8 @@ class HomeActivity : ComponentActivity() {
                                 )
                                 AppNavigation(
                                     navController= navController,
-                                    modifier = Modifier.padding(PaddingValues(8.dp))
+                                    modifier = Modifier.padding(PaddingValues(8.dp)),
+                                    navigationType = navigationType
                                 )
                             }
                         }
@@ -245,7 +246,8 @@ class HomeActivity : ComponentActivity() {
                             ) {
                                 AppNavigation(
                                     navController= navController,
-                                    modifier = Modifier.padding(PaddingValues(12.dp))
+                                    modifier = Modifier.padding(PaddingValues(12.dp)),
+                                    navigationType = navigationType
                                 )
                             }
                         }

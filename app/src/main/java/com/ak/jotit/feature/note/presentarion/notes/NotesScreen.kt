@@ -50,18 +50,20 @@ import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.domain.util.NoteOrderBy
 import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
+import com.ak.jotit.ui.NavigationType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun NotesScreen(
+internal fun NotesScreen(
     state: NotesState,
     onAddEditClick: () -> Unit,
     toggleNotesFilter: () -> Unit,
     onFilterChange: (NoteOrderBy) -> Unit,
     onNoteClick: (Pair<String, String>) -> Unit,
     onDeleteNote: (id: String) -> Unit,
-    onRestoreNote: () -> Unit
+    onRestoreNote: () -> Unit,
+    navigationType: NavigationType
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -69,20 +71,22 @@ fun NotesScreen(
 
     Scaffold(
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(id = R.string.add_note)) },
-                icon = {
+            AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER) {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(id = R.string.add_note)) },
+                    icon = {
 //                    TODO remove AnimatedVisibility and uncomment expanded for Material 3
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_note)
-                    )
-                },
-                expanded = listState.isScrollingUp(),
-                onClick = onAddEditClick,
-                contentColor = MaterialTheme.colorScheme.primary,
-                shape = MaterialTheme.shapes.medium
-            )
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.add_note)
+                        )
+                    },
+                    expanded = listState.isScrollingUp(),
+                    onClick = onAddEditClick,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    shape = MaterialTheme.shapes.medium
+                )
+            }
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
