@@ -90,6 +90,7 @@ dependencies {
     implementation libs.lifecycle.runtime.ktx
     implementation libs.compose.activity
     implementation libs.compose.navigation
+    implementation libs.compose.window.size
 
     // Coroutines
     implementation libs.coroutines.core

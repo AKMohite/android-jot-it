@@ -21,6 +21,7 @@ junitVersion = "4.13.2"
 kotlinVersion = "1.7.20"
 ktxVersion = "1.8.0-alpha03"
 lifecycleVersion = "2.5.0-alpha01"
+material3WindowSizeClassVersion = "1.2.1"
 materialVersion = "1.0.0"
 mockitoVersion = "2.8.9"
 navigationVersion = "2.5.1"
@@ -38,6 +39,7 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompatV
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivityVersion"}
 compose-androidx = { module = "androidx.compose.ui:ui", version.ref = "composeVersion"}
 compose-material = { module = "androidx.compose.material3:material3", version.ref = "materialVersion"}
+compose-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3WindowSizeClassVersion" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigationVersion"}
 compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "composeVersion"}
 constraint-layout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayoutVersion" }
