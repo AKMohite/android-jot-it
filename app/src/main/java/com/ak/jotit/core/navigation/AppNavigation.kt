@@ -21,7 +21,6 @@ import com.ak.jotit.feature.note.presentarion.notes.NotesEvent
 import com.ak.jotit.feature.note.presentarion.notes.NotesScreen
 import com.ak.jotit.feature.note.presentarion.notes.NotesViewModel
 import com.ak.jotit.feature.splash.presentation.SplashScreen
-import com.ak.jotit.ui.NavigationType
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

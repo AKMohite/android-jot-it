@@ -50,7 +50,7 @@ import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.domain.util.NoteOrderBy
 import com.ak.jotit.feature.note.presentarion.notes.components.NoteItem
 import com.ak.jotit.feature.note.presentarion.notes.components.OrderSection
-import com.ak.jotit.ui.NavigationType
+import com.ak.jotit.core.navigation.NavigationType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
