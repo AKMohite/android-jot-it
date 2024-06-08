@@ -200,8 +200,7 @@ internal fun JotItApp(
                     AppNavigation(
                         navController = navController,
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(PaddingValues(12.dp)),
+                            .fillMaxSize(),
                         navigationType = navigationType,
                         contentType = contentType
                     )
