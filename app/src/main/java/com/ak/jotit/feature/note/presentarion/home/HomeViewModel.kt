@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,14 +43,14 @@ internal class HomeViewModel @Inject constructor(
     private var currentNoteId= savedStateHandle.get<String>("noteId") ?: ""
     private val _title = mutableStateOf(
         NoteTextFieldState(
-        hint = TITLE_FIELD
-    )
+            hint = TITLE_FIELD
+        )
     )
     override val title: State<NoteTextFieldState> = _title
     private val _description = mutableStateOf(
         NoteTextFieldState(
-        hint = DESCRIPTION_FIELD
-    )
+            hint = DESCRIPTION_FIELD
+        )
     )
     override val description: State<NoteTextFieldState> = _description
     private val _color = mutableStateOf(getRandomColor().colorName)
@@ -141,7 +142,12 @@ internal class HomeViewModel @Inject constructor(
     }
 
     override fun onChangeColor(color: String) {
-        _color.value = color
+        viewModelScope.launch {
+            _color.value = color
+            _uiState.update {
+                it.copy(openedNote = it.openedNote?.copy(color = color))
+            }
+        }
     }
     override fun saveNote() {
     viewModelScope.launch {

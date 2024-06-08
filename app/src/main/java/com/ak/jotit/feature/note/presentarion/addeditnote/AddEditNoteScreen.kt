@@ -1,6 +1,7 @@
 package com.ak.jotit.feature.note.presentarion.addeditnote
 
 import androidx.compose.animation.Animatable
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -39,12 +41,9 @@ internal fun NoteDetailScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val bgColor = colorResource(id = (getNoteBgColors()[note.color] ?: getRandomColor()).colorRes).toArgb()
-    val noteBgAnimatable = remember {
-        Animatable(
-            Color(bgColor)
-        )
-    }
-    val scope = rememberCoroutineScope()
+    val noteBgAnimatable by animateColorAsState(
+        Color(bgColor)
+    )
 
     Scaffold(
         floatingActionButton = {
@@ -62,7 +61,7 @@ internal fun NoteDetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(noteBgAnimatable.value)
+                .background(noteBgAnimatable)
                 .padding(top = padding, start = padding, end = padding)
         ) {
             Row(
@@ -71,9 +70,15 @@ internal fun NoteDetailScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                getNoteBgColors().forEach{ bgColor ->
-                    val noteBgColor = colorResource(id = (getNoteBgColors()[bgColor.key] ?: getRandomColor()).colorRes).toArgb()
-                    val colorInt = bgColor.value.colorRes
+                getNoteBgColors().forEach{ noteColor ->
+                    val colorInt = noteColor.value.colorRes
+                    val animatedColor by animateColorAsState(
+                        if (note.color == noteColor.key) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            Color.Transparent
+                        }
+                    )
                     Box(
                         modifier = Modifier
                             .size(50.dp)
@@ -81,23 +86,11 @@ internal fun NoteDetailScreen(
                             .background(colorResource(id = colorInt))
                             .border(
                                 width = 2.dp,
-                                color = if (note.color == bgColor.key) {
-                                    MaterialTheme.colorScheme.onSurface
-                                } else {
-                                    Color.Transparent
-                                },
+                                color = animatedColor,
                                 shape = CircleShape
                             )
                             .clickable {
-                                scope.launch {
-                                    noteBgAnimatable.animateTo(
-                                        targetValue = Color(noteBgColor),
-                                        animationSpec = tween(
-                                            durationMillis = 500
-                                        )
-                                    )
-                                }
-                                actions.onChangeColor(bgColor.key)
+                                actions.onChangeColor(noteColor.key)
                             }
                     )
                 }
