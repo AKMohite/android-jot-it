@@ -6,9 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,11 +18,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -33,13 +36,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ak.jotit.R
@@ -63,6 +66,13 @@ internal fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+
+    // region searchbar
+    var text by rememberSaveable { mutableStateOf("") }
+    var active by rememberSaveable { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    // endregion
+
     Scaffold(
         floatingActionButton = {
             AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER) {
@@ -104,23 +114,125 @@ internal fun HomeScreen(
                 .fillMaxSize()
                 .padding(top = padding, start = padding, end = padding)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.headlineMedium
-                )
-                IconButton(
-                    onClick = actions::toggleFilter
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = stringResource(id = R.string.app_name),
+//                    style = MaterialTheme.typography.headlineMedium
+//                )
+//                IconButton(
+//                    onClick = actions::toggleFilter
+//                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_sort),
+//                        contentDescription = stringResource(R.string.sort_notes)
+//                    )
+//                }
+//            }
+
+            if (navigationType == NavigationType.CLOSED_DRAWER) {
+                SearchBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    inputField = {
+                        SearchBarDefaults.InputField(
+                            query = text,
+                            onQueryChange = {
+                                text = it
+                            },
+                            expanded = expanded,
+                            onExpandedChange = {
+                                expanded = it
+                            },
+                            placeholder = {
+                                Text("Search")
+                            },
+                            onSearch = {
+                                expanded = false
+                            },
+                            trailingIcon = {
+                                if (active) {
+                                    IconButton(
+                                        onClick = {
+                                            if (text.isBlank()) {
+                                                active = false
+                                            } else {
+                                                text = ""
+                                            }
+                                        }
+                                    ) {
+                                        Icon(imageVector = Icons.Default.Close, contentDescription = "Search notes")
+                                    }
+                                }
+                            },
+                            leadingIcon = {
+//                            todo add menu hamburger?
+                                IconButton(onClick = {
+
+                                }) {
+                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search notes")
+                                }
+                            }
+                        )
+                    },
+                    expanded = expanded,
+                    onExpandedChange = {
+                        expanded = it
+                    }
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_sort),
-                        contentDescription = stringResource(R.string.sort_notes)
-                    )
+
                 }
+            } else {
+                DockedSearchBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    inputField = {
+                        SearchBarDefaults.InputField(
+                            query = text,
+                            onQueryChange = {
+                                text = it
+                            },
+                            onSearch = {
+                                expanded = false
+                            },
+                            expanded = expanded,
+                            onExpandedChange = {
+                                expanded = it
+                            },
+                            placeholder = {
+                                Text("Search")
+                            },
+                            leadingIcon = {
+//                            todo add menu hamburger?
+                                IconButton(onClick = {
+
+                                }) {
+                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search notes")
+                                }
+                            },
+                            trailingIcon = {
+                                if (active) {
+                                    IconButton(
+                                        onClick = {
+                                            if (text.isBlank()) {
+                                                active = false
+                                            } else {
+                                                text = ""
+                                            }
+                                        }
+                                    ) {
+                                        Icon(imageVector = Icons.Default.Close, contentDescription = "Search notes")
+                                    }
+                                }
+                            }
+                        )
+                    },
+                    onExpandedChange = {
+                        expanded = it
+                    },
+                    expanded = expanded
+                ) { }
             }
 
             AnimatedVisibility(
