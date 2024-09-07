@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -31,7 +30,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,8 +42,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ak.jotit.R
+import com.ak.jotit.core.components.EmptyState
 import com.ak.jotit.core.navigation.NavigationType
 import com.ak.jotit.feature.note.domain.model.NoteEntity
 import com.ak.jotit.feature.note.presentarion.home.HomeActions
@@ -154,25 +152,6 @@ internal fun HomeScreen(
                     onRestoreNote = actions::restoreDeletedNote
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun EmptyState(
-    modifier: Modifier = Modifier
-) {
-    CompositionLocalProvider(LocalContentColor provides LocalContentColor.current.copy(alpha = 0.4f)) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .then(modifier),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(stringResource(R.string.sad_face), fontSize = 72.sp)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(R.string.notes_empty_text), style = MaterialTheme.typography.bodySmall)
         }
     }
 }
