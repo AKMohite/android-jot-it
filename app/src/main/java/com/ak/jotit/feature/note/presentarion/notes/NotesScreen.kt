@@ -68,14 +68,13 @@ internal fun HomeScreen(
     val listState = rememberLazyListState()
 
     // region searchbar
-    var text by rememberSaveable { mutableStateOf("") }
-    var active by rememberSaveable { mutableStateOf(false) }
-    var expanded by rememberSaveable { mutableStateOf(false) }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    var isSearchBarExpanded by rememberSaveable { mutableStateOf(false) }
     // endregion
 
     Scaffold(
         floatingActionButton = {
-            AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER) {
+            AnimatedVisibility(visible = navigationType == NavigationType.CLOSED_DRAWER && !isSearchBarExpanded) {
 //                LargeFloatingActionButton(
 //                    onClick = {  },
 //                    modifier = Modifier
@@ -108,7 +107,7 @@ internal fun HomeScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
-        val padding = paddingValues.calculateTopPadding() + 8.dp
+        val padding = paddingValues.calculateTopPadding()
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -135,31 +134,33 @@ internal fun HomeScreen(
 
             if (navigationType == NavigationType.CLOSED_DRAWER) {
                 SearchBar(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     inputField = {
                         SearchBarDefaults.InputField(
-                            query = text,
+                            query = searchQuery,
                             onQueryChange = {
-                                text = it
+                                searchQuery = it
                             },
-                            expanded = expanded,
+                            expanded = isSearchBarExpanded,
                             onExpandedChange = {
-                                expanded = it
+                                isSearchBarExpanded = it
                             },
                             placeholder = {
                                 Text("Search")
                             },
                             onSearch = {
-                                expanded = false
+                                isSearchBarExpanded = false
                             },
                             trailingIcon = {
-                                if (active) {
+                                if (isSearchBarExpanded) {
                                     IconButton(
                                         onClick = {
-                                            if (text.isBlank()) {
-                                                active = false
+                                            if (searchQuery.isBlank()) {
+                                                isSearchBarExpanded = false
                                             } else {
-                                                text = ""
+                                                searchQuery = ""
                                             }
                                         }
                                     ) {
@@ -177,28 +178,31 @@ internal fun HomeScreen(
                             }
                         )
                     },
-                    expanded = expanded,
+                    expanded = isSearchBarExpanded,
                     onExpandedChange = {
-                        expanded = it
+                        isSearchBarExpanded = it
                     }
                 ) {
 
                 }
             } else {
                 DockedSearchBar(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                     inputField = {
                         SearchBarDefaults.InputField(
-                            query = text,
+                            modifier = Modifier.fillMaxWidth(),
+                            query = searchQuery,
                             onQueryChange = {
-                                text = it
+                                searchQuery = it
                             },
                             onSearch = {
-                                expanded = false
+                                isSearchBarExpanded = false
                             },
-                            expanded = expanded,
+                            expanded = isSearchBarExpanded,
                             onExpandedChange = {
-                                expanded = it
+                                isSearchBarExpanded = it
                             },
                             placeholder = {
                                 Text("Search")
@@ -212,13 +216,13 @@ internal fun HomeScreen(
                                 }
                             },
                             trailingIcon = {
-                                if (active) {
+                                if (isSearchBarExpanded) {
                                     IconButton(
                                         onClick = {
-                                            if (text.isBlank()) {
-                                                active = false
+                                            if (searchQuery.isBlank()) {
+                                                isSearchBarExpanded = false
                                             } else {
-                                                text = ""
+                                                searchQuery = ""
                                             }
                                         }
                                     ) {
@@ -229,9 +233,9 @@ internal fun HomeScreen(
                         )
                     },
                     onExpandedChange = {
-                        expanded = it
+                        isSearchBarExpanded = it
                     },
-                    expanded = expanded
+                    expanded = isSearchBarExpanded
                 ) { }
             }
 
@@ -290,6 +294,7 @@ private fun NotesList(
                 modifier = Modifier
                     .animateItemPlacement()
                     .fillMaxWidth()
+                    .padding(horizontal = 4.dp)
                     .clickable {
                         onNoteClick(Pair(note.id, note.color))
                     },
