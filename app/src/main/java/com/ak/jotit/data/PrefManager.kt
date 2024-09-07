@@ -2,10 +2,13 @@ package com.ak.jotit.data
 
 import android.content.Context
 import android.util.Log
-import androidx.datastore.preferences.createDataStore
-import androidx.datastore.preferences.edit
-import androidx.datastore.preferences.emptyPreferences
-import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -24,12 +27,13 @@ private const val TAG = "PrefManager"
 
 @Singleton
 class PrefManager @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext private val context: Context
 ) {
 
-    private val dataStore = context.createDataStore("jot_it_prefs")
 
-    val preferencesFlow = dataStore.data
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "jot_it_prefs")
+
+    val preferencesFlow = context.dataStore.data
         .catch { exception ->
             if (exception is IOException){
                 Log.e(TAG, "Error reading preferences: ", exception)
@@ -42,24 +46,24 @@ class PrefManager @Inject constructor(
             val sortOrder = SortOrder.valueOf(
                 preferences[PreferencesKeys.SORT_ORDER] ?: SortOrder.BY_DATE.name
             )
-            val hideCompleted = preferences[PreferencesKeys.HIDE_COMPLETED] ?: false
+            val hideCompleted: Boolean = preferences[PreferencesKeys.HIDE_COMPLETED] ?: false
             FilterPreferences(sortOrder, hideCompleted)
         }
 
     suspend fun updateSortOrder(sortOrder: SortOrder){
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.SORT_ORDER] = sortOrder.name
         }
     }
 
     suspend fun updateHideCompleted(hideCompleted: Boolean){
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.HIDE_COMPLETED] = hideCompleted
         }
     }
 
     private object PreferencesKeys{
-        val SORT_ORDER = preferencesKey<String>("sort_order")
-        val HIDE_COMPLETED = preferencesKey<Boolean>("hide_completed")
+        val SORT_ORDER = stringPreferencesKey("sort_order")
+        val HIDE_COMPLETED = booleanPreferencesKey("hide_completed")
     }
 }
