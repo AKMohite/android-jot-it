@@ -12,12 +12,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.window.layout.DisplayFeature
 import com.ak.jotit.feature.login.LoginScreen
 import com.ak.jotit.feature.note.domain.util.ScreenRoute
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteEvent
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteScreen
 import com.ak.jotit.feature.note.presentarion.addeditnote.AddEditNoteViewModel
+import com.ak.jotit.feature.note.presentarion.deletenote.DeleteNotesRoute
 import com.ak.jotit.feature.note.presentarion.home.HomeRoute
 import com.ak.jotit.feature.splash.presentation.SplashScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -133,9 +133,8 @@ internal fun AppNavigation(
         }
 
         composable(route = ScreenRoute.DeletedNotesScreen.route) {
-            Text(
-                text = "Deleted Notes",
-                style = MaterialTheme.typography.bodyLarge
+            DeleteNotesRoute(
+                contentType = contentType
             )
         }
 
