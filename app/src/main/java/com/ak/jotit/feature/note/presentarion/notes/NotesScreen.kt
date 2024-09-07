@@ -132,112 +132,17 @@ internal fun HomeScreen(
 //                }
 //            }
 
-            if (navigationType == NavigationType.CLOSED_DRAWER) {
-                SearchBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    inputField = {
-                        SearchBarDefaults.InputField(
-                            query = searchQuery,
-                            onQueryChange = {
-                                searchQuery = it
-                            },
-                            expanded = isSearchBarExpanded,
-                            onExpandedChange = {
-                                isSearchBarExpanded = it
-                            },
-                            placeholder = {
-                                Text("Search")
-                            },
-                            onSearch = {
-                                isSearchBarExpanded = false
-                            },
-                            trailingIcon = {
-                                if (isSearchBarExpanded) {
-                                    IconButton(
-                                        onClick = {
-                                            if (searchQuery.isBlank()) {
-                                                isSearchBarExpanded = false
-                                            } else {
-                                                searchQuery = ""
-                                            }
-                                        }
-                                    ) {
-                                        Icon(imageVector = Icons.Default.Close, contentDescription = "Search notes")
-                                    }
-                                }
-                            },
-                            leadingIcon = {
-//                            todo add menu hamburger?
-                                IconButton(onClick = {
-
-                                }) {
-                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search notes")
-                                }
-                            }
-                        )
-                    },
-                    expanded = isSearchBarExpanded,
-                    onExpandedChange = {
-                        isSearchBarExpanded = it
-                    }
-                ) {
-
+            NotesSearchBar(
+                navigationType = navigationType,
+                searchQuery = searchQuery,
+                isSearchBarExpanded = isSearchBarExpanded,
+                onQueryChanged = {
+                    searchQuery = it
+                },
+                onToggleSearchBar = {
+                    isSearchBarExpanded = it
                 }
-            } else {
-                DockedSearchBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    inputField = {
-                        SearchBarDefaults.InputField(
-                            modifier = Modifier.fillMaxWidth(),
-                            query = searchQuery,
-                            onQueryChange = {
-                                searchQuery = it
-                            },
-                            onSearch = {
-                                isSearchBarExpanded = false
-                            },
-                            expanded = isSearchBarExpanded,
-                            onExpandedChange = {
-                                isSearchBarExpanded = it
-                            },
-                            placeholder = {
-                                Text("Search")
-                            },
-                            leadingIcon = {
-//                            todo add menu hamburger?
-                                IconButton(onClick = {
-
-                                }) {
-                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search notes")
-                                }
-                            },
-                            trailingIcon = {
-                                if (isSearchBarExpanded) {
-                                    IconButton(
-                                        onClick = {
-                                            if (searchQuery.isBlank()) {
-                                                isSearchBarExpanded = false
-                                            } else {
-                                                searchQuery = ""
-                                            }
-                                        }
-                                    ) {
-                                        Icon(imageVector = Icons.Default.Close, contentDescription = "Search notes")
-                                    }
-                                }
-                            }
-                        )
-                    },
-                    onExpandedChange = {
-                        isSearchBarExpanded = it
-                    },
-                    expanded = isSearchBarExpanded
-                ) { }
-            }
+            )
 
             AnimatedVisibility(
                 visible = uiState.isOrderSectionVisible,
@@ -269,6 +174,116 @@ internal fun HomeScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun NotesSearchBar(
+    navigationType: NavigationType,
+    searchQuery: String,
+    onQueryChanged: (String) -> Unit,
+    isSearchBarExpanded: Boolean,
+    onToggleSearchBar: (Boolean) -> Unit
+) {
+    if (navigationType == NavigationType.CLOSED_DRAWER) {
+        SearchBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            inputField = {
+                SearchBarDefaults.InputField(
+                    query = searchQuery,
+                    onQueryChange = onQueryChanged,
+                    expanded = isSearchBarExpanded,
+                    onExpandedChange = onToggleSearchBar,
+                    placeholder = { Text("Search") },
+                    onSearch = onQueryChanged,
+                    trailingIcon = {
+                        if (isSearchBarExpanded) {
+                            IconButton(
+                                onClick = {
+                                    if (searchQuery.isBlank()) {
+                                        onToggleSearchBar(false)
+                                    } else {
+                                        onQueryChanged("")
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Search notes"
+                                )
+                            }
+                        }
+                    },
+                    leadingIcon = {
+//                            todo add menu hamburger?
+                        IconButton(onClick = {
+
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search notes"
+                            )
+                        }
+                    }
+                )
+            },
+            expanded = isSearchBarExpanded,
+            onExpandedChange = onToggleSearchBar
+        ) {
+
+        }
+    } else {
+        DockedSearchBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            inputField = {
+                SearchBarDefaults.InputField(
+                    modifier = Modifier.fillMaxWidth(),
+                    query = searchQuery,
+                    onQueryChange = onQueryChanged,
+                    onSearch = {
+                        onToggleSearchBar(false)
+                    },
+                    expanded = isSearchBarExpanded,
+                    onExpandedChange = onToggleSearchBar,
+                    placeholder = { Text("Search") },
+                    leadingIcon = {
+//                            todo add menu hamburger?
+                        IconButton(onClick = {
+
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search notes"
+                            )
+                        }
+                    },
+                    trailingIcon = {
+                        if (isSearchBarExpanded) {
+                            IconButton(
+                                onClick = {
+                                    if (searchQuery.isBlank()) {
+                                        onToggleSearchBar(false)
+                                    } else {
+                                        onQueryChanged("")
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Search notes"
+                                )
+                            }
+                        }
+                    }
+                )
+            },
+            onExpandedChange = onToggleSearchBar,
+            expanded = isSearchBarExpanded
+        ) { }
     }
 }
 
