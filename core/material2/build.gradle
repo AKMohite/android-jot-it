@@ -1,6 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "org.jetbrains.kotlin.plugin.compose" version "2.0.20"
 }
 
 android {
@@ -24,17 +27,22 @@ android {
         compose true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     kotlinOptions {
-        jvmTarget = '1.8'
         freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompilerVersion.get()
+    composeCompiler{
+        setEnableStrongSkippingMode(true)
+        setIncludeSourceInformation(true)
     }
     namespace 'com.ak.jotit.material2'
 }
