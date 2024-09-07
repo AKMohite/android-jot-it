@@ -36,6 +36,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompilerVersion.get()
     }
+    namespace 'com.ak.jotit.material2'
 }
 
 dependencies {
