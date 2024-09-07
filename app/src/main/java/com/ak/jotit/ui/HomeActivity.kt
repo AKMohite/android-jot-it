@@ -225,7 +225,7 @@ fun JotItPreview() {
 
 @Preview(showBackground = true, widthDp = 700)
 @Composable
-fun ReplyAppPreviewTablet() {
+fun JotItPreviewTablet() {
     JotItTheme {
         JotItApp(
             navigationType = NavigationType.NAVIGATION_RAIL,
@@ -236,7 +236,7 @@ fun ReplyAppPreviewTablet() {
 
 @Preview(showBackground = true, widthDp = 1000)
 @Composable
-fun ReplyAppPreviewDesktop() {
+fun JotItPreviewDesktop() {
     JotItTheme {
         JotItApp(
             navigationType = NavigationType.PERMANENT_DRAWER,

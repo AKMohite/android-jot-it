@@ -144,20 +144,20 @@ internal fun HomeScreen(
                 }
             )
 
-            AnimatedVisibility(
-                visible = uiState.isOrderSectionVisible,
-                enter = fadeIn() + slideInVertically(),
-                exit = fadeOut() + slideOutVertically()
-            ) {
-                OrderSection(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .testTag(stringResource(id = R.string.filter_note)),
-                    noteOrderBy = uiState.noteOrderBy,
-                    onOrderChange = actions::onOrderNotes
-                )
-            }
+//            AnimatedVisibility(
+//                visible = uiState.isOrderSectionVisible,
+//                enter = fadeIn() + slideInVertically(),
+//                exit = fadeOut() + slideOutVertically()
+//            ) {
+//                OrderSection(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(vertical = 16.dp)
+//                        .testTag(stringResource(id = R.string.filter_note)),
+//                    noteOrderBy = uiState.noteOrderBy,
+//                    onOrderChange = actions::onOrderNotes
+//                )
+//            }
             Spacer(modifier = Modifier.height(16.dp))
             if (uiState.notes.isEmpty()) {
                 EmptyState()
@@ -186,10 +186,15 @@ private fun NotesSearchBar(
     onToggleSearchBar: (Boolean) -> Unit
 ) {
     if (navigationType == NavigationType.CLOSED_DRAWER) {
+        val (horizontalPadding, verticalPadding) = if (isSearchBarExpanded) {
+            0.dp to 0.dp
+        } else {
+            8.dp to 4.dp
+        }
         SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(horizontal = horizontalPadding, vertical = verticalPadding),
             inputField = {
                 SearchBarDefaults.InputField(
                     query = searchQuery,
