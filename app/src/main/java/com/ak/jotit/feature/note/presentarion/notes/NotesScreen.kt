@@ -12,13 +12,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -43,6 +47,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ak.jotit.R
@@ -219,6 +224,28 @@ private fun NotesSearchBar(
                                     contentDescription = "Search notes"
                                 )
                             }
+                        } else {
+                            IconButton(
+                                onClick = {}
+                            ) {
+                                if (false) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(24.dp)
+                                            .height(24.dp),
+                                        painter = painterResource(R.drawable.notes_list),
+                                        contentDescription = "List"
+                                    )
+                                } else {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(24.dp)
+                                            .height(24.dp),
+                                        painter = painterResource(R.drawable.notes_grid),
+                                        contentDescription = "Grid"
+                                    )
+                                }
+                            }
                         }
                     },
                     leadingIcon = {
@@ -227,7 +254,7 @@ private fun NotesSearchBar(
 
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Search,
+                                imageVector = Icons.Default.Menu,
                                 contentDescription = "Search notes"
                             )
                         }
