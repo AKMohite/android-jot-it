@@ -93,31 +93,42 @@ fun NoteItem(
                 canCutCornerSize = note.isSynced
             )
 
-            Column(
+            NoteCard(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
-                    .padding(end = 32.dp)
-            ) {
-                Text(
-                    text = note.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = note.description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 5,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+                    .padding(end = 32.dp),
+                note = note
+            )
         }
+    }
+}
+
+@Composable
+internal fun NoteCard(
+    modifier: Modifier = Modifier,
+    note: NoteEntity
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = note.title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = note.description,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
