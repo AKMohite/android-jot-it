@@ -1,4 +1,3 @@
 rootProject.name = "Jot It"
 include ':app'
-
 include ':core:material2'

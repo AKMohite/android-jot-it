@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    namespace "com.ak.jotit.material2"
     compileSdk 33
 
     defaultConfig {

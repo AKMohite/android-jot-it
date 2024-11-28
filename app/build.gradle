@@ -12,6 +12,7 @@ plugins {
 
 android {
 
+    namespace "com.ak.jotit"
     compileSdk 34
 
     defaultConfig {
@@ -58,20 +59,20 @@ android {
         freeCompilerArgs += "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api"
         freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
     }
+    packagingOptions {
+        resources {
+            excludes += ['/META-INF/{AL2.0,LGPL2.1}', 'META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
 
 // this fix is added because of androidTest issues
-    packagingOptions {
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompilerVersion.get()
     }
     composeCompiler{
         setEnableStrongSkippingMode(true)
         setIncludeSourceInformation(true)
     }
-    namespace 'com.ak.jotit'
 
 }
 
