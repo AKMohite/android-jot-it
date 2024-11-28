@@ -3,6 +3,7 @@ package com.ak.jotit.core.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -57,7 +58,10 @@ internal fun JotItClosedDrawer(
         modifier = modifier,
         gesturesEnabled = isDrawerAccessible,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+            ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 items.forEachIndexed { index, item ->
                     NavigationDrawerItem(

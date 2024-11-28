@@ -220,6 +220,7 @@ private fun NotesSearchBar(
                             IconButton(
                                 onClick = {}
                             ) {
+//                                Todo: Handle grid/listview with preference
                                 if (false) {
                                     Icon(
                                         modifier = Modifier
