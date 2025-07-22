@@ -332,7 +332,7 @@ private fun NotesList(
         ) { note ->
             NoteItem(
                 modifier = Modifier
-                    .animateItemPlacement()
+                    .animateItem()
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp)
                     .clickable {

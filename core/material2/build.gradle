@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace "com.ak.jotit.material2"
-    compileSdk 33
+    compileSdk 36
 
     defaultConfig {
         minSdk 22
-        targetSdk 33
+        targetSdk 36
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
