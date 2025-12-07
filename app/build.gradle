@@ -13,12 +13,12 @@ plugins {
 android {
 
     namespace "com.ak.jotit"
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.ak.jotit"
-        minSdk 22
-        targetSdk 35
+        minSdk 24
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -95,6 +95,7 @@ dependencies {
     // Compose
     implementation libs.compose.androidx
     implementation libs.compose.material
+    implementation libs.compose.icons
     implementation libs.compose.preview
     implementation libs.lifecycle.runtime.ktx
     implementation libs.compose.activity
